@@ -8,11 +8,14 @@ import { Menu, Moon, ShoppingCart, Sun } from 'lucide-react'
 import ProfileButton from './ui/ProfileButton'
 import { useTheme } from 'next-themes'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 type Props = {}
 
 const Header = () => {
   const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
 
   const routes = [
     {
@@ -24,6 +27,7 @@ const Header = () => {
       label: 'Jobs Table'
     }
   ]
+
   return (
     <header className="mb-6 border-b py-2 sm:flex sm:justify-between">
       <div className="relative grid h-16 w-full grid-cols-2 items-center md:grid-cols-3">
@@ -51,7 +55,13 @@ const Header = () => {
           {routes.map((route, i) => (
             // eslint-disable-next-line react/jsx-key
             <Button asChild variant="ghost">
-              <Link key={i} href={route.href} className="text-sm font-medium transition-colors">
+              <Link
+                key={i}
+                href={route.href}
+                className={cn(
+                  `text-sm font-medium transition-colors`,
+                  pathname === route.href ? 'bg-stone-800 hover:bg-stone-700' : ''
+                )}>
                 {route.label}
               </Link>
             </Button>
@@ -68,7 +78,7 @@ const Header = () => {
             <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">Toggle Theme</span>
           </Button>
-          <ProfileButton />
+          {/* <ProfileButton /> */}
         </div>
       </div>
     </header>

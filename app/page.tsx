@@ -13,12 +13,6 @@ export default function Home() {
   return (
     <div>
       <div className="my-6 text-3xl font-bold tracking-tighter">Dashboard</div>
-      <HoverCard>
-        <HoverCardTrigger>Hover</HoverCardTrigger>
-        <HoverCardContent>
-          The React Framework – created and maintained by @vercel.
-        </HoverCardContent>
-      </HoverCard>
       <CVPage />
     </div>
   )
