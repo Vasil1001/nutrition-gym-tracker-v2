@@ -110,7 +110,7 @@ export default function Page() {
     setShowForm(false)
   }
   return (
-    <div>
+    <>
       <div className="my-6 text-3xl font-bold tracking-tighter">Jobs Table page</div>
       <DataTable
         columns={columns}
@@ -126,6 +126,6 @@ export default function Page() {
         }}
         handleInputChange={handleInputChange}
       />
-    </div>
+    </>
   )
 }

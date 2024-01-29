@@ -4,13 +4,13 @@ import { Input } from '@/components/ui/input'
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import react, { SVGProps } from 'react'
-import SquareStackIcon from './icons/square-stack-icon'
-import UserRoundIcon from './icons/user-round-icon'
+import SquareStackIcon from './ui/icons/square-stack-icon'
+import UserRoundIcon from './ui/icons/user-round-icon'
 import { ArrowUpFromLine, Clock, User } from 'lucide-react'
-import { LineChartWeights } from './LineChart'
-import { PieChartJobs } from './PieChart'
+import { LineChartWeights } from './charts/LineChart'
+import { PieChartJobs } from './charts/PieChart'
 
-export function CVPage() {
+export function Dashboard() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 md:gap-5 ">

@@ -1,35 +1,36 @@
 'use client'
 
-import React from 'react'
-import Container from './ui/container'
-import Link from 'next/link'
-import { Button } from './ui/button'
-import { Menu, Moon, ShoppingCart, Sun } from 'lucide-react'
-import ProfileButton from './ui/ProfileButton'
-import { useTheme } from 'next-themes'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
-import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { Menu, Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { Button } from './ui/button'
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 
 type Props = {}
 
-const Header = () => {
+const Navbar = () => {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
 
   const routes = [
     {
       href: '/',
-      label: 'Dashboard'
+      label: 'Overview'
     },
     {
-      href: '/jobs-table',
-      label: 'Jobs Table'
+      href: '/jobs',
+      label: 'Jobs'
+    },
+    {
+      href: '/nutrition',
+      label: 'Nutrition Tracking'
     }
   ]
 
   return (
-    <header className="mb-6 border-b py-2 sm:flex sm:justify-between">
+    <header className="border-b py-2 sm:flex sm:justify-between">
       <div className="relative grid h-16 w-full grid-cols-2 items-center md:grid-cols-3">
         <div className="col-span-1 flex items-center">
           <Sheet>
@@ -47,32 +48,34 @@ const Header = () => {
             </SheetContent>
           </Sheet>
           <Link href="/">
-            <h1 className="text-base font-bold tracking-tighter">Application Tracker</h1>
+            <h1 className="text-lg font-bold tracking-tighter">Nutrition Tracker</h1>
           </Link>
         </div>
 
-        <nav className="hidden justify-center space-x-4 md:col-span-1 md:flex lg:space-x-3">
-          {routes.map((route, i) => (
-            // eslint-disable-next-line react/jsx-key
-            <Button asChild variant="ghost">
-              <Link
-                key={i}
-                href={route.href}
-                className={cn(
-                  `text-sm font-medium transition-colors`,
-                  pathname === route.href ? 'bg-stone-800 hover:bg-stone-700' : ''
-                )}>
-                {route.label}
-              </Link>
-            </Button>
-          ))}
-        </nav>
-        <div className="col-span-1 flex justify-end">
+        <div className="col-span-2 flex justify-end">
+          <nav className="hidden justify-center space-x-2 md:col-span-1 md:flex">
+            {routes.map((route, i) => (
+              // eslint-disable-next-line react/jsx-key
+              <Button asChild variant="ghost">
+                <Link
+                  key={i}
+                  href={route.href}
+                  className={cn(
+                    `text-sm font-medium transition-colors`,
+                    pathname === route.href
+                      ? 'bg-zinc-200/60 dark:bg-stone-800 dark:hover:bg-stone-700'
+                      : ''
+                  )}>
+                  {route.label}
+                </Link>
+              </Button>
+            ))}
+          </nav>
           <Button
             variant="ghost"
             size="icon"
             aria-label="Toggle Theme"
-            className="mr-2"
+            className="ml-2"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
             <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
@@ -85,4 +88,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Navbar

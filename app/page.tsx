@@ -1,8 +1,8 @@
 'use client'
 
-import BarChartGoal from '@/components/BarChartGoal'
-import { CVPage } from '@/components/CVPage'
-import { LineChartWeights } from '@/components/LineChart'
+import BarChartGoal from '@/components/charts/BarChartGoal'
+import { Dashboard } from '@/components/overview'
+import { LineChartWeights } from '@/components/charts/LineChart'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Container from '@/components/ui/container'
 
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div>
       <div className="my-6 text-3xl font-bold tracking-tighter">Dashboard</div>
-      <CVPage />
+      <Dashboard />
     </div>
   )
 }

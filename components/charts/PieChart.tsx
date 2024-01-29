@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { PieChart, Pie, Sector } from 'recharts'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 
 const data = [
   { name: 'Applications sent', value: 43 },
