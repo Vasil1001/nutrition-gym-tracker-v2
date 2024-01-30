@@ -35,11 +35,27 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
     0
   )
   const foodCounts: FoodCount[] = selectedFoods.reduce((acc, food) => {
-    const existingFood = acc.find((item) => item.food.name === food.name)
+    const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
     if (existingFood) {
-      existingFood.count++
+      const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
+        const existingFood = acc.find((item) => item.food.name === food.name)
+        if (existingFood) {
+          existingFood.count++
+        } else {
+          acc.push({ food, count: 1 })
+        }
+        return acc
+      }, [])
     } else {
-      acc.push({ food, count: 1 })
+      const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
+        const existingFood = acc.find((item) => item.food.name === food.name)
+        if (existingFood) {
+          existingFood.count++
+        } else {
+          acc.push({ food, count: 1 })
+        }
+        return acc
+      }, [])
     }
     return acc
   }, [])
