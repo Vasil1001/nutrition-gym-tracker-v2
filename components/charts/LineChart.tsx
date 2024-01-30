@@ -57,7 +57,7 @@ export function LineChartWeights() {
   return (
     <Card className="flex h-full flex-col justify-between">
       <CardHeader>
-        <CardTitle>Applications Chart</CardTitle>
+        <CardTitle>Nutrition / Gym Chart</CardTitle>
         <CardDescription>Line chart with the amount of applications sent per day</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-4">

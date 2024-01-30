@@ -38,20 +38,20 @@ export default function FoodCard({ food, onAdd, onRemove }: FoodCardProps) {
         <div>
           <div className="flex justify-between">
             <CardTitle className="">{food.name}</CardTitle>
-            <div className="font-supreme flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground transition-all delay-150">
+            <div className="flex items-center justify-center gap-2 font-supreme text-sm font-medium text-muted-foreground transition-all delay-150">
               <Minus
-                className="h-5 w-5 cursor-pointer opacity-0 hover:text-foreground group-hover:opacity-100"
+                className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
                 onClick={handleRemove}
               />
               {count > 0 && count}
               <Plus
-                className="h-5 w-5 cursor-pointer opacity-0 hover:text-foreground group-hover:opacity-100"
+                className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
                 onClick={handleAdd}
               />
             </div>
           </div>
           <CardDescription>
-            <div className="font-supreme mb-3 mt-0.5 text-[0.8rem] text-muted-foreground">
+            <div className="mb-3 mt-0.5 font-supreme text-[0.8rem] text-muted-foreground">
               Per {food.servingSize} serving
             </div>
           </CardDescription>

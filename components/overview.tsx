@@ -1,16 +1,11 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable tailwindcss/classnames-order */
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { CardTitle, CardDescription, CardHeader, CardContent, Card } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import react, { SVGProps } from 'react'
-import SquareStackIcon from './ui/icons/square-stack-icon'
-import UserRoundIcon from './ui/icons/user-round-icon'
 import { ArrowUpFromLine, Clock, User } from 'lucide-react'
+import { SVGProps } from 'react'
 import { LineChartWeights } from './charts/LineChart'
-import { PieChartJobs } from './charts/PieChart'
 
 export function Dashboard() {
   return (
@@ -35,71 +30,63 @@ export function Dashboard() {
               </div>
             </CardHeader>
             <CardContent className="grid gap-1.5">
-              <div className="font-semibold">Total Applications</div>
+              <div className="font-semibold tracking-tight">Current stats</div>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1">
                   <GitBranchIcon className="h-4 w-4 " />
-                  <span className="">43</span>
+                  <span className="">63kg</span>
                 </div>
                 <div className="flex items-center gap-1 text-muted-foreground">
                   <Clock className="h-4 w-4" />
-                  <span className="">3h ago</span>
+                  <span className="">2x / week</span>
                 </div>
               </div>
 
-              <div className="mt-3 flex flex-col items-start gap-0 rounded-lg text-center text-sm">
-                <div className="text-2xl font-bold tracking-tighter">2 Interviews</div>
-                <div className="ml-0.5 text-[0.70rem] uppercase text-muted-foreground">
-                  Conducted so far
+              <div className="mt-2 font-semibold tracking-tight">Set goals</div>
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-1">
+                  <GitBranchIcon className="h-4 w-4 " />
+                  <span className="">66kg</span>
                 </div>
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span className="">3x / week</span>
+                </div>
+              </div>
+              <div className="ml-0.5 text-[0.70rem] uppercase text-muted-foreground">
+                Conducted so far
               </div>
             </CardContent>
           </Card>
 
-          <Card className="col-span-1 flex flex-col justify-between">
+          <Card className="col-span-2 flex flex-col justify-between">
             <CardHeader className="flex flex-row items-center gap-4 px-3.5">
               <ArrowUpFromLine className="h-12 w-12" />
               <div className="grid gap-1">
-                <CardTitle>Upload CV</CardTitle>
-                <CardDescription>Frontend Engineer CV</CardDescription>
+                <CardTitle>Set your targets</CardTitle>
+                <CardDescription>Nutrition and gym targets</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-1 flex-col items-center justify-end gap-4">
-              <div className="grid w-full max-w-sm items-center justify-center gap-1.5">
-                <Input
-                  id="cv"
-                  type="file"
-                  className="cursor-pointer border border-stone-700  hover:border-2 hover:border-stone-600"
-                />
+              <div className="flex w-full flex-1 gap-4 rounded-xl">
+                <div className="flex w-full flex-1 rounded-xl bg-[#24252b] p-4">
+                  <div className="flex w-full flex-col">
+                    <p className="mb-2">Weight</p>
+                    <Button className="w-full" type="submit">
+                      Set weight
+                    </Button>
+                  </div>
+                </div>
+                <div className="rounded-xl bg-[#24252b] p-4">Protein</div>
+                <div className="rounded-xl bg-[#24252b] p-4">Calories</div>
               </div>
               <Button className="w-full" type="submit">
-                Upload CV
-              </Button>
-            </CardContent>
-          </Card>
-          <Card className="col-span-1 flex flex-col justify-between">
-            <CardHeader className="flex flex-row items-center gap-4 px-3.5">
-              <ArrowUpFromLine className="h-12 w-12" />
-              <div className="grid gap-1">
-                <CardTitle>Upload Cover letter</CardTitle>
-                <CardDescription>Frontend Engineer letter</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col items-center justify-end gap-4">
-              <div className="grid w-full max-w-sm items-center justify-center gap-1.5">
-                <Input
-                  id="cover-letter"
-                  type="file"
-                  className="cursor-pointer border border-stone-700  hover:border-2 hover:border-stone-600"
-                />
-              </div>
-              <Button className="w-full" type="submit">
-                Upload Cover letter
+                Set your targets
               </Button>
             </CardContent>
           </Card>
 
-          <div className="col-span-2">
+          <div className="col-span-3">
             <LineChartWeights />
           </div>
           {/* <Card className="col-span-1 flex flex-col justify-between">

@@ -30,12 +30,20 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
     (total, selectedFood) => total + Number(selectedFood.calories),
     0
   )
+  const foodCounts = selectedFoods.reduce((acc, food) => {
+    const existingFood = acc.find((item) => item.food.name === food.name)
+    if (existingFood) {
+      existingFood.count++
+    } else {
+      acc.push({ food, count: 1 })
+    }
+    return acc
+  }, [])
 
   return (
-    // eslint-disable-next-line tailwindcss/no-custom-classname
     <div className="border-l pl-4">
       <h1 className="my-6 text-2xl font-bold">Total Daily Intake</h1>
-      <div className="rounded-xl rounded-b-none outline outline-4 outline-[#2e3039]">
+      <div className="ml-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
         <Table>
           <TableHeader>
             <TableRow>
@@ -46,17 +54,19 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {selectedFoods.map((selectedFood, i) => (
+            {foodCounts.map(({ food, count }, i) => (
               <TableRow key={i}>
                 <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
-                  x2
+                  x{count}
                 </TableCell>
-                <TableCell className="w-[150px] font-medium">{selectedFood.name}</TableCell>
-                <TableCell className="border-r text-center ">{totalProtein}g</TableCell>
+                <TableCell className="w-[150px] font-medium">{food.name}</TableCell>
+                <TableCell className="border-r text-center ">
+                  {(totalProtein * count).toFixed()}g
+                </TableCell>
                 <TableCell className="text-center">{totalCalories}cal</TableCell>
               </TableRow>
             ))}
-            <TableRow className=" bg-[#2e3039]">
+            <TableRow className=" bg-[#2e3039] dark:hover:bg-[#2e3039]">
               <TableCell className="text-center text-muted-foreground">#</TableCell>
               <TableCell className="w-[150px] font-medium">Total Protein</TableCell>
               <TableCell className="border-r text-center ">{totalProtein}g</TableCell>
