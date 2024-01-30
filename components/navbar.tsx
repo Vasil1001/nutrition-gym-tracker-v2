@@ -20,8 +20,8 @@ const Navbar = () => {
       label: 'Overview'
     },
     {
-      href: '/jobs',
-      label: 'Jobs'
+      href: '/weights',
+      label: 'Weights'
     },
     {
       href: '/nutrition',

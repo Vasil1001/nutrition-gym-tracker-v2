@@ -111,7 +111,7 @@ export default function Page() {
   }
   return (
     <>
-      <div className="my-6 text-3xl font-bold tracking-tighter">Jobs Table page</div>
+      <div className="mt-6 mb-2 text-3xl font-bold tracking-tighter">Weights Table page</div>
       <DataTable
         columns={columns}
         data={jobs}

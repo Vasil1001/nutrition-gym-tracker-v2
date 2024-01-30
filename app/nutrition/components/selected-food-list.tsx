@@ -20,6 +20,10 @@ export type Food = {
   protein: string
   calories: string
 }
+type FoodCount = {
+  food: Food
+  count: number
+}
 
 export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
   const totalProtein = selectedFoods.reduce(
@@ -30,7 +34,7 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
     (total, selectedFood) => total + Number(selectedFood.calories),
     0
   )
-  const foodCounts = selectedFoods.reduce((acc, food) => {
+  const foodCounts: FoodCount[] = selectedFoods.reduce((acc, food) => {
     const existingFood = acc.find((item) => item.food.name === food.name)
     if (existingFood) {
       existingFood.count++
