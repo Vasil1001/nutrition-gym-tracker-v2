@@ -1,3 +1,5 @@
+/* eslint-disable tailwindcss/no-custom-classname */
+/* eslint-disable tailwindcss/classnames-order */
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,8 +14,8 @@ import { PieChartJobs } from './charts/PieChart'
 
 export function Dashboard() {
   return (
-    <div className="flex min-h-screen w-full flex-col">
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 md:gap-5 ">
+    <div className="flex max-h-screen w-full flex-col">
+      <main className="flex flex-col gap-4 md:gap-5 ">
         <div className="mx-auto flex w-full items-center gap-4">
           <form className="flex-1">
             <Input className="bg-white" placeholder="Search..." />

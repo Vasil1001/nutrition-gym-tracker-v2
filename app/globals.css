@@ -1,8 +1,13 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,500,300,400&f[]=general-sans@500,300,600,400,700&f[]=supreme@800,400,200,100,300,500,700&f[]=outfit@400,900,800,300,500,600,200,100,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
 
+font-family: 'Satoshi', sans-serif;
+font-family: 'General Sans', sans-serif;
+font-family: 'Supreme', sans-serif;
+font-family: 'Outfit', sans-serif;
 
 @layer base {
   :root {
@@ -29,7 +34,7 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 240, 12%, 11%;
     --foreground: 0 0% 95%;
     --card: 24 9.8% 10%;
     --card-foreground: 0 0% 95%;
@@ -51,8 +56,6 @@
   }
 }
 
-
- 
 @layer base {
   * {
     @apply border-border;

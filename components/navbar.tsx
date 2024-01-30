@@ -56,15 +56,15 @@ const Navbar = () => {
           <nav className="hidden justify-center space-x-2 md:col-span-1 md:flex">
             {routes.map((route, i) => (
               // eslint-disable-next-line react/jsx-key
-              <Button asChild variant="ghost">
+              <Button asChild variant="ghost" key={i}>
                 <Link
                   key={i}
                   href={route.href}
                   className={cn(
                     `text-sm font-medium transition-colors`,
                     pathname === route.href
-                      ? 'bg-zinc-200/60 dark:bg-stone-800 dark:hover:bg-stone-700'
-                      : ''
+                      ? 'bg-[#f4f4f5] hover:bg-[#f2f4f5]/60 dark:bg-[#2e3039] dark:hover:bg-[#2e3039]/50'
+                      : 'dark:hover:bg-[#2e3039]/60'
                   )}>
                   {route.label}
                 </Link>
@@ -75,7 +75,7 @@ const Navbar = () => {
             variant="ghost"
             size="icon"
             aria-label="Toggle Theme"
-            className="ml-2"
+            className="ml-2 bg-[#f4f4f5] hover:bg-[#f2f4f5]/60 dark:bg-[#2e3039]  dark:hover:bg-[#2e3039]/50"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
             <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
