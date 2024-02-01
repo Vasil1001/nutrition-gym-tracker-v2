@@ -35,27 +35,11 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
     0
   )
   const foodCounts: FoodCount[] = selectedFoods.reduce((acc, food) => {
-    const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
+    const existingFood: FoodCount | undefined = acc.find((item) => item.food.name === food.name) as unknown as FoodCount;
     if (existingFood) {
-      const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
-        const existingFood = acc.find((item) => item.food.name === food.name)
-        if (existingFood) {
-          existingFood.count++
-        } else {
-          acc.push({ food, count: 1 })
-        }
-        return acc
-      }, [])
+      existingFood.count++
     } else {
-      const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
-        const existingFood = acc.find((item) => item.food.name === food.name)
-        if (existingFood) {
-          existingFood.count++
-        } else {
-          acc.push({ food, count: 1 })
-        }
-        return acc
-      }, [])
+      acc.push({ food, count: 1 })
     }
     return acc
   }, [])
@@ -89,8 +73,8 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
             <TableRow className=" bg-[#2e3039] dark:hover:bg-[#2e3039]">
               <TableCell className="text-center text-muted-foreground">#</TableCell>
               <TableCell className="w-[150px] font-medium">Total Protein</TableCell>
-              <TableCell className="border-r text-center ">{totalProtein}g</TableCell>
-              <TableCell className="text-center">{totalCalories}cal</TableCell>
+              <TableCell className="border-r text-center ">{totalProtein.toFixed()}g</TableCell>
+              <TableCell className="text-center">{totalCalories.toFixed()}cal</TableCell>
             </TableRow>
           </TableBody>
         </Table>
