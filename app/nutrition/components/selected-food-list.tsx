@@ -61,13 +61,15 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
             {foodCounts.map(({ food, count }, i) => (
               <TableRow key={i}>
                 <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
-                  x{count}
+                  {count}
                 </TableCell>
                 <TableCell className="w-[150px] font-medium">{food.name}</TableCell>
                 <TableCell className="border-r text-center ">
-                  {(totalProtein * count).toFixed()}g
+                  {(Number(food.protein) * count).toFixed()}g
                 </TableCell>
-                <TableCell className="text-center">{totalCalories}cal</TableCell>
+                <TableCell className="text-center">
+                  {(Number(food.calories) * count).toFixed()}c
+                </TableCell>
               </TableRow>
             ))}
             <TableRow className=" bg-[#2e3039] dark:hover:bg-[#2e3039]">

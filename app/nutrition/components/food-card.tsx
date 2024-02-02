@@ -2,6 +2,7 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable tailwindcss/classnames-order */
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import { Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 
@@ -43,7 +44,9 @@ export default function FoodCard({ food, onAdd, onRemove }: FoodCardProps) {
                 className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
                 onClick={handleRemove}
               />
-              {count > 0 && count}
+              <p className="text-bold font-outfit text-[1rem] tracking-tighter text-white">
+                {cn(count > 0 && 'x', count)}
+              </p>
               <Plus
                 className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
                 onClick={handleAdd}
@@ -51,26 +54,26 @@ export default function FoodCard({ food, onAdd, onRemove }: FoodCardProps) {
             </div>
           </div>
           <CardDescription>
-            <div className="mb-3 mt-0.5 font-supreme text-[0.8rem] text-muted-foreground">
+            <p className="-mt-0.5 mb-3 font-supreme text-[0.9rem] text-muted-foreground">
               Per {food.servingSize} serving
-            </div>
+            </p>
           </CardDescription>
         </div>
 
         <div className="flex items-center justify-evenly gap-4 overflow-hidden">
-          <div className="flex flex-col items-center p-1 text-[0.90rem] ">
-            <div className="text-[0.70rem] uppercase text-muted-foreground sm:hidden">PR</div>
-            <div className="hidden text-[0.70rem] uppercase text-muted-foreground sm:block">
+          <div className="flex flex-1 flex-col items-center rounded-sm border border-[#19191f] p-1 text-[0.90rem]">
+            <div className="text-[0.85rem] uppercase text-muted-foreground sm:hidden">PR</div>
+            <div className="hidden text-[0.85rem] uppercase text-muted-foreground sm:block">
               Protein
             </div>
-            {food.protein}
+            {food.protein}g
           </div>
-          <div className="flex flex-col items-center p-1 text-[0.90rem] ">
-            <div className="text-[0.70rem] uppercase text-muted-foreground sm:hidden">Cal</div>
-            <div className="hidden text-[0.70rem] uppercase text-muted-foreground sm:block">
+          <div className="flex flex-1 flex-col items-center rounded-sm border border-[#19191f] p-1 text-[0.90rem]">
+            <div className="text-[0.85rem] uppercase text-muted-foreground sm:hidden">Cal</div>
+            <div className="hidden text-[0.85rem] uppercase text-muted-foreground sm:block">
               Calories
             </div>
-            {food.calories}
+            {food.calories}c
           </div>
         </div>
       </CardContent>
