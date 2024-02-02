@@ -34,8 +34,8 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
     (total, selectedFood) => total + Number(selectedFood.calories),
     0
   )
-  const foodCounts: FoodCount[] = selectedFoods.reduce((acc, food) => {
-    const existingFood: FoodCount | undefined = acc.find((item) => item.food.name === food.name) as unknown as FoodCount;
+  const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
+    const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
     if (existingFood) {
       existingFood.count++
     } else {
@@ -46,8 +46,8 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
 
   return (
     <div className="border-l pl-4">
-      <h1 className="my-6 text-2xl font-bold">Total Daily Intake</h1>
-      <div className="ml-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
+      <h1 className="my-6 mb-8 text-2xl font-bold">Total Daily Intake</h1>
+      <div className="ml-2 mt-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
         <Table>
           <TableHeader>
             <TableRow>
