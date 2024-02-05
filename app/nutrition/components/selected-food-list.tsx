@@ -61,7 +61,7 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
             {foodCounts.map(({ food, count }, i) => (
               <TableRow key={i}>
                 <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
-                  {count}
+                  x{count}
                 </TableCell>
                 <TableCell className="w-[150px] font-medium">{food.name}</TableCell>
                 <TableCell className="border-r text-center ">

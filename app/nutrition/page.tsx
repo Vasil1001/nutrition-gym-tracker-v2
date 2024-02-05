@@ -1,5 +1,6 @@
 'use client'
 
+import LineTwoChart from '@/components/charts/NivoLineChart'
 import FoodList, { Food } from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
 import { useState } from 'react'
@@ -39,6 +40,7 @@ export default function Page() {
     <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
       <FoodList foods={foods} onAdd={handleAddFood} onRemove={handleRemoveFood} />
       <SelectedFoodList selectedFoods={selectedFoods} />
+      <LineTwoChart />
     </div>
   )
 }

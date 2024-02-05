@@ -44,7 +44,7 @@ export default function FoodCard({ food, onAdd, onRemove }: FoodCardProps) {
                 className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
                 onClick={handleRemove}
               />
-              <p className="text-bold font-outfit text-[1rem] tracking-tighter text-white">
+              <p className="text-bold text-[1rem] tracking-tighter text-white">
                 {cn(count > 0 && 'x', count)}
               </p>
               <Plus
