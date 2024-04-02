@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       fontFamily: {
+        'chillax': ['Chillax', 'sans-serif'],
         'satoshi': ['Satoshi', 'sans-serif'],
         'general-sans': ['General Sans', 'sans-serif'],
         'outfit': ['Outfit', 'sans-serif'],

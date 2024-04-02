@@ -1,5 +1,12 @@
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@700,500,300,400&f[]=general-sans@500,300,600,400,700&f[]=supreme@800,400,200,100,300,500,700&f[]=outfit@400,900,800,300,500,600,200,100,700&display=swap');
 
+@font-face {
+  font-family: 'Chillax';
+  src: url('/fonts/Chillax-Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

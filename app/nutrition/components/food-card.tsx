@@ -39,11 +39,8 @@ export default function FoodCard({ food, onAdd, onRemove, isListView }: FoodCard
     return (
       <Card key={food.name} className="group">
         <CardContent className="flex justify-between gap-4 p-3 text-base">
-          <div className="">
-            <div className="flex justify-between">
-              <CardTitle className="">{food.name}</CardTitle>
-            </div>
-            <CardDescription></CardDescription>
+          <div className="flex items-center justify-between">
+            <CardTitle className="">{food.name}</CardTitle>
           </div>
           <p className="mt-0.5 font-supreme text-[0.9rem] text-muted-foreground">
             Per {food.servingSize} serving

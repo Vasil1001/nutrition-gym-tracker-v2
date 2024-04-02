@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import FoodCard from './food-card'
+import { Button } from '@/components/ui/button'
 
 type FoodProps = {
   foods: Food[]
@@ -23,11 +24,9 @@ export default function FoodList({ foods, onAdd, onRemove }: FoodProps) {
     <div className="mb-5 max-h-screen overflow-auto pr-4 scrollbar scrollbar-track-[#19191f] scrollbar-thumb-[#2e3039] lg:pr-0 ">
       <div className="flex items-center justify-between">
         <h1 className="my-6 text-2xl font-bold">Food List</h1>
-        <button
-          className="rounded bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
-          onClick={toggleView}>
+        <Button className="rounded  px-4 py-2 transition duration-300 " onClick={toggleView}>
           {isListView ? 'Show Gallery View' : 'Show List View'}
-        </button>
+        </Button>
       </div>
       <div
         className={`grid gap-4 ${
