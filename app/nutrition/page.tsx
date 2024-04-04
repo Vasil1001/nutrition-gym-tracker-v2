@@ -31,22 +31,33 @@ export default function Page() {
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
-    const newCount = (foodCounts[food.name] || 0) + 1;
-    setFoodCounts({ ...foodCounts, [food.name]: newCount });
+    const newCount = (foodCounts[food.name] || 0) + 1
+    setFoodCounts({ ...foodCounts, [food.name]: newCount })
   }
 
   const handleRemoveFood = (food: Food) => {
-    setSelectedFoods(selectedFoods.filter((f) => f.name !== food.name))
-    if (foodCounts[food.name] && foodCounts[food.name] > 0) {
-      const newCount = foodCounts[food.name] - 1;
-      setFoodCounts({ ...foodCounts, [food.name]: newCount });
-    }
+    setFoodCounts((prevCounts) => {
+      const currentCount = prevCounts[food.name] || 0
+      if (currentCount > 1) {
+        return { ...prevCounts, [food.name]: currentCount - 1 }
+      } else {
+        const newCounts = { ...prevCounts }
+        delete newCounts[food.name]
+        setSelectedFoods(selectedFoods.filter((f) => f.name !== food.name)) // Move this line here
+        return newCounts
+      }
+    })
   }
 
   return (
     <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
-      <FoodList foods={foods} foodCounts={foodCounts} onAdd={handleAddFood} onRemove={handleRemoveFood} />
-      <SelectedFoodList selectedFoods={selectedFoods} />
+      <FoodList
+        foods={foods}
+        foodCounts={foodCounts}
+        onAdd={handleAddFood}
+        onRemove={handleRemoveFood}
+      />
+      <SelectedFoodList selectedFoods={selectedFoods} foodCounts={foodCounts} />
       <LineTwoChart />
     </div>
   )

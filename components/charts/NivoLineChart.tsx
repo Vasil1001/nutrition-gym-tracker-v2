@@ -22,8 +22,8 @@ export default function LineTwoChart() {
             <CardTitle>Weekly Overview</CardTitle>
             <CardDescription>Daily Calorie Intake</CardDescription>
           </CardHeader>
-          <CardContent>
-            <CurvedlineChart className="aspect-[4/3] w-full" />
+          <CardContent className="m-3 mt-0 rounded-xl bg-[#19191f]">
+            <CurvedlineChart className="mt-4 aspect-[4/3] w-full" />
           </CardContent>
         </Card>
       </div>

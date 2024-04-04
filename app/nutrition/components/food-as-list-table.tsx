@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardTitle, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -8,30 +7,24 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Minus, MinusIcon, Plus, PlusIcon } from 'lucide-react'
-import { Food, FoodProps } from './food-list'
-import App from '../../../components/ui/icons/plus-icon'
-import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { Minus, Plus } from 'lucide-react'
+import { useState } from 'react'
+import { Food, FoodProps } from './food-list'
 
 export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: FoodProps) {
-  // Initialize counts as an object mapping food names to their counts
   const [counts, setCounts] = useState<{ [key: string]: number }>({})
 
   const handleAdd = (food: Food) => {
-    // Increment count for the specific food
     const newCount = (foodCounts[food.name] || 0) + 1
     setCounts({ ...foodCounts, [food.name]: newCount })
     onAdd(food)
   }
 
   const handleRemove = (food: Food) => {
-    // Decrement count for the specific food if it's greater than 0
-    if (counts[food.name] > 0) {
-      const newCount = foodCounts[food.name] - 1
-      setCounts({ ...foodCounts, [food.name]: newCount })
-      onRemove(food)
-    }
+    const newCount = foodCounts[food.name] - 1
+    setCounts({ ...foodCounts, [food.name]: newCount })
+    onRemove(food)
   }
   return (
     <Card className="my-2 ml-2 ">

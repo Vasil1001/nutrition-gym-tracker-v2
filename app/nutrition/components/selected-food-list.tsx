@@ -12,6 +12,7 @@ import {
 
 type SelectedFoodProps = {
   selectedFoods: Food[]
+  foodCounts: { [key: string]: number } // Add this line
 }
 
 export type Food = {
@@ -25,25 +26,27 @@ type FoodCount = {
   count: number
 }
 
-export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
-  const totalProtein = selectedFoods.reduce(
-    (total, selectedFood) => total + Number(selectedFood.protein),
-    0
-  )
-  const totalCalories = selectedFoods.reduce(
-    (total, selectedFood) => total + Number(selectedFood.calories),
-    0
-  )
-  const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
-    const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
-    if (existingFood) {
-      existingFood.count++
-    } else {
-      acc.push({ food, count: 1 })
-    }
-    return acc
-  }, [])
+export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {
+  const totalProtein = Object.keys(foodCounts).reduce((total, foodName) => {
+    const food = selectedFoods.find((f) => f.name === foodName)
+    return total + (food ? Number(food.protein) * foodCounts[foodName] : 0)
+  }, 0)
 
+  const totalCalories = Object.keys(foodCounts).reduce((total, foodName) => {
+    const food = selectedFoods.find((f) => f.name === foodName)
+    return total + (food ? Number(food.calories) * foodCounts[foodName] : 0)
+  }, 0)
+
+  // const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
+  //   const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
+  //   if (existingFood) {
+  //     existingFood.count++
+  //   } else {
+  //     acc.push({ food, count: 1 })
+  //   }
+  //   return acc
+  // }, [])
+  console.log('TEST', selectedFoods)
   return (
     <div className="border-l pl-4">
       <h1 className="my-6 mb-8 text-2xl font-bold">Total Daily Intake</h1>
@@ -58,20 +61,24 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {foodCounts.map(({ food, count }, i) => (
-              <TableRow key={i}>
-                <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
-                  x{count}
-                </TableCell>
-                <TableCell className="w-[150px] font-medium">{food.name}</TableCell>
-                <TableCell className="border-r text-center ">
-                  {(Number(food.protein) * count).toFixed()}g
-                </TableCell>
-                <TableCell className="text-center">
-                  {(Number(food.calories) * count).toFixed()}c
-                </TableCell>
-              </TableRow>
-            ))}
+            {Object.entries(foodCounts).map(([foodName, count], i) => {
+              const food = selectedFoods.find((f) => f.name === foodName)
+              if (!food || count === 0) return null // Skip rendering if food not found or count is 0
+              return (
+                <TableRow key={i}>
+                  <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
+                    x{count}
+                  </TableCell>
+                  <TableCell className="w-[150px] font-medium">{foodName}</TableCell>
+                  <TableCell className="border-r text-center">
+                    {(Number(food.protein) * count).toFixed()}g
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {(Number(food.calories) * count).toFixed()}cal
+                  </TableCell>
+                </TableRow>
+              )
+            })}
             <TableRow className="dark:bg-[#2e3039] dark:hover:bg-[#2e3039]">
               <TableCell className="text-center text-muted-foreground">#</TableCell>
               <TableCell className="w-[150px] font-medium">Total Protein</TableCell>
