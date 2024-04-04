@@ -25,6 +25,7 @@ type Food = {
 
 export type FoodCardProps = {
   food: Food
+  count: number
   onAdd: () => void
   onRemove: () => void
   isListView: boolean

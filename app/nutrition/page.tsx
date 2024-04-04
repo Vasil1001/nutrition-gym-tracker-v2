@@ -27,18 +27,25 @@ export default function Page() {
   //   { name: 'Cheese', servingSize: '100g', protein: '25g', calories: '402' }
   // ]
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([])
+  const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>({})
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
+    const newCount = (foodCounts[food.name] || 0) + 1;
+    setFoodCounts({ ...foodCounts, [food.name]: newCount });
   }
 
   const handleRemoveFood = (food: Food) => {
     setSelectedFoods(selectedFoods.filter((f) => f.name !== food.name))
+    if (foodCounts[food.name] && foodCounts[food.name] > 0) {
+      const newCount = foodCounts[food.name] - 1;
+      setFoodCounts({ ...foodCounts, [food.name]: newCount });
+    }
   }
 
   return (
     <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
-      <FoodList foods={foods} onAdd={handleAddFood} onRemove={handleRemoveFood} />
+      <FoodList foods={foods} foodCounts={foodCounts} onAdd={handleAddFood} onRemove={handleRemoveFood} />
       <SelectedFoodList selectedFoods={selectedFoods} />
       <LineTwoChart />
     </div>

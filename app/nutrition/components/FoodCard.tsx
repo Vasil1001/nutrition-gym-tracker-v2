@@ -14,17 +14,17 @@ import { Minus, Plus, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { FoodCardProps } from './food-card'
 
-export default function FoodCard({ food, onAdd, onRemove, isListView }: FoodCardProps) {
-  const [count, setCount] = useState(0)
+export default function FoodCard({ food, count, onAdd, onRemove, isListView }: FoodCardProps) {
+  // const [count, setCount] = useState(0)
 
   const handleAdd = () => {
-    setCount(count + 1)
+    // setCount(count + 1)
     onAdd()
   }
 
   const handleRemove = () => {
     if (count > 0) {
-      setCount(count - 1)
+      // setCount(count - 1)
       onRemove()
     }
   }

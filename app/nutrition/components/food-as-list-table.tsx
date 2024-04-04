@@ -14,17 +14,22 @@ import App from '../../../components/ui/icons/plus-icon'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
-export default function FoodAsListTable({ foods, onAdd, onRemove }: FoodProps) {
-  const [count, setCount] = useState(0)
+export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: FoodProps) {
+  // Initialize counts as an object mapping food names to their counts
+  const [counts, setCounts] = useState<{ [key: string]: number }>({})
 
   const handleAdd = (food: Food) => {
-    setCount(count + 1)
+    // Increment count for the specific food
+    const newCount = (foodCounts[food.name] || 0) + 1
+    setCounts({ ...foodCounts, [food.name]: newCount })
     onAdd(food)
   }
 
   const handleRemove = (food: Food) => {
-    if (count > 0) {
-      setCount(count - 1)
+    // Decrement count for the specific food if it's greater than 0
+    if (counts[food.name] > 0) {
+      const newCount = foodCounts[food.name] - 1
+      setCounts({ ...foodCounts, [food.name]: newCount })
       onRemove(food)
     }
   }
@@ -36,7 +41,7 @@ export default function FoodAsListTable({ foods, onAdd, onRemove }: FoodProps) {
             <TableHeader className="w-full bg-[#19191f]">
               <TableRow>
                 <TableHead>Food</TableHead>
-                <TableHead className="text-end">Serving Size</TableHead>
+                <TableHead className="text-end">Serving</TableHead>
                 <TableHead className="text-end">Calories</TableHead>
                 <TableHead className="text-end">Protein</TableHead>
               </TableRow>
@@ -46,20 +51,26 @@ export default function FoodAsListTable({ foods, onAdd, onRemove }: FoodProps) {
                 <TableRow
                   key={index}
                   className="group relative dark:bg-[#19191f] dark:hover:bg-[#2e3039] dark:hover:outline-0">
-                  <div className="flex items-center justify-center gap-2 font-supreme text-sm font-medium text-muted-foreground transition-all delay-150">
-                    <Minus
-                      className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
-                      onClick={() => handleRemove(food)}
-                    />
-                    <p className="text-bold text-[1rem] tracking-tighter text-white">
-                      {cn(count > 0 && 'x', count)}
-                    </p>
-                    <Plus
-                      className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
-                      onClick={() => handleAdd(food)}
-                    />
-                  </div>
-                  <TableCell className="font-semibold">{food.name}</TableCell>
+                  <TableCell className="flex gap-3 font-semibold">
+                    <div
+                      className={cn(
+                        foodCounts[food.name] > 0 ? 'flex' : 'hidden',
+                        'w-10 items-center justify-start gap-2 font-supreme text-sm font-medium text-muted-foreground transition-all delay-150 group-hover:flex'
+                      )}>
+                      <Minus
+                        className="h-4 w-4 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
+                        onClick={() => handleRemove(food)}
+                      />
+                      <p className="text-bold text-[0.9rem] tracking-tighter text-white">
+                        {cn(foodCounts[food.name] > 0 && '', foodCounts[food.name])}
+                      </p>
+                      <Plus
+                        className="h-4 w-4 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
+                        onClick={() => handleAdd(food)}
+                      />
+                    </div>
+                    {food.name}
+                  </TableCell>
                   <TableCell className="text-end">{food.servingSize} g</TableCell>
                   <TableCell className="text-end">{food.calories} cal</TableCell>
                   <TableCell className="mr-1.5 flex justify-end text-end">

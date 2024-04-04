@@ -16,6 +16,7 @@ export type FoodProps = {
   foods: Food[]
   onAdd: (food: Food) => void
   onRemove: (food: Food) => void
+  foodCounts: { [key: string]: number };
 }
 
 export type Food = {
@@ -25,7 +26,7 @@ export type Food = {
   calories: string
 }
 
-export default function FoodList({ foods, onAdd, onRemove }: FoodProps) {
+export default function FoodList({ foods, foodCounts, onAdd, onRemove }: FoodProps) {
   const [isListView, setIsListView] = useState(false)
 
   const toggleView = () => setIsListView(!isListView)
@@ -43,17 +44,18 @@ export default function FoodList({ foods, onAdd, onRemove }: FoodProps) {
           isListView ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
         }`}>
         {isListView ? (
-          <div><FoodAsListTable foods={foods} onAdd={onAdd} onRemove={onRemove} /></div>
+          <div><FoodAsListTable foods={foods} foodCounts={foodCounts} onAdd={onAdd} onRemove={onRemove} /></div>
         ) : (
           <>
             {foods.map((food) => (
-              <FoodCard
-                isListView={isListView}
-                key={food.name}
-                food={food}
-                onAdd={() => onAdd(food)}
-                onRemove={() => onRemove(food)}
-              />
+             <FoodCard
+             key={food.name}
+             food={food}
+             count={foodCounts[food.name] || 0}
+             onAdd={() => onAdd(food)}
+             onRemove={() => onRemove(food)}
+             isListView={isListView}
+           />
             ))}
           </>
         )}
