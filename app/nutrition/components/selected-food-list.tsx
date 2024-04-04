@@ -65,7 +65,7 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
               const food = selectedFoods.find((f) => f.name === foodName)
               if (!food || count === 0) return null // Skip rendering if food not found or count is 0
               return (
-                <TableRow key={i}>
+                <TableRow className='dark:hover:bg-[#2e3039]' key={i}>
                   <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
                     x{count}
                   </TableCell>
