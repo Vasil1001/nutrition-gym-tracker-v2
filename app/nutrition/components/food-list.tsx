@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
-import FoodCard from './food-card'
+import FoodCard from './FoodCard'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardTitle, CardDescription, CardHeader } from '@/components/ui/card'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+import FoodAsListTable from './food-as-list-table'
 
-type FoodProps = {
+export type FoodProps = {
   foods: Food[]
   onAdd: (food: Food) => void
   onRemove: (food: Food) => void
@@ -32,7 +42,22 @@ export default function FoodList({ foods, onAdd, onRemove }: FoodProps) {
         className={`grid gap-4 ${
           isListView ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
         }`}>
-        {foods.map((food) => (
+        {isListView ? (
+          <div><FoodAsListTable foods={foods} onAdd={onAdd} onRemove={onRemove} /></div>
+        ) : (
+          <>
+            {foods.map((food) => (
+              <FoodCard
+                isListView={isListView}
+                key={food.name}
+                food={food}
+                onAdd={() => onAdd(food)}
+                onRemove={() => onRemove(food)}
+              />
+            ))}
+          </>
+        )}
+        {/* {foods.map((food) => (
           <FoodCard
             isListView={isListView}
             key={food.name}
@@ -40,7 +65,7 @@ export default function FoodList({ foods, onAdd, onRemove }: FoodProps) {
             onAdd={() => onAdd(food)}
             onRemove={() => onRemove(food)}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   )

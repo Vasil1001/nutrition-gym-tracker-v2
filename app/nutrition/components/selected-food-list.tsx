@@ -72,7 +72,7 @@ export default function SelectedFoodList({ selectedFoods }: SelectedFoodProps) {
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow className=" bg-[#2e3039] dark:hover:bg-[#2e3039]">
+            <TableRow className="dark:bg-[#2e3039] dark:hover:bg-[#2e3039]">
               <TableCell className="text-center text-muted-foreground">#</TableCell>
               <TableCell className="w-[150px] font-medium">Total Protein</TableCell>
               <TableCell className="border-r text-center ">{totalProtein.toFixed()}g</TableCell>

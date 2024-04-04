@@ -12,15 +12,6 @@ export function Dashboard() {
   return (
     <div className="flex max-h-screen w-full flex-col">
       <main className="flex flex-col gap-4 md:gap-5 ">
-        <div className="mx-auto flex w-full items-center gap-4">
-          <form className="flex-1">
-            <Input className="bg-white" placeholder="Search..." />
-            <Button className="sr-only" type="submit">
-              Submit
-            </Button>
-          </form>
-          <div>TabsContent</div>
-        </div>
 
         <div className="mx-auto grid w-full max-w-6xl gap-4 md:grid-cols-3">
           <Card className="col-span-1 flex flex-col justify-between">
@@ -74,9 +65,6 @@ export function Dashboard() {
                 <div className="flex w-full flex-1 rounded-xl bg-[#24252b] p-4">
                   <div className="flex w-full flex-col">
                     <p className="mb-2">Weight</p>
-                    <Button className="w-full" type="submit">
-                      Set weight
-                    </Button>
                   </div>
                 </div>
                 <div className="rounded-xl bg-[#24252b] p-4">Protein</div>
