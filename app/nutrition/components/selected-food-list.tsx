@@ -49,7 +49,6 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
     return total + (food ? Number(food.calories) * foodCounts[foodName] : 0)
   }, 0)
 
-
   // const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
   //   const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
   //   if (existingFood) {
@@ -69,6 +68,11 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
               calories: { current: totalCalories, target: 2000 },
               protein: { current: totalProtein, target: 150 },
               carbs: { current: 0, target: 250 }
+            }}
+            onGoalsUpdate={(newGoals) => {
+              // Handle updating the target values
+
+              console.log('New goals:', newGoals)
             }}
           />
         </div>

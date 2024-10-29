@@ -21,24 +21,23 @@ interface ProgressCircleProps {
 }
 
 const ProgressCircle: React.FC<ProgressCircleProps> = ({ current, target, label, color }) => {
-  const percentage = (current / target) * 100
+  const percentage = Math.min(100, (current / target) * 100)
   const circumference = 2 * Math.PI * 38
   const strokeDashoffset = circumference - (percentage / 100) * circumference
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-2 text-center font-semibold">{label}</div>
+      <div className="mb-2 text-center">
+        <div className="font-semibold">{label}</div>
+      </div>
 
       <div className="relative h-24 w-24">
-        <svg
-          className="h-24 w-24"
-          viewBox="0 0 96 96" // Explicit viewBox for better control
-        >
-          <circle cx="48" cy="48" r="38" stroke="#e5e7eb" strokeWidth="8" fill="none" />
+        <svg className="h-24 w-24" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="40" stroke="#e5e7eb" strokeWidth="8" fill="none" />
           <circle
             cx="48"
             cy="48"
-            r="38"
+            r="40"
             stroke={color}
             strokeWidth="8"
             fill="none"
@@ -46,14 +45,15 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ current, target, label,
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
             style={{ transition: 'stroke-dashoffset 0.5s ease' }}
-            transform="rotate(-90 48 48)" // Rotate to start from top
+            transform="rotate(-90 48 48)"
           />
         </svg>
-
-        <div className="absolute inset-0 flex -translate-y-[1px] items-center justify-center">
-          <span className="-translate-x-[1px] transform text-sm font-semibold">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className={`text-xs ${current >= target ? '' : 'text-muted-foreground'}`}>
             {current.toFixed(0)}
-          </span>
+            {current >= target ? '' : `/${target}`}
+            {label === 'Protein' || label === 'Carbs' ? 'g' : ''}
+          </div>
         </div>
       </div>
     </div>
@@ -61,29 +61,22 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({ current, target, label,
 }
 
 interface NutritionProgressProps {
-  initialGoals?: NutritionGoals
+  initialGoals: NutritionGoals
   onGoalsUpdate?: (goals: NutritionGoals) => void
 }
 
 const defaultGoals: NutritionGoals = {
   calories: { current: 123, target: 2000 },
   protein: { current: 123, target: 150 },
-  carbs: { current: 123, target: 250 },
+  carbs: { current: 123, target: 250 }
 }
 
-const NutritionProgress: React.FC<NutritionProgressProps> = ({
-  initialGoals = defaultGoals,
-  onGoalsUpdate
-}) => {
+const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onGoalsUpdate }) => {
   const [goals, setGoals] = React.useState<NutritionGoals>(initialGoals)
 
-  const handleGoalsUpdate = React.useCallback(
-    (newGoals: NutritionGoals) => {
-      setGoals(newGoals)
-      onGoalsUpdate?.(newGoals)
-    },
-    [onGoalsUpdate]
-  )
+  React.useEffect(() => {
+    setGoals(initialGoals)
+  }, [initialGoals])
 
   const nutrients: Array<{
     key: keyof NutritionGoals
@@ -101,7 +94,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({
     <div className="mx-auto">
       {/* Daily Goals Card */}
       <Card className="mb-4">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardHeader className="flex flex-row items-center justify-between pb-0">
           <CardTitle className="text-xl">Daily Goals</CardTitle>
           <Pencil
             className="h-5 w-5 cursor-pointer text-blue-500"
@@ -112,12 +105,12 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({
           />
         </CardHeader>
         <CardContent className="flex justify-between text-sm">
-          {nutrients.map(({ key, label, unit }) => (
+          {/* {nutrients.map(({ key, label, unit }) => (
             <div key={key}>
               {label}: {goals[key].target}
               {unit ?? ''}
             </div>
-          ))}
+          ))} */}
         </CardContent>
       </Card>
 
