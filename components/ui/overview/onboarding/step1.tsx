@@ -1,53 +1,63 @@
-// Step1.jsx
+import React, { useState } from 'react'
 
-// Step 1: Collect user's sex, weight, and height.
-// - Sex: Dropdown selection between Male and Female.
-// - Weight: Input in pounds (lbs).
-// - Height: Input in inches.
-// Notes:
-// - Ensure all fields are required and validated for positive numbers.
-// - On form submission, pass the collected data to the parent component and proceed to Step 2.
+function Step1({ onNext }: any) {
+  const [sex, setSex] = useState('')
+  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('')
 
-// Step2.jsx
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+    if (sex && Number(weight) > 0 && Number(height) > 0) {
+      onNext({ sex, weight: Number(weight), height: Number(height) })
+    } else {
+      alert('Please fill all fields with valid values.')
+    }
+  }
 
-// Step 2: Select Activity Level.
-// - Options:
-//   1. Sedentary (Weight × 14): Little to no exercise.
-//   2. Moderately Active (Weight × 16): Regular exercise 3-5 days/week.
-//   3. Highly Active (Weight × 18): Intense exercise 6-7 days/week.
-// Notes:
-// - Each option displays its corresponding calorie multiplier for transparency.
-// - Users can select only one activity level.
-// - On selection, pass the chosen activity level to the parent component and proceed to Step 3.
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="mb-4 text-xl font-semibold">Step 1: Basic Information</h2>
+      <div className="space-y-2">
+        <label className="block">
+          Sex:
+          <select
+            value={sex}
+            onChange={(e) => setSex(e.target.value)}
+            required
+            className="mt-1 block w-full rounded-md border border-gray-300">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </label>
+        <label className="block">
+          Weight (lbs):
+          <input
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            min="1"
+            required
+            className="mt-1 block w-full rounded-md border border-gray-300"
+          />
+        </label>
+        <label className="block">
+          Height (inches):
+          <input
+            type="number"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            min="1"
+            required
+            className="mt-1 block w-full rounded-md border border-gray-300"
+          />
+        </label>
+      </div>
+      <button type="submit" className="mt-4 rounded bg-blue-500 px-4 py-2 text-white">
+        Next
+      </button>
+    </form>
+  )
+}
 
-// Step3.jsx
-
-// Step 3: Select Fitness Goal.
-// - Options:
-//   1. Build Muscle
-//   2. Lose Weight
-//   3. Maintain
-// Notes:
-// - Each option is mutually exclusive using radio buttons.
-// - On form submission, trigger the calculation of BMI, Calories, and Protein.
-// - Pass the selected goal to the parent component and proceed to Results.
-
-// Results.jsx
-
-// Step 4: Display Targets.
-// - BMI Calculation:
-//   - Displays the calculated BMI with color coding:
-//     - Green: Normal weight.
-//     - Orange: Overweight.
-//     - Red: Underweight or Obese.
-// - Suggested Calories:
-//   - Based on the selected activity level and weight.
-// - Suggested Protein:
-//   - Calculated as 1.6g per kg of body weight.
-// - Restart Option:
-//   - Allows users to redo the onboarding process.
-// - Information Button:
-//   - Provides users with explanations of calorie multipliers.
-// Notes:
-// - Ensure that calculations are accurate and reflect user inputs.
-// - Maintain a clean and readable layout for results display.
+export default Step1
