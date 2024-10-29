@@ -48,45 +48,47 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
   // }, [])
   console.log('TEST', selectedFoods)
   return (
-    <div className="border-l pl-4">
-      <h1 className="my-6 mb-8 text-2xl font-bold">Total Daily Intake</h1>
-      <div className="ml-2 mt-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[10px] text-left">#</TableHead>
-              <TableHead className="w-[150px]">Food</TableHead>
-              <TableHead className="text-center">Protein</TableHead>
-              <TableHead className="text-center">Calories</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {Object.entries(foodCounts).map(([foodName, count], i) => {
-              const food = selectedFoods.find((f) => f.name === foodName)
-              if (!food || count === 0) return null // Skip rendering if food not found or count is 0
-              return (
-                <TableRow className='dark:hover:bg-[#2e3039]' key={i}>
-                  <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
-                    x{count}
-                  </TableCell>
-                  <TableCell className="w-[150px] font-medium">{foodName}</TableCell>
-                  <TableCell className="border-r text-center">
-                    {(Number(food.protein) * count).toFixed()}g
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {(Number(food.calories) * count).toFixed()}cal
-                  </TableCell>
-                </TableRow>
-              )
-            })}
-            <TableRow className="dark:bg-[#2e3039] dark:hover:bg-[#2e3039]">
-              <TableCell className="text-center text-muted-foreground">#</TableCell>
-              <TableCell className="w-[150px] font-medium">Total Protein</TableCell>
-              <TableCell className="border-r text-center ">{totalProtein.toFixed()}g</TableCell>
-              <TableCell className="text-center">{totalCalories.toFixed()}cal</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+    <div className="border-l ">
+      <div className="ml-4">
+        <h1 className="my-6 mb-8 text-2xl font-bold">Total Daily Intake</h1>
+        <div className="mx-2 mt-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[10px] text-left">#</TableHead>
+                <TableHead className="w-[150px]">Food</TableHead>
+                <TableHead className="text-center">Protein</TableHead>
+                <TableHead className="text-center">Calories</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Object.entries(foodCounts).map(([foodName, count], i) => {
+                const food = selectedFoods.find((f) => f.name === foodName)
+                if (!food || count === 0) return null // Skip rendering if food not found or count is 0
+                return (
+                  <TableRow className="dark:hover:bg-[#2e3039]" key={i}>
+                    <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
+                      x{count}
+                    </TableCell>
+                    <TableCell className="w-[150px] font-medium">{foodName}</TableCell>
+                    <TableCell className="border-r text-center">
+                      {(Number(food.protein) * count).toFixed()}g
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {(Number(food.calories) * count).toFixed()}cal
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
+              <TableRow className="dark:bg-[#2e3039] dark:hover:bg-[#2e3039]">
+                <TableCell className="text-center text-muted-foreground">#</TableCell>
+                <TableCell className="w-[150px] font-medium">Total Protein</TableCell>
+                <TableCell className="border-r text-center ">{totalProtein.toFixed()}g</TableCell>
+                <TableCell className="text-center">{totalCalories.toFixed()}cal</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   )

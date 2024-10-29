@@ -4,15 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { ArrowUpFromLine, Clock, User } from 'lucide-react'
-import { LineChartWeights } from './charts/LineChart'
+import { LineChartWeights } from '../../charts/LineChart'
 import { TabsContent } from '@/components/ui/tabs'
-import { GitBranchIcon } from './ui/icons/GitBranchIcon'
+import { GitBranchIcon } from '../icons/GitBranchIcon'
 
 export function Dashboard() {
   return (
     <div className="flex max-h-screen w-full flex-col">
       <main className="flex flex-col gap-4 md:gap-5 ">
-
         <div className="mx-auto grid w-full max-w-6xl gap-4 md:grid-cols-3">
           <Card className="col-span-1 flex flex-col justify-between">
             <CardHeader className="flex flex-row items-center gap-4 px-3.5">
