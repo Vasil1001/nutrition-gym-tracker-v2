@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import NutritionProgress from './progress-circle'
 
 type SelectedFoodProps = {
   selectedFoods: Food[]
@@ -26,6 +27,17 @@ type FoodCount = {
   count: number
 }
 
+interface Target {
+  current: number
+  goal: number
+}
+
+interface NutritionTargets {
+  calories: Target
+  protein: Target
+  carbs: Target
+}
+
 export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {
   const totalProtein = Object.keys(foodCounts).reduce((total, foodName) => {
     const food = selectedFoods.find((f) => f.name === foodName)
@@ -36,6 +48,7 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
     const food = selectedFoods.find((f) => f.name === foodName)
     return total + (food ? Number(food.calories) * foodCounts[foodName] : 0)
   }, 0)
+
 
   // const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
   //   const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
@@ -50,7 +63,15 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
   return (
     <div className="border-l ">
       <div className="ml-4">
-        <h1 className="my-6 mb-8 text-2xl font-bold">Total Daily Intake</h1>
+        <div className="mb-6 mt-4">
+          <NutritionProgress
+            initialGoals={{
+              calories: { current: totalCalories, target: 2000 },
+              protein: { current: totalProtein, target: 150 },
+              carbs: { current: 0, target: 250 }
+            }}
+          />
+        </div>
         <div className="mx-2 mt-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
           <Table>
             <TableHeader>

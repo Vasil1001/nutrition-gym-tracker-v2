@@ -15,16 +15,12 @@ import { useState } from 'react'
 import { FoodCardProps } from './food-card'
 
 export default function FoodCard({ food, count, onAdd, onRemove, isListView }: FoodCardProps) {
-  // const [count, setCount] = useState(0)
-
   const handleAdd = () => {
-    // setCount(count + 1)
     onAdd()
   }
 
   const handleRemove = () => {
     if (count > 0) {
-      // setCount(count - 1)
       onRemove()
     }
   }
@@ -83,8 +79,8 @@ export default function FoodCard({ food, count, onAdd, onRemove, isListView }: F
     )
   } else {
     return (
-      <Card key={food.name} className="group">
-        <CardContent className=" gap-4 p-3 text-base">
+      <Card key={food.name} className="group rounded-xl">
+        <CardContent className=" gap-4 rounded-xl p-3 text-base">
           <div>
             <div className="flex justify-between">
               <CardTitle className="">{food.name}</CardTitle>
