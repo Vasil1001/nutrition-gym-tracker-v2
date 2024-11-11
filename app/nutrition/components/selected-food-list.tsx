@@ -32,17 +32,20 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
     carbs: { current: 0, target: 250 }
   })
 
- useEffect(() => {
-    // Only access localStorage on the client side
-    const saved = localStorage.getItem('nutritionTargets')
-    if (saved) {
-      setSavedTargets(JSON.parse(saved))
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nutritionTargets')
+      if (saved) {
+        setSavedTargets(JSON.parse(saved))
+      }
     }
   }, [])
-  
+
   const handleGoalsUpdate = (newGoals: any) => {
     setSavedTargets(newGoals)
-    localStorage.setItem('nutritionTargets', JSON.stringify(newGoals))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('nutritionTargets', JSON.stringify(newGoals))
+    }
     console.log('New goals:', newGoals)
   }
 
