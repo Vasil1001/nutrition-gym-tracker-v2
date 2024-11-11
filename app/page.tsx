@@ -1,14 +1,8 @@
 'use client'
 
-import BarChartGoal from '@/components/charts/BarChartGoal'
-import { Dashboard } from '@/components/ui/overview/overview'
-import { LineChartWeights } from '@/components/charts/LineChart'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import Container from '@/components/ui/container'
+import { Dashboard } from '@/components/ui/overview/overview'
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import Onboarding from '@/components/ui/overview/onboarding/onboarding'
 import { useState } from 'react'
 
 export default function Home() {

@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -24,17 +26,20 @@ export type Food = {
 }
 
 export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {
-  const [savedTargets, setSavedTargets] = useState(() => {
-    const saved = localStorage.getItem('nutritionTargets')
-    return saved
-      ? JSON.parse(saved)
-      : {
-          calories: { current: 0, target: 2000 },
-          protein: { current: 0, target: 150 },
-          carbs: { current: 0, target: 250 }
-        }
+  const [savedTargets, setSavedTargets] = useState({
+    calories: { current: 0, target: 2000 },
+    protein: { current: 0, target: 150 },
+    carbs: { current: 0, target: 250 }
   })
 
+ useEffect(() => {
+    // Only access localStorage on the client side
+    const saved = localStorage.getItem('nutritionTargets')
+    if (saved) {
+      setSavedTargets(JSON.parse(saved))
+    }
+  }, [])
+  
   const handleGoalsUpdate = (newGoals: any) => {
     setSavedTargets(newGoals)
     localStorage.setItem('nutritionTargets', JSON.stringify(newGoals))
