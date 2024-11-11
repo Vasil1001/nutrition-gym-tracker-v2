@@ -46,7 +46,7 @@ export default function Home() {
                     className="absolute right-2 top-2 text-2xl text-gray-500 hover:text-gray-700">
                     &times;
                   </button>
-                  <Onboarding />
+                  {/* <Onboarding /> */}
                 </div>
               </div>
             )}

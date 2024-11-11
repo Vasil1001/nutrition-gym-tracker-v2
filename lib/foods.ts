@@ -90,4 +90,4 @@ export const foods = [
     calories: '113',
     carbs: '<1'
   }
-] as const
+]

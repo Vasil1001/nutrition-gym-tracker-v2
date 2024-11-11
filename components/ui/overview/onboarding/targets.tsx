@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Targets({ results }: any) {
+function Targets({ results, onSaveTargets }: { results: any; onSaveTargets: (targets: any) => void }) {
   const { bmi, calorieTarget, proteinTarget } = results
 
   const getBMIStatus = (bmi: number) => {
@@ -24,6 +24,14 @@ function Targets({ results }: any) {
   const underweightMax = ((18.5 - bmiMin) / bmiRange) * 100
   const normalMax = ((25 - bmiMin) / bmiRange) * 100
   const overweightMax = ((30 - bmiMin) / bmiRange) * 100
+
+  const handleSaveTargets = () => {
+    onSaveTargets({
+      calories: { current: 0, target: Math.round(calorieTarget) },
+      protein: { current: 0, target: Math.round(proteinTarget) },
+      carbs: { current: 0, target: Math.round((calorieTarget * 0.5) / 4) }
+    })
+  }
 
   return (
     <div className="space-y-4">
@@ -84,11 +92,18 @@ function Targets({ results }: any) {
 
       <p>Suggested Calories: {calorieTarget.toFixed(0)} kcal/day</p>
       <p>Suggested Protein: {proteinTarget.toFixed(1)} g/day</p>
-      <button
-        onClick={() => window.location.reload()}
-        className="mt-4 rounded bg-gray-300 px-4 py-2 text-black">
-        Restart
-      </button>
+      <div className='flex gap-4'>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 rounded bg-gray-300 px-4 py-2 text-black">
+          Restart
+        </button>
+        <button
+          onClick={handleSaveTargets}
+          className="mt-4 rounded bg-blue-500 px-4 py-2 text-white">
+          Save Targets
+        </button>
+      </div>
     </div>
   )
 }

@@ -16,6 +16,7 @@ export default function Page() {
     setSelectedFoods([...selectedFoods, food])
     const newCount = (foodCounts[food.name] || 0) + 1
     setFoodCounts({ ...foodCounts, [food.name]: newCount })
+    
   }
 
   const handleRemoveFood = (food: Food) => {

@@ -1,35 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 function OnboardingModal({ onSubmit }: any) {
-  const [sex, setSex] = useState('');
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [unitSystem, setUnitSystem] = useState('metric'); // 'metric' or 'imperial'
-  const [activityLevel, setActivityLevel] = useState('');
-  const [fitnessGoal, setFitnessGoal] = useState('');
+  const [sex, setSex] = useState('')
+  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('')
+  const [unitSystem, setUnitSystem] = useState('metric') // 'metric' or 'imperial'
+  const [activityLevel, setActivityLevel] = useState('')
+  const [fitnessGoal, setFitnessGoal] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (
-      sex &&
-      Number(weight) > 0 &&
-      Number(height) > 0 &&
-      activityLevel &&
-      fitnessGoal
-    ) {
-      let weightKg = Number(weight);
-      let heightCm = Number(height);
-      let weightLbs = Number(weight);
-      let heightInches = Number(height);
+    e.preventDefault()
+    if (sex && Number(weight) > 0 && Number(height) > 0 && activityLevel && fitnessGoal) {
+      let weightKg = Number(weight)
+      let heightCm = Number(height)
+      let weightLbs = Number(weight)
+      let heightInches = Number(height)
 
       if (unitSystem === 'imperial') {
         // Convert lbs to kg and inches to cm
-        weightKg = weightLbs * 0.453592;
-        heightCm = heightInches * 2.54;
+        weightKg = weightLbs * 0.453592
+        heightCm = heightInches * 2.54
       } else {
         // Convert kg to lbs and cm to inches
-        weightLbs = weightKg / 0.453592;
-        heightInches = heightCm / 2.54;
+        weightLbs = weightKg / 0.453592
+        heightInches = heightCm / 2.54
       }
 
       const data = {
@@ -39,13 +33,13 @@ function OnboardingModal({ onSubmit }: any) {
         heightCm,
         heightInches,
         activityLevel,
-        fitnessGoal,
-      };
-      onSubmit(data);
+        fitnessGoal
+      }
+      onSubmit(data)
     } else {
-      alert('Please fill all fields with valid values.');
+      alert('Please fill all fields with valid values.')
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -113,7 +107,7 @@ function OnboardingModal({ onSubmit }: any) {
               onChange={(e) => setWeight(e.target.value)}
               min="1"
               required
-              className="mt-1 block w-full border border-gray-300 rounded-md"
+              className="mt-1 block w-full rounded-md border border-gray-300"
             />
           </label>
           <label className="block">
@@ -124,7 +118,7 @@ function OnboardingModal({ onSubmit }: any) {
               onChange={(e) => setHeight(e.target.value)}
               min="1"
               required
-              className="mt-1 block w-full border border-gray-300 rounded-md"
+              className="mt-1 block w-full rounded-md border border-gray-300"
             />
           </label>
         </div>
@@ -201,14 +195,11 @@ function OnboardingModal({ onSubmit }: any) {
           </div>
         </div>
       </div>
-      <button
-        type="submit"
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-      >
+      <button type="submit" className="mt-4 rounded bg-blue-500 px-4 py-2 text-white">
         Calculate
       </button>
     </form>
-  );
+  )
 }
 
-export default OnboardingModal;
+export default OnboardingModal

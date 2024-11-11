@@ -32,13 +32,24 @@ interface Target {
   goal: number
 }
 
-interface NutritionTargets {
-  calories: Target
-  protein: Target
-  carbs: Target
-}
-
 export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {
+  const [savedTargets, setSavedTargets] = useState(() => {
+    const saved = localStorage.getItem('nutritionTargets')
+    return saved
+      ? JSON.parse(saved)
+      : {
+          calories: { current: 0, target: 2000 },
+          protein: { current: 0, target: 150 },
+          carbs: { current: 0, target: 250 }
+        }
+  })
+
+  const handleGoalsUpdate = (newGoals: any) => {
+    setSavedTargets(newGoals)
+    localStorage.setItem('nutritionTargets', JSON.stringify(newGoals))
+    console.log('New goals:', newGoals)
+  }
+
   const totalProtein = Object.keys(foodCounts).reduce((total, foodName) => {
     const food = selectedFoods.find((f) => f.name === foodName)
     return total + (food ? Number(food.protein) * foodCounts[foodName] : 0)
@@ -49,31 +60,17 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
     return total + (food ? Number(food.calories) * foodCounts[foodName] : 0)
   }, 0)
 
-  // const foodCounts: FoodCount[] = selectedFoods.reduce((acc: FoodCount[], food) => {
-  //   const existingFood = acc.find((item: FoodCount) => item.food.name === food.name)
-  //   if (existingFood) {
-  //     existingFood.count++
-  //   } else {
-  //     acc.push({ food, count: 1 })
-  //   }
-  //   return acc
-  // }, [])
-  console.log('TEST', selectedFoods)
   return (
     <div className="border-l ">
       <div className="ml-4">
         <div className="mb-6 mt-4">
           <NutritionProgress
             initialGoals={{
-              calories: { current: totalCalories, target: 2000 },
-              protein: { current: totalProtein, target: 150 },
-              carbs: { current: 0, target: 250 }
+              calories: { current: totalCalories, target: savedTargets.calories.target },
+              protein: { current: totalProtein, target: savedTargets.protein.target },
+              carbs: { current: 0, target: savedTargets.carbs.target }
             }}
-            onGoalsUpdate={(newGoals) => {
-              // Handle updating the target values
-
-              console.log('New goals:', newGoals)
-            }}
+            onGoalsUpdate={handleGoalsUpdate}
           />
         </div>
         <div className="mx-2 mt-2 rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">

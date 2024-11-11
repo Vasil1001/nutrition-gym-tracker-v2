@@ -1,16 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Pencil } from 'lucide-react'
-
-interface NutrientGoal {
-  current: number
-  target: number
-}
+import Onboarding from '@/components/ui/overview/onboarding/onboarding'
 
 interface NutritionGoals {
-  calories: NutrientGoal
-  protein: NutrientGoal
-  carbs: NutrientGoal
+  calories: { current: number; target: number }
+  protein: { current: number; target: number }
+  carbs: { current: number; target: number }
 }
 
 interface ProgressCircleProps {
@@ -65,16 +61,32 @@ interface NutritionProgressProps {
   onGoalsUpdate?: (goals: NutritionGoals) => void
 }
 
-const defaultGoals: NutritionGoals = {
-  calories: { current: 123, target: 2000 },
-  protein: { current: 123, target: 150 },
-  carbs: { current: 123, target: 250 }
-}
-
 const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onGoalsUpdate }) => {
-  const [goals, setGoals] = React.useState<NutritionGoals>(initialGoals)
+  const [goals, setGoals] = useState<NutritionGoals>(initialGoals)
+  const [showOnboarding, setShowOnboarding] = useState(false)
 
-  React.useEffect(() => {
+  const handleSetTargetsClick = () => {
+    setShowOnboarding(true)
+  }
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false)
+  }
+
+  const handleGoalsUpdate = (newTargets: any) => {
+    const newGoals = {
+      calories: { current: goals.calories.current, target: newTargets.calories.target },
+      protein: { current: goals.protein.current, target: newTargets.protein.target },
+      carbs: { current: goals.carbs.current, target: newTargets.carbs.target }
+    }
+    setGoals(newGoals)
+    if (onGoalsUpdate) {
+      onGoalsUpdate(newGoals)
+    }
+    handleCloseOnboarding()
+  }
+
+  useEffect(() => {
     setGoals(initialGoals)
   }, [initialGoals])
 
@@ -92,28 +104,36 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
 
   return (
     <div className="mx-auto">
-      {/* Daily Goals Card */}
       <Card className="mb-4">
         <CardHeader className="flex flex-row items-center justify-between pb-0">
           <CardTitle className="text-xl">Daily Goals</CardTitle>
           <Pencil
             className="h-5 w-5 cursor-pointer text-blue-500"
-            onClick={() => {
-              // Handle edit goals
-              console.log('Edit goals clicked')
-            }}
+            onClick={handleSetTargetsClick}
           />
         </CardHeader>
         <CardContent className="flex justify-between text-sm">
-          {/* {nutrients.map(({ key, label, unit }) => (
+          {nutrients.map(({ key, label, unit }) => (
             <div key={key}>
               {label}: {goals[key].target}
               {unit ?? ''}
             </div>
-          ))} */}
+          ))}
         </CardContent>
       </Card>
 
+      {showOnboarding && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black] bg-opacity-50">
+          <div className="relative w-full max-w-md rounded-lg bg-[#34343f] p-6 shadow-lg">
+            <button
+              onClick={handleCloseOnboarding}
+              className="absolute right-2 top-2 text-2xl text-gray-500 hover:text-gray-700">
+              &times;
+            </button>
+            <Onboarding onComplete={handleGoalsUpdate} onSaveTargets={handleGoalsUpdate} />
+          </div>
+        </div>
+      )}
       {/* Today's Progress Card */}
       <Card>
         <CardContent>
