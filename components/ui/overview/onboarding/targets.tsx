@@ -1,6 +1,12 @@
 import React from 'react'
 
-function Targets({ results, onSaveTargets }: { results: any; onSaveTargets: (targets: any) => void }) {
+function Targets({
+  results,
+  onSaveTargets
+}: {
+  results: any
+  onSaveTargets: (targets: any) => void
+}) {
   const { bmi, calorieTarget, proteinTarget } = results
 
   const getBMIStatus = (bmi: number) => {
@@ -26,10 +32,17 @@ function Targets({ results, onSaveTargets }: { results: any; onSaveTargets: (tar
   const overweightMax = ((30 - bmiMin) / bmiRange) * 100
 
   const handleSaveTargets = () => {
+    const carbsTarget = Math.round((results.calorieTarget * 0.5) / 4)
     onSaveTargets({
-      calories: { current: 0, target: Math.round(calorieTarget) },
-      protein: { current: 0, target: Math.round(proteinTarget) },
-      carbs: { current: 0, target: Math.round((calorieTarget * 0.5) / 4) }
+      calories: { target: Math.round(results.calorieTarget) },
+      protein: { target: Math.round(results.proteinTarget) },
+      carbs: { target: carbsTarget },
+      bmi: results.bmi,
+      bmiPosition: bmiPosition,
+      bmiStatus: bmiStatus,
+      underweightMax: underweightMax,
+      normalMax: normalMax,
+      overweightMax: overweightMax
     })
   }
 
@@ -92,7 +105,7 @@ function Targets({ results, onSaveTargets }: { results: any; onSaveTargets: (tar
 
       <p>Suggested Calories: {calorieTarget.toFixed(0)} kcal/day</p>
       <p>Suggested Protein: {proteinTarget.toFixed(1)} g/day</p>
-      <div className='flex gap-4'>
+      <div className="flex gap-4">
         <button
           onClick={() => window.location.reload()}
           className="mt-4 rounded bg-gray-300 px-4 py-2 text-black">

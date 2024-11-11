@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import NutritionProgress from './progress-circle'
+import NutritionProgress from './nutrition-progress'
 
 type SelectedFoodProps = {
   selectedFoods: Food[]
@@ -21,15 +21,6 @@ export type Food = {
   servingSize: string
   protein: string
   calories: string
-}
-type FoodCount = {
-  food: Food
-  count: number
-}
-
-interface Target {
-  current: number
-  goal: number
 }
 
 export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {

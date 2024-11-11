@@ -31,9 +31,9 @@ function Onboarding({ onComplete, onSaveTargets }: OnboardingProps) {
     else if (activityLevel === 'Highly Active') calorieMultiplier = 18
 
     // Use weight in lbs for calorieTarget calculation
-    const calorieTarget = weightLbs * calorieMultiplier
+    const calorieTarget = Math.round(weightLbs * calorieMultiplier)
     // Use weight in kg for proteinTarget calculation
-    const proteinTarget = weightKg * 1.6
+    const proteinTarget = Math.round(weightKg * 1.6)
 
     setResults({ bmi, calorieTarget, proteinTarget })
   }

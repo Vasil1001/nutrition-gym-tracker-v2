@@ -29,7 +29,7 @@ export const foods = [
   },
 
   // Salmon - 113g serving (typical fillet)
-  { name: 'Salmon', servingSize: '113g', protein: '23g', calories: '206', carbs: '0g' },
+  { name: 'Salmon', servingSize: '113', protein: '23', calories: '206', carbs: '0' },
 
   // Eggs - 50g serving (1 large egg)
   {
@@ -53,7 +53,7 @@ export const foods = [
   { name: 'Tofu', servingSize: '85', protein: '7.2', calories: '64', carbs: '2.3' },
 
   // Beef (lean) - 113g serving
-  { name: 'Beef', servingSize: '113g', protein: '30.6', calories: '250', carbs: '0' },
+  { name: 'Beef', servingSize: '113', protein: '30.6', calories: '250', carbs: '0' },
 
   // Lentils - 198g serving (about 1 cup cooked)
   {
@@ -86,7 +86,7 @@ export const foods = [
   {
     name: 'Cheese',
     servingSize: '28',
-    protein: '7 g ',
+    protein: '7 ',
     calories: '113',
     carbs: '<1'
   }
