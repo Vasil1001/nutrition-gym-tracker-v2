@@ -105,7 +105,7 @@ function Targets({
 
       <p>Suggested Calories: {calorieTarget.toFixed(0)} kcal/day</p>
       <p>Suggested Protein: {proteinTarget.toFixed(1)} g/day</p>
-      <div className="flex gap-4">
+      <div className="flex justify-between gap-4">
         <button
           onClick={() => window.location.reload()}
           className="mt-4 rounded bg-gray-300 px-4 py-2 text-black">

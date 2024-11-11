@@ -98,7 +98,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
         <CardHeader className="flex flex-row items-center justify-between pb-0">
           <CardTitle className="text-xl">Daily Goals</CardTitle>
           <Pencil
-            className="h-5 w-5 cursor-pointer text-blue-500"
+            className="h-5 w-5 cursor-pointer text-blue-500 hover:text-blue-600 animate-pulse"
             onClick={handleSetTargetsClick}
           />
         </CardHeader>
