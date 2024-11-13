@@ -64,7 +64,7 @@ export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: 
                     </div>
                     {food.name}
                   </TableCell>
-                  <TableCell className="border-r text-center">{food.servingSize}g</TableCell>
+                  <TableCell className="border-r text-center">{food.servingSize}</TableCell>
                   <TableCell className="border-r text-center">{food.calories}cal</TableCell>
                   <TableCell className="flex justify-center text-end">{food.protein}g</TableCell>
                 </TableRow>

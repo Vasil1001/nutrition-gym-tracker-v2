@@ -7,8 +7,6 @@ import { useState } from 'react'
 import { foods } from '@/lib/foods'
 
 export default function Page() {
- 
-
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([])
   const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>({})
 
@@ -27,7 +25,7 @@ export default function Page() {
       } else {
         const newCounts = { ...prevCounts }
         delete newCounts[food.name]
-        setSelectedFoods(selectedFoods.filter((f) => f.name !== food.name)) // Move this line here
+        setSelectedFoods(selectedFoods.filter((f) => f.name !== food.name))
         return newCounts
       }
     })
