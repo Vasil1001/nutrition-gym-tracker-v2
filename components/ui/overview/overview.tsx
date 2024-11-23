@@ -74,15 +74,6 @@ export function Dashboard() {
               </Button>
             </CardContent>
           </Card>
-
-          <div className="col-span-3">
-            <LineChartWeights />
-          </div>
-          {/* <Card className="col-span-1 flex flex-col justify-between">
-            <CardContent className="flex flex-col items-center justify-end gap-4">
-              <PieChartJobs />
-            </CardContent>
-          </Card> */}
         </div>
       </main>
     </div>

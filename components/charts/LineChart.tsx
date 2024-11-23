@@ -56,7 +56,7 @@ export function LineChartWeights() {
 
   const averageWeight = calculateAverageWeight(data)
   return (
-    <Card className="flex h-full flex-col justify-between">
+    <Card className="flex aspect-[3/3] flex-col justify-between ">
       <CardHeader>
         <CardTitle>Nutrition / Gym Chart</CardTitle>
         <CardDescription>Line chart with the amount of applications sent per day</CardDescription>

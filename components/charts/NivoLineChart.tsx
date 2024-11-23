@@ -4,26 +4,26 @@ import { JSX, ClassAttributes, HTMLAttributes } from 'react'
 
 export default function LineTwoChart() {
   return (
-    <div className="-mt-6 grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2">
       <div className="flex flex-col">
-        <Card className="flex flex-col">
+        <Card className="mb-4 flex flex-col">
           <CardHeader>
             <CardTitle>Weekly Overview</CardTitle>
             <CardDescription>Daily Protein Intake</CardDescription>
           </CardHeader>
-          <CardContent>
-            <CurvedlineChart className="aspect-[4/3] w-full" />
+          <CardContent className="m-2 rounded-lg bg-[#19191f]">
+            <CurvedlineChart className=" aspect-[3/3]  w-full" />
           </CardContent>
         </Card>
       </div>
       <div className="flex flex-col">
-        <Card className="flex flex-col">
+        <Card className="mb-4 flex flex-col">
           <CardHeader>
             <CardTitle>Weekly Overview</CardTitle>
             <CardDescription>Daily Calorie Intake</CardDescription>
           </CardHeader>
-          <CardContent className="m-3 mt-0 rounded-xl bg-[#19191f]">
-            <CurvedlineChart className="mt-4 aspect-[4/3] w-full" />
+          <CardContent className="m-2 rounded-lg bg-[#19191f]">
+            <CurvedlineChart className=" aspect-[3/3]  w-full" />
           </CardContent>
         </Card>
       </div>
@@ -68,7 +68,7 @@ function CurvedlineChart(
         yScale={{
           type: 'linear',
           min: 0,
-          max: 250
+          max: 270
         }}
         curve="monotoneX"
         axisTop={null}

@@ -5,6 +5,7 @@ import FoodList, { Food } from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
 import { useState } from 'react'
 import { foods } from '@/lib/foods'
+import { LineChartWeights } from '@/components/charts/LineChart'
 
 export default function Page() {
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([])
@@ -14,7 +15,6 @@ export default function Page() {
     setSelectedFoods([...selectedFoods, food])
     const newCount = (foodCounts[food.name] || 0) + 1
     setFoodCounts({ ...foodCounts, [food.name]: newCount })
-    
   }
 
   const handleRemoveFood = (food: Food) => {
@@ -41,6 +41,15 @@ export default function Page() {
       />
       <SelectedFoodList selectedFoods={selectedFoods} foodCounts={foodCounts} />
       <LineTwoChart />
+
+      <div className="">
+        <LineChartWeights />
+      </div>
+      {/* <Card className="col-span-1 flex flex-col justify-between">
+            <CardContent className="flex flex-col items-center justify-end gap-4">
+              <PieChartJobs />
+            </CardContent>
+          </Card> */}
     </div>
   )
 }

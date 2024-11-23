@@ -32,7 +32,7 @@ export default function FoodList({ foods, foodCounts, onAdd, onRemove }: FoodPro
   const toggleView = () => setIsListView(!isListView)
   return (
     // eslint-disable-next-line tailwindcss/no-custom-classname
-    <div className="mb-5 max-h-screen overflow-auto pr-4 scrollbar scrollbar-track-[#19191f] scrollbar-thumb-[#2e3039] lg:pr-0 ">
+    <div className="max-h-screen overflow-auto pr-4 scrollbar scrollbar-track-[#19191f] scrollbar-thumb-[#2e3039] lg:pr-0 ">
       <div className="flex items-center justify-between">
         <h1 className="my-6 text-2xl font-bold">Food List</h1>
         <Button className="rounded  px-4 py-2 transition duration-300 " onClick={toggleView}>
