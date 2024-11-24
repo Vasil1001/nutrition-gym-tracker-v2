@@ -10,6 +10,7 @@ import { LineChartWeights } from '@/components/charts/LineChart'
 export default function Page() {
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([])
   const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>({})
+  const [fooddsArray, setFoods] = useState(foods)
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
@@ -34,7 +35,8 @@ export default function Page() {
   return (
     <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
       <FoodList
-        foods={foods}
+        foods={fooddsArray}
+        setFoods={setFoods}
         foodCounts={foodCounts}
         onAdd={handleAddFood}
         onRemove={handleRemoveFood}
