@@ -1,16 +1,7 @@
-import React, { useState } from 'react'
-import FoodCard from './FoodCard'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardTitle, CardDescription, CardHeader } from '@/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+import { useState } from 'react'
 import FoodAsListTable from './food-as-list-table'
+import FoodCard from './FoodCard'
 
 export type FoodProps = {
   foods: Food[]
@@ -35,8 +26,11 @@ export default function FoodList({ foods, foodCounts, onAdd, onRemove }: FoodPro
     // eslint-disable-next-line tailwindcss/no-custom-classname
     <div className="max-h-screen overflow-auto pr-4 scrollbar scrollbar-track-[#19191f] scrollbar-thumb-[#2e3039] lg:pr-0 ">
       <div className="flex items-center justify-between">
-        <h1 className="my-6 text-2xl font-bold">Food List</h1>
-        <Button className="rounded  px-4 py-2 transition duration-300 " onClick={toggleView}>
+        <h1 className="my-6 text-xl font-bold lg:text-2xl">Food List</h1>
+        
+        <Button
+          className="rounded  px-2.5 py-2 text-xs transition duration-300 lg:text-sm "
+          onClick={toggleView}>
           {isListView ? 'Show Gallery View' : 'Show List View'}
         </Button>
       </div>
@@ -67,15 +61,6 @@ export default function FoodList({ foods, foodCounts, onAdd, onRemove }: FoodPro
             ))}
           </>
         )}
-        {/* {foods.map((food) => (
-          <FoodCard
-            isListView={isListView}
-            key={food.name}
-            food={food}
-            onAdd={() => onAdd(food)}
-            onRemove={() => onRemove(food)}
-          />
-        ))} */}
       </div>
     </div>
   )

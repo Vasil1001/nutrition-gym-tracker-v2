@@ -1,20 +1,10 @@
 'use client'
-import { Button } from '@/components/ui/button'
 /* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable tailwindcss/classnames-order */
-import { Card, CardContent, CardTitle, CardDescription, CardHeader } from '@/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { Minus, Plus, PlusIcon } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
-import FoodAsListTable from './food-as-list-table'
 
 type Food = {
   name: string
@@ -78,14 +68,12 @@ export default function FoodCard({ food, onAdd, onRemove, isListView }: FoodCard
 
           <div className="flex items-center justify-evenly gap-4 overflow-hidden">
             <div className="flex flex-1 flex-col items-center rounded-sm border border-[#19191f] p-1 text-[0.90rem]">
-              <div className="text-[0.85rem] uppercase text-muted-foreground sm:hidden">PR</div>
               <div className="hidden text-[0.85rem] uppercase text-muted-foreground sm:block">
                 Protein
               </div>
               {food.protein}g
             </div>
             <div className="flex flex-1 flex-col items-center rounded-sm border border-[#19191f] p-1 text-[0.90rem]">
-              <div className="text-[0.85rem] uppercase text-muted-foreground sm:hidden">Cal</div>
               <div className="hidden text-[0.85rem] uppercase text-muted-foreground sm:block">
                 Calories
               </div>
