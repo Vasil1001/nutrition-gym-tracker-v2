@@ -24,6 +24,7 @@ export type Food = {
   servingSize: string
   protein: string
   calories: string
+  carbs: string
 }
 
 export default function FoodList({ foods, foodCounts, onAdd, onRemove }: FoodProps) {

@@ -15,7 +15,7 @@ import NutritionProgress from './nutrition-progress'
 
 type SelectedFoodProps = {
   selectedFoods: Food[]
-  foodCounts: { [key: string]: number } // Add this line
+  foodCounts: { [key: string]: number }
 }
 
 export type Food = {
@@ -23,6 +23,7 @@ export type Food = {
   servingSize: string
   protein: string
   calories: string
+  carbs: string
 }
 
 export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {
@@ -59,6 +60,11 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
     return total + (food ? Number(food.calories) * foodCounts[foodName] : 0)
   }, 0)
 
+  const totalCarbs = Object.keys(foodCounts).reduce((total, foodName) => {
+    const food = selectedFoods.find((f) => f.name === foodName)
+    return total + (food ? Number(food.carbs) * foodCounts[foodName] : 0)
+  }, 0)
+
   return (
     <div className="border-l ">
       <div className="ml-4">
@@ -67,7 +73,7 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
             initialGoals={{
               calories: { current: totalCalories, target: savedTargets.calories.target },
               protein: { current: totalProtein, target: savedTargets.protein.target },
-              carbs: { current: 0, target: savedTargets.carbs.target }
+              carbs: { current: totalCarbs, target: savedTargets.carbs.target }
             }}
             onGoalsUpdate={handleGoalsUpdate}
           />
