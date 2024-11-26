@@ -17,15 +17,11 @@ const Navbar = () => {
   const routes = [
     {
       href: '/',
-      label: 'Overview'
+      label: 'Nutrition Tracking'
     },
     {
       href: '/weights',
       label: 'Weights'
-    },
-    {
-      href: '/nutrition',
-      label: 'Nutrition Tracking'
     }
   ]
 
@@ -52,7 +48,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="col-span-2 flex justify-end">
+        <div className="col-span-1 flex justify-end md:col-span-2">
           <nav className="hidden justify-center space-x-2 md:col-span-1 md:flex">
             {routes.map((route, i) => (
               // eslint-disable-next-line react/jsx-key

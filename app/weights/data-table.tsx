@@ -1,19 +1,6 @@
+// data-table.tsx
 'use client'
 
-import * as React from 'react'
-import { useState } from 'react'
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable
-} from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -24,6 +11,19 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  useReactTable,
+  ColumnFiltersState
+} from '@tanstack/react-table'
+import * as React from 'react'
 
 import {
   DropdownMenu,
@@ -31,27 +31,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Job } from './columns'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  showForm: boolean
-  setShowForm: (value: boolean) => void
-  handleSubmit: (event: { preventDefault: () => void }) => void
-  newJob: Job
-  handleInputChange: (event: { target: { name: any; value: any } }) => void
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  showForm,
-  setShowForm,
-  handleSubmit,
-  newJob,
-  handleInputChange
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -60,19 +46,25 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection
+    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    filterFns: {
+      text: (row, columnId, filterValue) => {
+        const rowValue = row.getValue(columnId)
+        return String(rowValue).toLowerCase().includes(String(filterValue).toLowerCase())
+      }
     }
   })
 
@@ -80,42 +72,13 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter jobs by name..."
-          value={(table.getColumn('job-title')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('job-title')?.setFilterValue(event.target.value)}
+          placeholder="Filter by exercise name..."
+          value={(table.getColumn('exercise')?.getFilterValue() as string) ?? ''}
+          onChange={(event) =>
+            table.getColumn('exercise')?.setFilterValue(event.target.value)
+          }
           className="max-w-sm"
         />
-        <div>
-          <button onClick={() => setShowForm(true)}>Add New</button>
-          {showForm && (
-            <form onSubmit={handleSubmit}>
-              <label>
-                Job Title:
-                <input
-                  type="text"
-                  name="title"
-                  value={newJob.title}
-                  onChange={handleInputChange}
-                  required
-                />
-              </label>
-              <label>
-                Employer:
-                <input
-                  type="text"
-                  name="employer"
-                  value={newJob.employer}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                Pay:
-                <input type="number" name="pay" value={newJob.pay} onChange={handleInputChange} />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          )}
-        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -123,44 +86,40 @@ export function DataTable<TData, TValue>({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
+            {table.getAllColumns().map((column) => (
+              <DropdownMenuCheckboxItem
+                key={column.id}
+                className="capitalize"
+                checked={column.getIsVisible()}
+                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+              >
+                {column.id.charAt(0).toUpperCase() + column.id.slice(1)}
+              </DropdownMenuCheckboxItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -178,7 +137,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-0 py-4">
+
+      <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.

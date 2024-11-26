@@ -4,29 +4,16 @@ import { JSX, ClassAttributes, HTMLAttributes } from 'react'
 
 export default function LineTwoChart() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <div className="flex flex-col">
-        <Card className="mb-4 flex flex-col">
-          <CardHeader>
-            <CardTitle>Weekly Overview</CardTitle>
-            <CardDescription>Daily Protein Intake</CardDescription>
-          </CardHeader>
-          <CardContent className="m-2 rounded-lg bg-[#19191f]">
-            <CurvedlineChart className=" aspect-[3/3]  w-full" />
-          </CardContent>
-        </Card>
-      </div>
-      <div className="flex flex-col">
-        <Card className="mb-4 flex flex-col">
-          <CardHeader>
-            <CardTitle>Weekly Overview</CardTitle>
-            <CardDescription>Daily Calorie Intake</CardDescription>
-          </CardHeader>
-          <CardContent className="m-2 rounded-lg bg-[#19191f]">
-            <CurvedlineChart className=" aspect-[3/3]  w-full" />
-          </CardContent>
-        </Card>
-      </div>
+    <div className="flex flex-col">
+      <Card className="mb-4 flex flex-col">
+        <CardHeader>
+          <CardTitle>Weekly Overview</CardTitle>
+          <CardDescription>Daily Protein Intake</CardDescription>
+        </CardHeader>
+        <CardContent className="m-2 rounded-lg bg-[#19191f]">
+          <CurvedlineChart className=" aspect-[3/3]  w-full" />
+        </CardContent>
+      </Card>
     </div>
   )
 }

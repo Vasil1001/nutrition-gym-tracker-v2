@@ -56,23 +56,25 @@ export function LineChartWeights() {
 
   const averageWeight = calculateAverageWeight(data)
   return (
-    <Card className="flex aspect-[3/3] flex-col justify-between ">
+    <Card className="flex mb-4 aspect-[3/3] flex-col justify-between ">
       <CardHeader>
-        <CardTitle>Nutrition / Gym Chart</CardTitle>
-        <CardDescription>Line chart with the amount of applications sent per day</CardDescription>
-        <button
-          onClick={() =>
-            addEntry({
-              weight: 45,
-              date: '15/12/12'
-            })
-          }
-          className="btn">
-          Add Entry
-        </button>
+        <CardTitle className="flex gap-1">
+          Gym Chart
+          <button
+            onClick={() =>
+              addEntry({
+                weight: 45,
+                date: '15/12/12'
+              })
+            }
+            className="text-xs font-normal text-muted-foreground">
+            Add Entry
+          </button>
+        </CardTitle>
+        <CardDescription className="flex"></CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-4">
-        <div className="h-full min-h-[250px]">
+      <CardContent className="flex-1 pb-4 text-xs">
+        <div className="h-full ">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
