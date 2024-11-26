@@ -96,7 +96,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
     <div className="mx-auto">
       <Card className="mb-4">
         <CardHeader className="flex flex-row items-center justify-between pb-0">
-          <CardTitle className="text-xl">Daily Goals</CardTitle>
+          <CardTitle className="text-xl ">Daily Goals</CardTitle>
           <Pencil
             className="h-5 w-5 animate-pulse cursor-pointer text-blue-500 hover:text-blue-600"
             onClick={handleSetTargetsClick}
@@ -105,7 +105,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
         <CardContent className="mt-3 flex justify-between gap-4 text-sm">
           {nutrients.map(({ key, label, unit }) => (
             <div
-              className="flex w-full flex-col items-center gap-2 rounded-lg bg-[#19191f] p-2.5 font-bold tracking-tight"
+              className="flex w-full flex-col items-center gap-2 rounded-lg dark:bg-[#19191f] p-2.5 font-bold tracking-tight"
               key={key}>
               <span>{label}</span>
               {goals[key].target}
