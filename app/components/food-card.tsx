@@ -53,7 +53,7 @@ export default function FoodCard({
                       </span>
                     )}
                     <div className="flex cursor-pointer" onClick={handleDeleteClick}>
-                      <CardTitle className="flex text-xs hover:text-red-400 lg:text-[16px]">
+                      <CardTitle className="flex text-xs hover:text-red-500 hover:line-through lg:text-[16px]">
                         {food.name}
                       </CardTitle>
                     </div>
