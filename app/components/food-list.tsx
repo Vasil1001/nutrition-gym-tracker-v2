@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import FoodAsListTable from './food-as-list-table'
-import FoodCard from './FoodCard'
+import FoodCard from './food-card'
 import { AddFoodModal } from './add-food-modal'
 
 export type FoodProps = {
