@@ -10,6 +10,7 @@ export type FoodProps = {
   onRemove: (food: Food) => void
   foodCounts: { [key: string]: number }
   setFoods: React.Dispatch<React.SetStateAction<Food[]>>
+  onClearSelectedFoods?: () => void
 }
 
 export type Food = {
@@ -20,7 +21,14 @@ export type Food = {
   carbs: string
 }
 
-export default function FoodList({ foods, setFoods, foodCounts, onAdd, onRemove }: FoodProps) {
+export default function FoodList({
+  foods,
+  setFoods,
+  foodCounts,
+  onAdd,
+  onRemove,
+  onClearSelectedFoods
+}: FoodProps) {
   const [isListView, setIsListView] = useState(false)
 
   const toggleView = () => setIsListView(!isListView)
@@ -29,12 +37,22 @@ export default function FoodList({ foods, setFoods, foodCounts, onAdd, onRemove 
     setFoods([newFood, ...foods])
   }
 
+  const handleDeleteFood = (food: Food) => {
+    setFoods(foods.filter((f) => f.name !== food.name))
+  }
+
   return (
     // eslint-disable-next-line tailwindcss/no-custom-classname
     <div className="max-h-screen overflow-auto pr-4 scrollbar scrollbar-track-[#19191f] scrollbar-thumb-[#2e3039] lg:pr-0 ">
       <div className="flex  items-center justify-between">
         <h1 className="my-6 text-xl font-bold lg:text-2xl">Food List</h1>
         <div className=" flex gap-2">
+          <Button
+            variant={'outline'}
+            className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
+            onClick={onClearSelectedFoods}>
+            Clear Selected
+          </Button>
           <AddFoodModal onAddFood={handleAddNewFood} />
           <Button
             className="rounded  px-2.5 py-2 text-xs transition duration-300 lg:text-sm "
@@ -66,6 +84,7 @@ export default function FoodList({ foods, setFoods, foodCounts, onAdd, onRemove 
                 count={foodCounts[food.name] || 0}
                 onAdd={() => onAdd(food)}
                 onRemove={() => onRemove(food)}
+                onRemoveFoodCard={() => handleDeleteFood(food)}
                 isListView={isListView}
               />
             ))}

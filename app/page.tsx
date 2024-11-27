@@ -3,13 +3,26 @@
 import LineTwoChart from '@/components/charts/NivoLineChart'
 import FoodList, { Food } from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { foods } from '@/lib/foods'
 import { LineChartWeights } from '@/components/charts/LineChart'
 
 export default function Page() {
-  const [selectedFoods, setSelectedFoods] = useState<Food[]>([])
-  const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>({})
+  const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
+    if (typeof window !== 'undefined') {
+      const savedSelectedFoods = localStorage.getItem('selectedFoods')
+      return savedSelectedFoods ? JSON.parse(savedSelectedFoods) : []
+    }
+    return []
+  })
+
+  const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>(() => {
+    if (typeof window !== 'undefined') {
+      const savedFoodCounts = localStorage.getItem('foodCounts')
+      return savedFoodCounts ? JSON.parse(savedFoodCounts) : {}
+    }
+    return {}
+  })
   const [fooddsArray, setFoods] = useState(foods)
 
   const handleAddFood = (food: Food) => {
@@ -32,6 +45,18 @@ export default function Page() {
     })
   }
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods))
+      localStorage.setItem('foodCounts', JSON.stringify(foodCounts))
+    }
+  }, [selectedFoods, foodCounts])
+
+  const handleClearSelectedFoods = () => {
+    setSelectedFoods([])
+    setFoodCounts({})
+  }
+
   return (
     <div>
       <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
@@ -41,6 +66,7 @@ export default function Page() {
           foodCounts={foodCounts}
           onAdd={handleAddFood}
           onRemove={handleRemoveFood}
+          onClearSelectedFoods={handleClearSelectedFoods}
         />
         <SelectedFoodList selectedFoods={selectedFoods} foodCounts={foodCounts} />
 
