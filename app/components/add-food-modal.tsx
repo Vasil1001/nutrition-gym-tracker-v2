@@ -1,3 +1,4 @@
+// app/components/add-food-modal.tsx
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -8,33 +9,63 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { Food } from '@/lib/foods'
+import { Food } from '@/lib/types'
+import { supabase } from '@/lib/supabaseClient'
+import { useAuth } from '@/app/context/AuthContext'
 
 type AddFoodModalProps = {
   onAddFood: (food: Food) => void
 }
 
 export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
+  const { session } = useAuth()
   const [open, setOpen] = useState(false)
-  const [newFood, setNewFood] = useState<Food>({
+  const [error, setError] = useState<string | null>(null)
+  const [newFood, setNewFood] = useState<Omit<Food, 'id' | 'user_id'>>({
     name: '',
-    servingSize: '',
-    protein: '',
-    calories: '',
-    carbs: ''
+    serving_size: '',
+    protein: 0,
+    calories: 0,
+    carbs: 0
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    onAddFood(newFood)
-    setOpen(false)
-    setNewFood({
-      name: '',
-      servingSize: '',
-      protein: '',
-      calories: '',
-      carbs: ''
-    })
+
+    if (!session) {
+      setError('You must be logged in to add food')
+      return
+    }
+
+    const foodWithUserId: Food = {
+      ...newFood,
+      user_id: session.user.id
+    }
+
+    const { data, error: insertError } = await supabase
+      .from('foods')
+      .insert([foodWithUserId])
+      .select()
+      .single()
+
+    if (insertError) {
+      setError(insertError.message)
+      console.error('Error adding food:', insertError)
+      return
+    }
+
+    if (data) {
+      onAddFood(data)
+      setOpen(false)
+      setNewFood({
+        name: '',
+        serving_size: '',
+        protein: 0,
+        calories: 0,
+        carbs: 0
+      })
+      setError(null)
+    }
   }
 
   return (
@@ -51,6 +82,7 @@ export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
           <DialogTitle>Add New Food</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+          {error && <p className="text-sm text-red-500">{error}</p>}
           <div className="grid gap-2">
             <label htmlFor="name">Name</label>
             <Input
@@ -64,8 +96,8 @@ export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
             <label htmlFor="serving">Serving Size</label>
             <Input
               id="serving"
-              value={newFood.servingSize}
-              onChange={(e) => setNewFood({ ...newFood, servingSize: e.target.value })}
+              value={newFood.serving_size}
+              onChange={(e) => setNewFood({ ...newFood, serving_size: e.target.value })}
               required
               placeholder="e.g., 100g"
             />
@@ -75,7 +107,7 @@ export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
             <Input
               id="protein"
               value={newFood.protein}
-              onChange={(e) => setNewFood({ ...newFood, protein: e.target.value })}
+              onChange={(e) => setNewFood({ ...newFood, protein: parseFloat(e.target.value) })}
               required
               type="number"
               step="0.1"
@@ -86,7 +118,7 @@ export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
             <Input
               id="calories"
               value={newFood.calories}
-              onChange={(e) => setNewFood({ ...newFood, calories: e.target.value })}
+              onChange={(e) => setNewFood({ ...newFood, calories: parseFloat(e.target.value) })}
               required
               type="number"
             />
@@ -96,7 +128,7 @@ export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
             <Input
               id="carbs"
               value={newFood.carbs}
-              onChange={(e) => setNewFood({ ...newFood, carbs: e.target.value })}
+              onChange={(e) => setNewFood({ ...newFood, carbs: parseFloat(e.target.value) })}
               required
               type="number"
               step="0.1"

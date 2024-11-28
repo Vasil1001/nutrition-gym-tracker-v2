@@ -6,13 +6,9 @@ export type Weight = {
   reps: number
 }
 
-export type Food = {
-  name: string
-  servingSize: string
-  protein: number
-  calories: number
-  carbs: number
-}
+invalid input syntax for type uuid: ""
+
+
 
 export type FoodCardProps = {
   food: Food

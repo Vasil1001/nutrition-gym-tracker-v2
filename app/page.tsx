@@ -44,7 +44,7 @@ export default function Page() {
     }
     fetchFoods()
   }, [])
-  
+
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
     const newCount = (foodCounts[food.name] || 0) + 1

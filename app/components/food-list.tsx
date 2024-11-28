@@ -1,17 +1,19 @@
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import FoodAsListTable from './food-as-list-table'
 import FoodCard from './food-card'
 import { AddFoodModal } from './add-food-modal'
 import { Food } from '@/lib/types'
+import { supabase } from '@/lib/supabaseClient'
+import { useAuth } from '@/app/context/AuthContext'
 
-export type FoodProps = {
+interface FoodProps {
   foods: Food[]
+  setFoods: React.Dispatch<React.SetStateAction<Food[]>>
+  foodCounts: { [key: string]: number }
   onAdd: (food: Food) => void
   onRemove: (food: Food) => void
-  foodCounts: { [key: string]: number }
-  setFoods: React.Dispatch<React.SetStateAction<Food[]>>
-  onClearSelectedFoods?: () => void
+  onClearSelectedFoods: () => void
 }
 
 export default function FoodList({
@@ -22,17 +24,45 @@ export default function FoodList({
   onRemove,
   onClearSelectedFoods
 }: FoodProps) {
+  const { session } = useAuth()
   const [isListView, setIsListView] = useState(false)
 
   const toggleView = () => setIsListView(!isListView)
 
-  const handleAddNewFood = (newFood: Food) => {
+  const handleAddNewFood = async (newFood: Food) => {
     setFoods([newFood, ...foods])
   }
 
-  const handleDeleteFood = (food: Food) => {
-    setFoods(foods.filter((f) => f.name !== food.name))
+  const handleDeleteFood = async (food: Food) => {
+    if (!session) return
+
+    const { error } = await supabase
+      .from('foods')
+      .delete()
+      .eq('id', food.id)
+      .eq('user_id', session.user.id)
+
+    if (!error) {
+      setFoods(foods.filter((f) => f.id !== food.id))
+    }
   }
+
+  useEffect(() => {
+    const fetchUserFoods = async () => {
+      if (!session) return
+
+      const { data, error } = await supabase
+        .from('foods')
+        .select('*')
+        .eq('user_id', session.user.id)
+
+      if (data && !error) {
+        setFoods(data)
+      }
+    }
+
+    fetchUserFoods()
+  }, [session, setFoods])
 
   return (
     // eslint-disable-next-line tailwindcss/no-custom-classname
