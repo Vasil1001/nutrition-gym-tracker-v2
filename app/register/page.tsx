@@ -21,7 +21,7 @@ export default function Page() {
       setErrorMessage(error.message)
       console.error('Error signing up:', error)
     } else {
-      router.push('/')
+      router.push('/login')
     }
   }
 

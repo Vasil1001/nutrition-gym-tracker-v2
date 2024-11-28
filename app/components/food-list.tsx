@@ -3,6 +3,7 @@ import { useState } from 'react'
 import FoodAsListTable from './food-as-list-table'
 import FoodCard from './food-card'
 import { AddFoodModal } from './add-food-modal'
+import { Food } from '@/lib/types'
 
 export type FoodProps = {
   foods: Food[]
@@ -11,14 +12,6 @@ export type FoodProps = {
   foodCounts: { [key: string]: number }
   setFoods: React.Dispatch<React.SetStateAction<Food[]>>
   onClearSelectedFoods?: () => void
-}
-
-export type Food = {
-  name: string
-  servingSize: string
-  protein: string
-  calories: string
-  carbs: string
 }
 
 export default function FoodList({

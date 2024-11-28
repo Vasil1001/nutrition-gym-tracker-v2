@@ -1,13 +1,17 @@
 'use client'
 
 import LineTwoChart from '@/components/charts/NivoLineChart'
-import FoodList, { Food } from './components/food-list'
+import FoodList from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
 import { useEffect, useState } from 'react'
 import { foods } from '@/lib/foods'
 import { LineChartWeights } from '@/components/charts/LineChart'
+import { supabase } from '@/lib/supabaseClient'
+import { Food } from '@/lib/types'
 
 export default function Page() {
+  const [fetchedSBFoods, setFetchedSBFoods] = useState<Food[]>([])
+  const [fooddsArray, setFoods] = useState<Food[]>([])
   const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
     if (typeof window !== 'undefined') {
       const savedSelectedFoods = localStorage.getItem('selectedFoods')
@@ -23,8 +27,24 @@ export default function Page() {
     }
     return {}
   })
-  const [fooddsArray, setFoods] = useState(foods)
 
+  useEffect(() => {
+    setFoods(fetchedSBFoods)
+  }, [fetchedSBFoods])
+
+  useEffect(() => {
+    const fetchFoods = async () => {
+      const { data: foodsData, error } = await supabase.from('foods').select('*')
+      if (error) {
+        console.error(error)
+      } else {
+        setFetchedSBFoods(foodsData)
+        setFoods(foodsData)
+      }
+    }
+    fetchFoods()
+  }, [])
+  
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
     const newCount = (foodCounts[food.name] || 0) + 1

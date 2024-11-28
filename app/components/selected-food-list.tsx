@@ -12,18 +12,11 @@ import {
   TableRow
 } from '@/components/ui/table'
 import NutritionProgress from './nutrition-progress'
+import { Food } from '@/lib/types'
 
 type SelectedFoodProps = {
   selectedFoods: Food[]
   foodCounts: { [key: string]: number }
-}
-
-export type Food = {
-  name: string
-  servingSize: string
-  protein: string
-  calories: string
-  carbs: string
 }
 
 export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {

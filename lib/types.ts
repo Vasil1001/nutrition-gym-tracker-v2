@@ -9,8 +9,9 @@ export type Weight = {
 export type Food = {
   name: string
   servingSize: string
-  protein: string
-  calories: string
+  protein: number
+  calories: number
+  carbs: number
 }
 
 export type FoodCardProps = {
