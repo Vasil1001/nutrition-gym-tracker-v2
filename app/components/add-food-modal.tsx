@@ -9,9 +9,9 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { Food } from '@/lib/types'
 import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/app/context/AuthContext'
+import { Food } from '@/lib/types';
 
 type AddFoodModalProps = {
   onAddFood: (food: Food) => void

@@ -74,7 +74,7 @@ export default function FoodCard({
               </div>
               <CardDescription>
                 <p className="-mt-0.5 font-supreme text-xs text-muted-foreground">
-                  Per {food.servingSize} serving
+                  Per {food.serving_size} serving
                 </p>
               </CardDescription>
             </div>

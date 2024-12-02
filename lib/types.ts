@@ -6,7 +6,15 @@ export type Weight = {
   reps: number
 }
 
-invalid input syntax for type uuid: ""
+export type Food = {
+  id?: number
+  name: string
+  serving_size: string
+  protein: number
+  calories: number
+  carbs: number
+  user_id?: string
+}
 
 
 

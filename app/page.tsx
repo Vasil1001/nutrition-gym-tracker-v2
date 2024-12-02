@@ -3,15 +3,18 @@
 import LineTwoChart from '@/components/charts/NivoLineChart'
 import FoodList from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
-import { useEffect, useState } from 'react'
-import { foods } from '@/lib/foods'
-import { LineChartWeights } from '@/components/charts/LineChart'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
+import { useAuth } from '@/app/context/AuthContext'
+import { LineChartWeights } from '@/components/charts/LineChart'
+import { AddFoodModal } from './components/add-food-modal'
 
 export default function Page() {
-  const [fetchedSBFoods, setFetchedSBFoods] = useState<Food[]>([])
+  const { session } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
   const [fooddsArray, setFoods] = useState<Food[]>([])
+
   const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
     if (typeof window !== 'undefined') {
       const savedSelectedFoods = localStorage.getItem('selectedFoods')
@@ -28,22 +31,40 @@ export default function Page() {
     return {}
   })
 
-  useEffect(() => {
-    setFoods(fetchedSBFoods)
-  }, [fetchedSBFoods])
-
-  useEffect(() => {
-    const fetchFoods = async () => {
-      const { data: foodsData, error } = await supabase.from('foods').select('*')
-      if (error) {
-        console.error(error)
-      } else {
-        setFetchedSBFoods(foodsData)
-        setFoods(foodsData)
-      }
+  // Memoized fetch function
+  const fetchFoods = useCallback(async () => {
+    if (!session) {
+      return []
     }
+
+    setIsLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from('foods')
+        .select('*')
+        .eq('user_id', session.user.id)
+
+      if (error) throw error
+      return data || []
+    } catch (error) {
+      console.error('Error fetching foods:', error)
+      return []
+    } finally {
+      setIsLoading(false)
+    }
+  }, [session])
+
+  // Memoize foods data
+  const foods = useMemo(async () => {
+    const data = await fetchFoods()
+    setFoods(data)
+    return data
+  }, [fetchFoods])
+
+  // Initial fetch
+  useEffect(() => {
     fetchFoods()
-  }, [])
+  }, [fetchFoods])
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
@@ -78,7 +99,7 @@ export default function Page() {
   }
 
   return (
-    <div>
+    <div className="pt-0">
       <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
         <FoodList
           foods={fooddsArray}
@@ -87,18 +108,14 @@ export default function Page() {
           onAdd={handleAddFood}
           onRemove={handleRemoveFood}
           onClearSelectedFoods={handleClearSelectedFoods}
+          isLoading={isLoading}
         />
         <SelectedFoodList selectedFoods={selectedFoods} foodCounts={foodCounts} />
-
-        {/* <Card className="col-span-1 flex flex-col justify-between">
-              <CardContent className="flex flex-col items-center justify-end gap-4">
-                <PieChartJobs />
-              </CardContent>
-            </Card> */}
       </div>
+
       <div className="mt-4 grid grid-cols-2 gap-6">
         <LineTwoChart />
-        <LineChartWeights /> {/* Ensure this component has similar styling for consistency */}
+        <LineChartWeights />
       </div>
     </div>
   )
