@@ -48,7 +48,7 @@ export default function FoodCard({
                 <div className="flex">
                   <CardTitle className="flex text-xs lg:text-[15px]">
                     {count > 0 && (
-                      <span className="text-bold mr-1 whitespace-nowrap text-xs tracking-tighter text-white">
+                      <span className="mr-1 whitespace-nowrap text-xs font-bold tracking-tighter text-white">
                         x{count}
                       </span>
                     )}

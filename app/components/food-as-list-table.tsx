@@ -62,7 +62,7 @@ export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: 
                         className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
                         onClick={() => handleRemove(food)}
                       />
-                      <p className="text-bold text-[0.9rem] tracking-tighter text-white">
+                      <p className="text-[0.9rem] font-bold tracking-tighter text-white">
                         {cn(foodCounts[food.name] > 0 && '', foodCounts[food.name])}
                       </p>
                       <Plus
