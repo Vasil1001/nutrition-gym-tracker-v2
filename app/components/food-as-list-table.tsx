@@ -10,9 +10,17 @@ import {
 import { cn } from '@/lib/utils'
 import { Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
-import { Food, FoodProps } from './food-list'
+import { Food } from '@/lib/types'
 
-export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: FoodProps) {
+interface FoodCardProps {
+  foods: Food[]
+  setFoods: React.Dispatch<React.SetStateAction<Food[]>>
+  foodCounts: { [key: string]: number }
+  onAdd: (food: Food) => void
+  onRemove: (food: Food) => void
+}
+
+export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: FoodCardProps) {
   const [counts, setCounts] = useState<{ [key: string]: number }>({})
 
   const handleAdd = (food: Food) => {
@@ -64,7 +72,7 @@ export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: 
                     </div>
                     {food.name}
                   </TableCell>
-                  <TableCell className="border-r text-center">{food.servingSize}</TableCell>
+                  <TableCell className="border-r text-center">{food.serving_size}</TableCell>
                   <TableCell className="border-r text-center">{food.calories}cal</TableCell>
                   <TableCell className="flex justify-center text-end">{food.protein}g</TableCell>
                 </TableRow>

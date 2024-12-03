@@ -16,8 +16,6 @@ export type Food = {
   user_id?: string
 }
 
-
-
 export type FoodCardProps = {
   food: Food
   count: number

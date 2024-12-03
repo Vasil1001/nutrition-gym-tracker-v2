@@ -1,14 +1,13 @@
-// components/food-list.tsx
 import { Button } from '@/components/ui/button'
 import FoodAsListTable from './food-as-list-table'
 import FoodCard from './food-card'
 import { AddFoodModal } from './add-food-modal'
-import { Food } from '@/lib/types'
 import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/app/context/AuthContext'
 import { useState } from 'react'
 import { Spinner } from '@/components/ui/loader'
 import FoodCardSkeleton from '@/components/food-card-skeleton'
+import { Food } from '@/lib/types'
 
 interface FoodProps {
   foods: Food[]
@@ -83,7 +82,7 @@ export default function FoodList({
             ))}
           </div>
         </div>
-      ) : (
+      ) : foods.length > 0 ? (
         <div
           className={`grid gap-4 ${
             isListView ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
@@ -98,7 +97,7 @@ export default function FoodList({
                 onRemove={onRemove}
               />
             </div>
-          ) : foods.length > 0 ? (
+          ) : (
             foods.map((food) => (
               <FoodCard
                 key={food.id}
@@ -110,11 +109,12 @@ export default function FoodList({
                 isListView={isListView}
               />
             ))
-          ) : (
-            <div className="col-span-full flex h-[50vh] items-center justify-center">
-              <p className="text-center text-muted-foreground">No foods added yet</p>
-            </div>
           )}
+        </div>
+      ) : (
+        // Show 'No foods added yet' only when not loading and foods array is empty
+        <div className="col-span-full flex h-[50vh] items-center justify-center">
+          <p className="text-center text-muted-foreground">No foods added yet</p>
         </div>
       )}
     </div>

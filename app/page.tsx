@@ -3,17 +3,16 @@
 import LineTwoChart from '@/components/charts/NivoLineChart'
 import FoodList from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
-import { useEffect, useState, useMemo, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
 import { useAuth } from '@/app/context/AuthContext'
 import { LineChartWeights } from '@/components/charts/LineChart'
-import { AddFoodModal } from './components/add-food-modal'
 
 export default function Page() {
   const { session } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
-  const [fooddsArray, setFoods] = useState<Food[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [foodsArray, setFoods] = useState<Food[]>([])
 
   const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
     if (typeof window !== 'undefined') {
@@ -31,37 +30,36 @@ export default function Page() {
     return {}
   })
 
-  // Memoized fetch function
   const fetchFoods = useCallback(async () => {
     if (!session) {
-      return []
+      setFoods([])
+      setIsLoading(false)
+      return
     }
 
-    setIsLoading(true)
     try {
+      // Start loading
+      setIsLoading(true)
+
       const { data, error } = await supabase
         .from('foods')
         .select('*')
         .eq('user_id', session.user.id)
 
       if (error) throw error
-      return data || []
+
+      // Update foods state
+      setFoods(data || [])
     } catch (error) {
       console.error('Error fetching foods:', error)
-      return []
+      setFoods([])
     } finally {
+      // Stop loading after foods are updated
       setIsLoading(false)
     }
   }, [session])
 
-  // Memoize foods data
-  const foods = useMemo(async () => {
-    const data = await fetchFoods()
-    setFoods(data)
-    return data
-  }, [fetchFoods])
-
-  // Initial fetch
+  // Fetch foods on mount and when session changes
   useEffect(() => {
     fetchFoods()
   }, [fetchFoods])
@@ -100,9 +98,9 @@ export default function Page() {
 
   return (
     <div className="pt-0">
-      <div className=" grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
+      <div className="grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
         <FoodList
-          foods={fooddsArray}
+          foods={foodsArray}
           setFoods={setFoods}
           foodCounts={foodCounts}
           onAdd={handleAddFood}
