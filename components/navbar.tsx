@@ -9,7 +9,15 @@ import { Button } from './ui/button'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 import { useAuth } from '@/app/context/AuthContext'
 import { supabase } from '@/lib/supabaseClient'
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import User from './ui/icons/user-round-icon'
 const Navbar = () => {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
@@ -85,49 +93,40 @@ const Navbar = () => {
                 </Link>
               </Button>
             ))}
-            {!session ? (
-              <>
-                <Button asChild variant="ghost">
-                  <Link
-                    href="/login"
-                    className={cn(
-                      `text-sm font-medium transition-colors`,
-                      pathname === '/login'
-                        ? 'bg-[#f4f4f5] dark:bg-[#2e3039]'
-                        : 'hover:bg-[#f4f4f5] dark:hover:bg-[#2e3039]'
-                    )}>
-                    Login
-                  </Link>
-                </Button>
-                <Button asChild variant="ghost">
-                  <Link
-                    href="/register"
-                    className={cn(
-                      `text-sm font-medium transition-colors`,
-                      pathname === '/register'
-                        ? 'bg-[#f4f4f5] dark:bg-[#2e3039]'
-                        : 'hover:bg-[#f4f4f5] dark:hover:bg-[#2e3039]'
-                    )}>
-                    Register
-                  </Link>
-                </Button>
-              </>
-            ) : (
-              <Button variant="ghost" onClick={handleLogout}>
-                Logout
-              </Button>
-            )}
           </nav>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Toggle Theme"
-            className="ml-2 bg-[#f4f4f5] hover:bg-[#f2f4f5]/80 dark:bg-[#2e3039] dark:hover:bg-[#2e3039]/80"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle Theme</span>
-          </Button>
+          <div className="ml-2 flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="rounded-md px-2 hover:bg-[#f2f4f5]/80 dark:bg-[#2e3039] dark:hover:bg-[#2e3039]/80">
+                <User />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {!session ? (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/login">Login</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/register">Register</Link>
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle Theme"
+              className="ml-2 bg-[#f4f4f5] hover:bg-[#f2f4f5]/80 dark:bg-[#2e3039] dark:hover:bg-[#2e3039]/80"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+              <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Toggle Theme</span>
+            </Button>
+          </div>
         </div>
       </div>
     </header>
