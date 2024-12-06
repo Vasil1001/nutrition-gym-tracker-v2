@@ -96,7 +96,7 @@ const Navbar = () => {
           </nav>
           <div className="ml-2 flex">
             <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-md px-2 hover:bg-[#f2f4f5]/80 dark:bg-[#2e3039] dark:hover:bg-[#2e3039]/80">
+              <DropdownMenuTrigger className="rounded-md px-1 hover:bg-[#f2f4f5]/80  dark:hover:bg-[#2e3039]/80">
                 <User />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -105,14 +105,20 @@ const Navbar = () => {
                 {!session ? (
                   <>
                     <DropdownMenuItem asChild>
-                      <Link href="/login">Login</Link>
+                      <Link className="cursor-pointer" href="/login">
+                        Login
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/register">Register</Link>
+                      <Link className="cursor-pointer" href="/register">
+                        Register
+                      </Link>
                     </DropdownMenuItem>
                   </>
                 ) : (
-                  <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                    Logout
+                  </DropdownMenuItem>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>

@@ -63,10 +63,10 @@ export default function FoodList({
             Clear Selected
           </Button>
           <AddFoodModal onAddFood={handleAddNewFood} />
-          <Button
+          <Button variant={'outline'}
             className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
             onClick={toggleView}>
-            {isListView ? 'Gallery View' : 'List View'}
+            {isListView ? 'Gallery' : 'List'}
           </Button>
         </div>
       </div>
