@@ -52,71 +52,76 @@ export default function FoodList({
   }
 
   return (
-    <div className="max-h-screen overflow-auto pr-4 scrollbar scrollbar-track-[#19191f] scrollbar-thumb-[#2e3039] lg:pr-0">
-      <div className="flex items-center justify-between">
-        <h1 className="my-6 text-xl font-bold lg:text-2xl">Food List</h1>
-        <div className="flex gap-2">
-          <Button
-            variant={'outline'}
-            className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
-            onClick={onClearSelectedFoods}>
-            Clear Selected
-          </Button>
-          <AddFoodModal onAddFood={handleAddNewFood} />
-          <Button variant={'outline'}
-            className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
-            onClick={toggleView}>
-            {isListView ? 'Gallery' : 'List'}
-          </Button>
+    <div className="h-full rounded-lg shadow-sm">
+      <div className="mx-auto md:max-w-none">
+        <div className="flex items-center justify-between">
+          <h2 className="my-6 text-xl font-semibold lg:text-2xl">Food List</h2>
+          <div className="flex gap-2">
+            <Button
+              variant={'outline'}
+              className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
+              onClick={onClearSelectedFoods}>
+              Clear Selected
+            </Button>
+            <AddFoodModal onAddFood={handleAddNewFood} />
+            <Button
+              variant={'outline'}
+              className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
+              onClick={toggleView}>
+              {isListView ? 'Gallery' : 'List'}
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {isLoading ? (
-        <div className="relative">
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/50">
-            <Spinner size="large" show={true} />
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-            {Array.from({ length: 9 }).map((_, index) => (
-              <FoodCardSkeleton key={index} />
-            ))}
-          </div>
-        </div>
-      ) : foods.length > 0 ? (
-        <div
-          className={`grid gap-4 ${
-            isListView ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
-          }`}>
-          {isListView ? (
-            <div>
-              <FoodAsListTable
-                foods={foods}
-                setFoods={setFoods}
-                foodCounts={foodCounts}
-                onAdd={onAdd}
-                onRemove={onRemove}
-              />
+        {isLoading ? (
+          <div className="relative">
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/50">
+              <Spinner size="large" show={true} />
             </div>
-          ) : (
-            foods.map((food) => (
-              <FoodCard
-                key={food.id}
-                food={food}
-                count={foodCounts[food.name] || 0}
-                onAdd={() => onAdd(food)}
-                onRemove={() => onRemove(food)}
-                onRemoveFoodCard={() => handleDeleteFood(food)}
-                isListView={isListView}
-              />
-            ))
-          )}
-        </div>
-      ) : (
-        // Show 'No foods added yet' only when not loading and foods array is empty
-        <div className="col-span-full flex h-[50vh] items-center justify-center">
-          <p className="text-center text-muted-foreground">No foods added yet</p>
-        </div>
-      )}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <FoodCardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        ) : foods.length > 0 ? (
+          <div
+            className={`grid gap-4 ${
+              isListView
+                ? 'grid-cols-1'
+                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
+            }`}>
+            {isListView ? (
+              <div>
+                <FoodAsListTable
+                  foods={foods}
+                  setFoods={setFoods}
+                  foodCounts={foodCounts}
+                  onAdd={onAdd}
+                  onRemove={onRemove}
+                />
+              </div>
+            ) : (
+              foods.map((food) => (
+                <FoodCard
+                  key={food.id}
+                  food={food}
+                  count={foodCounts[food.name] || 0}
+                  onAdd={() => onAdd(food)}
+                  onRemove={() => onRemove(food)}
+                  onRemoveFoodCard={() => handleDeleteFood(food)}
+                  isListView={isListView}
+                />
+              ))
+            )}
+          </div>
+        ) : (
+          // Show 'No foods added yet' only when not loading and foods array is empty
+          <div className="col-span-full flex h-[50vh] items-center justify-center">
+            <p className="text-center text-muted-foreground">No foods added yet</p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

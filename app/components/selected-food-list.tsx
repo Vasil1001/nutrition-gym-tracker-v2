@@ -59,9 +59,9 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
   }, 0)
 
   return (
-    <div className="border-l ">
-      <div className="ml-4">
-        <div className="mb-6 mt-4">
+    <div className="h-full pl-0 shadow-sm md:border-l md:pl-4">
+      <div className="">
+        <div className="mb-6 md:mt-4">
           <NutritionProgress
             initialGoals={{
               calories: { current: totalCalories, target: savedTargets.calories.target },

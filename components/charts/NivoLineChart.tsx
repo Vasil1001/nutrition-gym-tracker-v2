@@ -5,13 +5,13 @@ import { JSX, ClassAttributes, HTMLAttributes } from 'react'
 export default function LineTwoChart() {
   return (
     <div className="flex flex-col">
-      <Card className="mb-4 flex flex-col">
+      <Card className="flex h-[500px] flex-col">
         <CardHeader>
           <CardTitle>Weekly Overview</CardTitle>
           <CardDescription>Daily Protein Intake</CardDescription>
         </CardHeader>
-        <CardContent className="m-2 rounded-lg bg-[#19191f]">
-          <CurvedlineChart className=" aspect-[3/3]  w-full" />
+        <CardContent className="m-2 flex-1 rounded-lg bg-[#19191f]">
+          <CurvedlineChart className="h-full w-full" />
         </CardContent>
       </Card>
     </div>

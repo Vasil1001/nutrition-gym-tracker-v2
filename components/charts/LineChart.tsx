@@ -56,7 +56,7 @@ export function LineChartWeights() {
 
   const averageWeight = calculateAverageWeight(data)
   return (
-    <Card className="flex mb-4 aspect-[3/3] flex-col justify-between ">
+    <Card className="flex h-[500px] flex-col">
       <CardHeader>
         <CardTitle className="flex gap-1">
           Gym Chart
@@ -74,7 +74,7 @@ export function LineChartWeights() {
         <CardDescription className="flex"></CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-4 text-xs">
-        <div className="h-full ">
+        <div className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}

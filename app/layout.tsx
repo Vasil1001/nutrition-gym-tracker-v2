@@ -15,16 +15,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Container>
-              <Navbar />
-              {children}
-            </Container>
-          </ThemeProvider>
-        </AuthProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body className={`${inter.className} min-h-screen`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AuthProvider>
+            <Navbar />
+            <div className="mx-auto max-w-6xl  sm:px-6 lg:px-5">
+              <main className="h-full">{children}</main>
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

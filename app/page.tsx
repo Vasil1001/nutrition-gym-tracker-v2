@@ -97,8 +97,8 @@ export default function Page() {
   }
 
   return (
-    <div className="pt-0">
-      <div className="grid h-full max-h-screen grid-cols-[2fr_1fr] gap-4">
+    <div className="px-4 pt-0 sm:px-0">
+      <div className="grid h-full gap-4 md:grid-cols-[2fr_1fr]">
         <FoodList
           foods={foodsArray}
           setFoods={setFoods}
@@ -111,7 +111,7 @@ export default function Page() {
         <SelectedFoodList selectedFoods={selectedFoods} foodCounts={foodCounts} />
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-6">
+      <div className="font-inter mb-6 mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
         <LineTwoChart />
         <LineChartWeights />
       </div>
