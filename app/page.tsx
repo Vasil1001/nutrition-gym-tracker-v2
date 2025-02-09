@@ -13,7 +13,6 @@ import { useRouter } from 'next/navigation'
 import FoodSummaryCards from './components/food-summary-cards'
 import { Spinner } from '@/components/ui/spinner'
 
-
 export default function Page() {
   const { session, loading } = useAuth()
   const router = useRouter()
@@ -71,12 +70,21 @@ export default function Page() {
     fetchFoods()
   }, [fetchFoods])
 
+  // Move these useEffect hooks outside the conditional block
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods))
+      localStorage.setItem('foodCounts', JSON.stringify(foodCounts))
+    }
+  }, [selectedFoods, foodCounts])
+
   useEffect(() => {
     if (!loading && !session) {
       router.push('/login')
     }
   }, [session, loading, router])
 
+  // Conditionally render the content based on loading and session
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -108,13 +116,6 @@ export default function Page() {
       }
     })
   }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods))
-      localStorage.setItem('foodCounts', JSON.stringify(foodCounts))
-    }
-  }, [selectedFoods, foodCounts])
 
   const handleClearSelectedFoods = () => {
     setSelectedFoods([])
