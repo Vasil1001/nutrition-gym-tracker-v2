@@ -105,7 +105,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
         <CardContent className="mt-3 flex justify-between gap-4 text-sm">
           {nutrients.map(({ key, label, unit }) => (
             <div
-              className="flex w-full flex-col items-center gap-2 rounded-lg dark:bg-[#19191f] p-2.5 font-bold tracking-tight"
+              className="flex w-full flex-col items-center gap-2 rounded-lg p-2.5 font-bold tracking-tight dark:bg-[#19191f]"
               key={key}>
               <span>{label}</span>
               {goals[key].target}
@@ -116,7 +116,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
       </Card>
 
       {showOnboarding && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black] bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black]/50">
           <div className="relative w-full max-w-md rounded-lg bg-[#34343f] p-6 shadow-lg">
             <button
               onClick={handleCloseOnboarding}

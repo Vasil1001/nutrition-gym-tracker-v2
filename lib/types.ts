@@ -24,3 +24,18 @@ export type FoodCardProps = {
   onRemoveFoodCard: () => void
   isListView: boolean
 }
+
+export interface FoodSummary {
+  id: string
+  date: string
+  totalProtein: number
+  totalCalories: number
+  totalCarbs: number
+  foods: {
+    name: string
+    count: number
+    protein: number
+    calories: number
+    carbs: number
+  }[]
+}

@@ -8,12 +8,15 @@ import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
 import { useAuth } from '@/app/context/AuthContext'
 import { LineChartWeights } from '@/components/charts/LineChart'
+import FoodSummaryCards from './components/food-summary-cards'
+import { Button } from '@/components/ui/button'
+import { FoodSummary } from '@/lib/types'
+import { useToast } from '@/hooks/use-toast'
 
 export default function Page() {
   const { session } = useAuth()
   const [isLoading, setIsLoading] = useState(true)
   const [foodsArray, setFoods] = useState<Food[]>([])
-
   const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
     if (typeof window !== 'undefined') {
       const savedSelectedFoods = localStorage.getItem('selectedFoods')
@@ -21,7 +24,6 @@ export default function Page() {
     }
     return []
   })
-
   const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>(() => {
     if (typeof window !== 'undefined') {
       const savedFoodCounts = localStorage.getItem('foodCounts')
@@ -29,6 +31,8 @@ export default function Page() {
     }
     return {}
   })
+  const [summaries, setSummaries] = useState<FoodSummary[]>([])
+  const { toast } = useToast()
 
   const fetchFoods = useCallback(async () => {
     if (!session) {
@@ -96,6 +100,51 @@ export default function Page() {
     setFoodCounts({})
   }
 
+  const handleSaveDay = () => {
+    if (Object.keys(foodCounts).length === 0) {
+      toast({
+        title: 'No foods selected',
+        description: 'Please select some foods before saving.',
+        variant: 'destructive'
+      })
+      return
+    }
+
+    const summary: FoodSummary = {
+      id: Date.now().toString(), // Simple ID for now
+      date: new Date().toISOString(),
+      totalProtein: Object.entries(foodCounts).reduce((total, [foodName, count]) => {
+        const food = selectedFoods.find((f) => f.name === foodName)
+        return total + (food ? food.protein * count : 0)
+      }, 0),
+      totalCalories: Object.entries(foodCounts).reduce((total, [foodName, count]) => {
+        const food = selectedFoods.find((f) => f.name === foodName)
+        return total + (food ? food.calories * count : 0)
+      }, 0),
+      totalCarbs: Object.entries(foodCounts).reduce((total, [foodName, count]) => {
+        const food = selectedFoods.find((f) => f.name === foodName)
+        return total + (food ? food.carbs * count : 0)
+      }, 0),
+      foods: Object.entries(foodCounts).map(([name, count]) => {
+        const food = selectedFoods.find((f) => f.name === name)!
+        return {
+          name,
+          count,
+          protein: food.protein * count,
+          calories: food.calories * count,
+          carbs: food.carbs * count
+        }
+      })
+    }
+
+    setSummaries([summary, ...summaries])
+    toast({
+      title: 'Day saved!',
+      description: 'Your daily food summary has been saved.'
+    })
+    handleClearSelectedFoods()
+  }
+
   return (
     <div className="px-4 pt-0 sm:px-0">
       <div className="grid h-full gap-4 md:grid-cols-[2fr_1fr]">
@@ -116,7 +165,15 @@ export default function Page() {
         />
       </div>
 
-      <div className="font-inter mb-6 mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="mt-4 flex justify-end">
+        <Button onClick={handleSaveDay} disabled={Object.keys(foodCounts).length === 0}>
+          Save Today&apos;s Food
+        </Button>
+      </div>
+
+      <FoodSummaryCards summaries={summaries} />
+
+      <div className="my-6 grid grid-cols-1 gap-4 md:grid-cols-2">
         <LineTwoChart />
         <LineChartWeights />
       </div>

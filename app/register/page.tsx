@@ -97,7 +97,7 @@ export default function RegisterPage() {
                     type="email"
                     className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
-                    } placeholder-gray-400 transition-all focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                    } transition-all placeholder:text-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500`}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
@@ -111,7 +111,7 @@ export default function RegisterPage() {
                     type="password"
                     className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
                       errors.password ? 'border-red-500' : 'border-gray-300'
-                    } placeholder-gray-400 transition-all focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                    } transition-all placeholder:text-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500`}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
@@ -129,7 +129,7 @@ export default function RegisterPage() {
                     type="password"
                     className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
                       errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                    } placeholder-gray-400 transition-all focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                    } transition-all placeholder:text-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500`}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm your password"
