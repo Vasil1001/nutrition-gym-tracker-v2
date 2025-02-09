@@ -77,9 +77,6 @@ export default function Page() {
     }
   }, [session, router])
 
-  if (!session) {
-    return null // Return null while redirecting
-  }
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
