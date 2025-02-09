@@ -46,18 +46,27 @@ const Navbar = () => {
     return () => subscription.unsubscribe()
   }, [])
 
-  if (!isAuthenticated) return null
-
-  const routes = [
-    {
-      href: '/',
-      label: 'Nutrition Tracking'
-    },
-    {
-      href: '/weights',
-      label: 'Weights'
-    }
-  ]
+  const routes = isAuthenticated
+    ? [
+        {
+          href: '/',
+          label: 'Nutrition Tracking'
+        },
+        {
+          href: '/weights',
+          label: 'Weights'
+        }
+      ]
+    : [
+        {
+          href: '/login',
+          label: 'Login'
+        },
+        {
+          href: '/register',
+          label: 'Register'
+        }
+      ]
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut()
@@ -71,7 +80,7 @@ const Navbar = () => {
   return (
     <header className="pt-2">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-4 ">
-        <div className="relative grid h-16 w-full grid-cols-2 border-b pb-2 items-center md:grid-cols-3">
+        <div className="relative grid h-16 w-full grid-cols-2 items-center border-b pb-2 md:grid-cols-3">
           {/* Mobile Navigation */}
           <div className="col-span-1 flex items-center">
             <Sheet>
@@ -109,7 +118,7 @@ const Navbar = () => {
                   <Link
                     href={route.href}
                     className={cn(
-                      `text-sm font-medium hover:bg-[#2e3039]/70 text-white transition-colors`,
+                      `text-sm font-medium text-white transition-colors hover:bg-[#2e3039]/70`,
                       pathname === route.href ? 'bg-[#2e3039]' : 'hover:bg-[#2e3039]/60'
                     )}>
                     {route.label}

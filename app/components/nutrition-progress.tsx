@@ -1,8 +1,12 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Pencil } from 'lucide-react'
 import Onboarding from '@/components/ui/overview/onboarding/onboarding'
 import { ProgressCircle } from './progress-circle'
+import { ProgressRings } from './progress-rings'
+import { useAuth } from '../context/AuthContext'
 
 interface NutritionGoals {
   calories: { current: number; target: number }
@@ -16,7 +20,14 @@ interface NutritionProgressProps {
 }
 
 const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onGoalsUpdate }) => {
-  const [goals, setGoals] = useState<NutritionGoals>(initialGoals)
+  const { session } = useAuth()
+  const defaultGoals = {
+    calories: { current: 0, target: 0 },
+    protein: { current: 0, target: 0 },
+    carbs: { current: 0, target: 0 }
+  }
+
+  const [goals, setGoals] = useState<NutritionGoals>(session ? initialGoals : defaultGoals)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [bmiData, setBmiData] = useState({
     bmi: 0,
@@ -97,10 +108,12 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
       <Card className="mb-4">
         <CardHeader className="flex flex-row items-center justify-between pb-0">
           <CardTitle className="text-xl">Daily Goals</CardTitle>
-          <Pencil
-            className="h-5 w-5 animate-pulse cursor-pointer text-blue-500 hover:text-blue-600"
-            onClick={handleSetTargetsClick}
-          />
+          {session && (
+            <Pencil
+              className="h-5 w-5 animate-pulse cursor-pointer text-blue-500 hover:text-blue-600"
+              onClick={handleSetTargetsClick}
+            />
+          )}
         </CardHeader>
         <CardContent className="mt-3 flex justify-between gap-4 text-sm">
           {nutrients.map(({ key, label, unit }) => (
@@ -187,22 +200,43 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
         </Card>
       )}
 
-      {/* Today's 3 Progress circles */}
-      <Card>
-        <CardContent>
-          <div className="mt-4 grid grid-cols-3 gap-4">
-            {nutrients.map(({ key, label, color }) => (
-              <ProgressCircle
-                key={key}
-                current={goals[key].current}
-                target={goals[key].target}
-                label={label}
-                color={color}
-              />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Mobile view */}
+      <div className="block md:hidden">
+        <ProgressRings
+          calories={{ current: goals.calories.current, target: goals.calories.target }}
+          protein={{ current: goals.protein.current, target: goals.protein.target }}
+          carbs={{ current: goals.carbs.current, target: goals.carbs.target }}
+        />
+      </div>
+
+      {/* Desktop view */}
+      <div className="hidden md:block">
+        {/* Today's 3 Progress circles */}
+        <Card>
+          <CardContent>
+            <div className="mt-4 grid grid-cols-3 gap-4">
+              {nutrients.map(({ key, label, color }) => (
+                <ProgressCircle
+                  key={key}
+                  current={goals[key].current}
+                  target={goals[key].target}
+                  label={label}
+                  color={color}
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="mt-4 pt-5 ">
+          <CardContent>
+            <ProgressRings
+              calories={{ current: goals.calories.current, target: goals.calories.target }}
+              protein={{ current: goals.protein.current, target: goals.protein.target }}
+              carbs={{ current: goals.carbs.current, target: goals.carbs.target }}
+            />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

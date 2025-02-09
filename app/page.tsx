@@ -8,13 +8,16 @@ import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
 import { useAuth } from '@/app/context/AuthContext'
 import { LineChartWeights } from '@/components/charts/LineChart'
-import FoodSummaryCards from './components/food-summary-cards'
 import { Button } from '@/components/ui/button'
 import { FoodSummary } from '@/lib/types'
 import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
+import FoodSummaryCards from './components/food-summary-cards'
 
 export default function Page() {
   const { session } = useAuth()
+  const router = useRouter()
+
   const [isLoading, setIsLoading] = useState(true)
   const [foodsArray, setFoods] = useState<Food[]>([])
   const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
@@ -67,6 +70,16 @@ export default function Page() {
   useEffect(() => {
     fetchFoods()
   }, [fetchFoods])
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/login')
+    }
+  }, [session, router])
+
+  if (!session) {
+    return null // Return null while redirecting
+  }
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
@@ -146,7 +159,7 @@ export default function Page() {
   }
 
   return (
-    <div className="px-4 pt-0 pb-4 sm:px-0">
+    <div className="px-4 pb-4 pt-0 sm:px-0">
       <div className="grid h-full gap-4 border-b md:grid-cols-[2fr_1fr]">
         <div className="relative">
           <FoodList

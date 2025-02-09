@@ -66,8 +66,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#19191f] p-4">
-      <div className="flex h-[600px] w-full max-w-4xl overflow-hidden rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+    <div className="flex min-h-screen items-center justify-center bg-[#19191f] px-4 py-8">
+      <div className="flex w-full max-w-4xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+        {/* Left side with icon - same as login page */}
         <div className="hidden flex-1 items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
           <div className="space-y-6 text-center text-white">
             <div className="rounded-2xl bg-white/20 p-6 backdrop-blur-sm">
@@ -80,10 +81,10 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 bg-zinc-50 p-12">
-          <div className="flex w-full max-w-md flex-col justify-between">
-            <div>
-              <div className="mb-10 text-center">
+        <div className="flex flex-1 bg-zinc-50 p-6 md:p-12">
+          <div className="flex w-full max-w-md flex-col">
+            <div className="flex-1">
+              <div className="mb-6 text-center">
                 <h2 className="mb-2 text-4xl font-bold text-gray-900">Get Started</h2>
                 <p className="text-gray-600">Create your free account</p>
               </div>
@@ -97,7 +98,7 @@ export default function RegisterPage() {
                     type="email"
                     className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
@@ -111,7 +112,7 @@ export default function RegisterPage() {
                     type="password"
                     className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
                       errors.password ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
@@ -129,7 +130,7 @@ export default function RegisterPage() {
                     type="password"
                     className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
                       errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm your password"
@@ -148,11 +149,11 @@ export default function RegisterPage() {
               </form>
             </div>
 
-            <div className="mt-auto pt-6 text-center">
+            <div className="mt-6 pb-6 text-center">
               <Link
                 href="/login"
                 className="text-sm font-medium text-green-600 transition-colors hover:text-green-800">
-                Already have an account? Sign In
+                Already have an account? Login
               </Link>
             </div>
           </div>
