@@ -8,12 +8,12 @@ import { ProgressRings } from './progress-rings'
 import {
   LineChart,
   Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
   ReferenceLine,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  CartesianGrid,
+  XAxis,
+  YAxis
 } from 'recharts'
 import { Button } from '@/components/ui/button'
 
@@ -78,7 +78,7 @@ export default function FoodSummaryCards({
     .map((summary) => ({
       date: format(new Date(summary.date), 'MMM dd'),
       protein: summary.totalProtein,
-      isSelected: selectedSummary?.id === summary.id // Add isSelected property
+      isSelected: selectedSummary?.id === summary.id
     }))
 
   // Custom dot component to highlight selected date
@@ -197,9 +197,6 @@ export default function FoodSummaryCards({
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4 flex flex-col gap-8">
-            {' '}
-            {/* Changed to flex container */}
-            {/* Progress Circles */}
             <div className="mx-auto flex max-w-[500px] justify-center gap-8">
               {selectedSummary && (
                 <>
@@ -276,7 +273,6 @@ export default function FoodSummaryCards({
                 </ResponsiveContainer>
               </div>
             </div>
-            {/* Updated totals and food list */}
             <div className="flex flex-col rounded-lg border">
               {/* Totals section */}
               <div className="border-b p-4">

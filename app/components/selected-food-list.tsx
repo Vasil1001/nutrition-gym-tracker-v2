@@ -46,7 +46,6 @@ export default function SelectedFoodList({
     if (typeof window !== 'undefined') {
       localStorage.setItem('nutritionTargets', JSON.stringify(newGoals))
     }
-    console.log('New goals:', newGoals)
   }
 
   const totalProtein = Object.keys(foodCounts).reduce((total, foodName) => {
@@ -87,10 +86,10 @@ export default function SelectedFoodList({
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-[#19191f]">
               <TableRow>
-                <TableHead className="w-[10px] text-left">#</TableHead>
+                <TableHead className="w-[40px] text-left">#</TableHead>
                 <TableHead className="w-[150px]">Food</TableHead>
-                <TableHead className="text-center">Protein</TableHead>
-                <TableHead className="text-center">Calories</TableHead>
+                <TableHead className="w-[1px] text-center">Protein</TableHead>
+                <TableHead className="w-[1px] text-center">Calories</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="max-h-[calc(100%-6rem)] overflow-y-auto">
@@ -132,12 +131,20 @@ export default function SelectedFoodList({
           </Table>
         )}
         <div className="sticky bottom-0 w-full border-t bg-[#2e3039] text-sm hover:bg-[#2e3039]">
-          <TableRow className="flex items-center border-none border-[#2e3039] bg-[#2e3039] px-4 pb-1 pt-3">
-            <div className="w-[10px] text-center text-muted-foreground">#</div>
-            <div className="ml-4 w-[150px] font-medium">Total</div>
-            <div className="flex-1 text-center">{totalProtein.toFixed()}g</div>
-            <div className="flex-1 text-center">{totalCalories.toFixed()}cal</div>
-          </TableRow>
+          <div className="table w-full">
+            <TableRow>
+              <TableCell className="w-[40px] border-none py-3 text-center text-muted-foreground">
+                #
+              </TableCell>
+              <TableCell className="w-[150px] border-none py-3 font-medium">Total</TableCell>
+              <TableCell className="w-[1px] border-r border-none py-3 text-center">
+                {totalProtein.toFixed()}g
+              </TableCell>
+              <TableCell className="w-[1px] border-none py-3 text-center">
+                {totalCalories.toFixed()}cal
+              </TableCell>
+            </TableRow>
+          </div>
         </div>
       </div>
     </div>

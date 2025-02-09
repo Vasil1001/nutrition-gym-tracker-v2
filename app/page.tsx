@@ -1,21 +1,21 @@
 'use client'
 
-import LineTwoChart from '@/components/charts/NivoLineChart'
 import FoodList from './components/food-list'
 import SelectedFoodList from './components/selected-food-list'
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
 import { useAuth } from '@/app/context/AuthContext'
-import { LineChartWeights } from '@/components/charts/LineChart'
 import { Button } from '@/components/ui/button'
 import { FoodSummary } from '@/lib/types'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import FoodSummaryCards from './components/food-summary-cards'
+import { Spinner } from '@/components/ui/spinner'
+
 
 export default function Page() {
-  const { session } = useAuth()
+  const { session, loading } = useAuth()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(true)
@@ -72,10 +72,22 @@ export default function Page() {
   }, [fetchFoods])
 
   useEffect(() => {
-    if (!session) {
+    if (!loading && !session) {
       router.push('/login')
     }
-  }, [session, router])
+  }, [session, loading, router])
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner size="large" show={true} />
+      </div>
+    )
+  }
+
+  if (!session) {
+    return null
+  }
 
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
@@ -185,11 +197,6 @@ export default function Page() {
         handleSaveDay={handleSaveDay}
         foodCounts={foodCounts}
       />
-
-      {/* <div className="my-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <LineTwoChart />
-        <LineChartWeights />
-      </div> */}
     </div>
   )
 }

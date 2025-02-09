@@ -1,4 +1,3 @@
-// app/components/add-food-modal.tsx
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
