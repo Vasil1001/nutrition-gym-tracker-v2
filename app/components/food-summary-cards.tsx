@@ -4,6 +4,7 @@ import { FoodSummary } from '@/lib/types'
 import { format } from 'date-fns'
 import { useState, useEffect } from 'react'
 import { ProgressCircle } from './progress-circle'
+import { ProgressRings } from './progress-rings'
 import {
   LineChart,
   Line,
@@ -105,7 +106,7 @@ export default function FoodSummaryCards({
   }
 
   return (
-    <div className="mt-4 mb-10">
+    <div className="mb-10 mt-4">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold">Food History</h2>
@@ -121,7 +122,7 @@ export default function FoodSummaryCards({
       </div>
 
       {/* Main grid showing first 6 cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="lg:grid-cols-63 grid grid-cols-1 gap-4 sm:grid-cols-4">
         {displayedSummaries.map((summary) => (
           <Card
             key={summary.id}
@@ -131,23 +132,15 @@ export default function FoodSummaryCards({
                 : ''
             }`}
             onClick={() => setSelectedSummary(summary)}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="text-sm font-medium">
-                  {format(new Date(summary.date), 'MMM dd, yyyy')}
-                </div>
-                <div
-                  className={`text-sm ${
-                    isProteinTargetHit(summary.totalProtein)
-                      ? 'font-semibold text-blue-500'
-                      : 'text-muted-foreground'
-                  }`}>
-                  {Number(summary.totalProtein).toFixed()}g protein
-                </div>
+            <CardContent className="flex flex-col gap-2 p-4">
+              <div className="text-sm font-medium text-muted-foreground">
+                {format(new Date(summary.date), 'MMM dd, yyyy')}
               </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                {summary.totalCalories}/{userTargets.calories} calories
-              </div>
+              <ProgressRings
+                calories={{ current: summary.totalCalories, target: userTargets.calories }}
+                protein={{ current: summary.totalProtein, target: userTargets.protein }}
+                carbs={{ current: summary.totalCarbs || 0, target: userTargets.carbs }}
+              />
             </CardContent>
           </Card>
         ))}
@@ -291,19 +284,19 @@ export default function FoodSummaryCards({
                   <div className="flex flex-col items-center">
                     <span className="text-sm text-muted-foreground">Total Protein</span>
                     <span className="text-2xl font-bold text-blue-500">
-                      {selectedSummary?.totalProtein}g
+                      {Number(selectedSummary?.totalProtein).toFixed(1)}g
                     </span>
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="text-sm text-muted-foreground">Total Calories</span>
                     <span className="text-2xl font-bold text-orange-500">
-                      {selectedSummary?.totalCalories}
+                      {Math.round(selectedSummary?.totalCalories || 0)}
                     </span>
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="text-sm text-muted-foreground">Total Carbs</span>
                     <span className="text-2xl font-bold text-green-500">
-                      {selectedSummary?.totalCarbs}g
+                      {Math.round(selectedSummary?.totalCarbs || 0)}g
                     </span>
                   </div>
                 </div>

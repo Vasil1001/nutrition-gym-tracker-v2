@@ -200,18 +200,7 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
         </Card>
       )}
 
-      {/* Mobile view */}
-      <div className="block md:hidden">
-        <ProgressRings
-          calories={{ current: goals.calories.current, target: goals.calories.target }}
-          protein={{ current: goals.protein.current, target: goals.protein.target }}
-          carbs={{ current: goals.carbs.current, target: goals.carbs.target }}
-        />
-      </div>
-
-      {/* Desktop view */}
-      <div className="hidden md:block">
-        {/* Today's 3 Progress circles */}
+      <div className="">
         <Card>
           <CardContent>
             <div className="mt-4 grid grid-cols-3 gap-4">
@@ -225,15 +214,6 @@ const NutritionProgress: React.FC<NutritionProgressProps> = ({ initialGoals, onG
                 />
               ))}
             </div>
-          </CardContent>
-        </Card>
-        <Card className="mt-4 pt-5 ">
-          <CardContent>
-            <ProgressRings
-              calories={{ current: goals.calories.current, target: goals.calories.target }}
-              protein={{ current: goals.protein.current, target: goals.protein.target }}
-              carbs={{ current: goals.carbs.current, target: goals.carbs.target }}
-            />
           </CardContent>
         </Card>
       </div>

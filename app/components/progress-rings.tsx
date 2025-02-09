@@ -8,9 +8,9 @@ interface ProgressRingsProps {
 
 export const ProgressRings: React.FC<ProgressRingsProps> = ({ calories, protein, carbs }) => {
   const rings = [
-    { ...calories, color: '#FF9800', radius: 40 },
-    { ...protein, color: '#2196F3', radius: 30 },
-    { ...carbs, color: '#4CAF50', radius: 20 }
+    { ...calories, color: '#FF9800', radius: 30 },
+    { ...protein, color: '#2196F3', radius: 22 },
+    { ...carbs, color: '#4CAF50', radius: 14 }
   ]
 
   const circleProps = (current: number, target: number, radius: number) => {
@@ -21,8 +21,8 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({ calories, protein,
   }
 
   return (
-    <div className="flex items-start justify-start gap-6 ">
-      <svg className="h-24 w-24" viewBox="0 0 100 100">
+    <div className="flex flex-col items-center justify-center gap-1.5">
+      <svg className="h-20 w-20" viewBox="0 0 100 100">
         {rings.map((ring, i) => {
           const { circumference, offset } = circleProps(ring.current, ring.target, ring.radius)
           return (
@@ -32,7 +32,7 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({ calories, protein,
               cy="50"
               r={ring.radius}
               stroke={ring.color}
-              strokeWidth="6"
+              strokeWidth="4"
               fill="none"
               strokeDasharray={circumference}
               strokeDashoffset={offset}
@@ -42,15 +42,18 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({ calories, protein,
           )
         })}
       </svg>
-      <div className="flex flex-col justify-between text-left text-xs">
-        <div>
-          {calories.current.toFixed()}/{calories.target} cal
+      <div className="flex flex-col items-center justify-center gap-0.5 font-semibold">
+        <div className="flex items-center gap-1 text-xs" style={{ color: '#FF9800' }}>
+          <span>{Math.round(calories.current)}</span>
+          <span>{calories.current >= calories.target ? 'cal' : `/${calories.target}cal`}</span>
         </div>
-        <div>
-          {protein.current.toFixed()}/{protein.target} g Protein
+        <div className="flex items-center gap-1 text-xs" style={{ color: '#2196F3' }}>
+          <span>{Number(protein.current).toFixed(1)}g</span>
+          <span>{protein.current >= protein.target ? 'Protein' : `/${protein.target}g`}</span>
         </div>
-        <div>
-          {carbs.current.toFixed()}/{carbs.target} g Carbs
+        <div className="flex items-center gap-1 text-xs" style={{ color: '#4CAF50' }}>
+          <span>{Math.round(carbs.current)}g</span>
+          <span>{carbs.current >= carbs.target ? 'Carbs' : `/${carbs.target}g`}</span>
         </div>
       </div>
     </div>

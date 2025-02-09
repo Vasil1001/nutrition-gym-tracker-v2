@@ -77,7 +77,6 @@ export default function Page() {
     }
   }, [session, router])
 
-
   const handleAddFood = (food: Food) => {
     setSelectedFoods([...selectedFoods, food])
     const newCount = (foodCounts[food.name] || 0) + 1
@@ -158,7 +157,7 @@ export default function Page() {
   return (
     <div className="px-4 pb-4 pt-0 sm:px-0">
       <div className="grid h-full gap-4 border-b md:grid-cols-[2fr_1fr]">
-        <div className="relative">
+        <div className="relative order-2 md:order-1">
           <FoodList
             foods={foodsArray}
             setFoods={setFoods}
@@ -169,13 +168,15 @@ export default function Page() {
             isLoading={isLoading}
           />
         </div>
-        <div className="relative max-h-[calc(100vh-13rem)] overflow-hidden">
-          <SelectedFoodList
-            selectedFoods={selectedFoods}
-            foodCounts={foodCounts}
-            onAdd={handleAddFood}
-            onRemove={handleRemoveFood}
-          />
+        <div className="relative order-1 max-h-[calc(100vh-13rem)] overflow-hidden md:order-2">
+          <div className="mb-4 md:mb-0">
+            <SelectedFoodList
+              selectedFoods={selectedFoods}
+              foodCounts={foodCounts}
+              onAdd={handleAddFood}
+              onRemove={handleRemoveFood}
+            />
+          </div>
         </div>
       </div>
 
