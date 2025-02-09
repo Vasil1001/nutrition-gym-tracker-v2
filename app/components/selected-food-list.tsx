@@ -13,18 +13,28 @@ import {
 } from '@/components/ui/table'
 import NutritionProgress from './nutrition-progress'
 import { Food } from '@/lib/types'
+import { Plus, Minus } from 'lucide-react'
 
 type SelectedFoodProps = {
   selectedFoods: Food[]
   foodCounts: { [key: string]: number }
+  onAdd: (food: Food) => void
+  onRemove: (food: Food) => void
 }
 
-export default function SelectedFoodList({ selectedFoods, foodCounts }: SelectedFoodProps) {
+export default function SelectedFoodList({
+  selectedFoods,
+  foodCounts,
+  onAdd,
+  onRemove
+}: SelectedFoodProps) {
   const [savedTargets, setSavedTargets] = useState({
     calories: { current: 0, target: 2000 },
     protein: { current: 0, target: 150 },
     carbs: { current: 0, target: 250 }
   })
+
+  const [hoveredFood, setHoveredFood] = useState<string | null>(null) // Track hovered food
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -81,16 +91,50 @@ export default function SelectedFoodList({ selectedFoods, foodCounts }: Selected
                 <TableHead className="text-center">Calories</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="max-h-[300px] overflow-y-auto">
+              {' '}
               {Object.entries(foodCounts).map(([foodName, count], i) => {
                 const food = selectedFoods.find((f) => f.name === foodName)
                 if (!food || count === 0) return null // Skip rendering if food not found or count is 0
                 return (
-                  <TableRow className="dark:hover:bg-[#2e3039]" key={i}>
+                  <TableRow
+                    className="dark:hover:bg-[#2e3039]"
+                    key={i}
+                    onMouseEnter={() => setHoveredFood(foodName)} // Set hovered food on mouse enter
+                    onMouseLeave={() => setHoveredFood(null)}>
+                    {' '}
+                    {/* Clear hovered food on mouse leave */}
                     <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
                       x{count}
                     </TableCell>
-                    <TableCell className="w-[150px] font-medium">{foodName}</TableCell>
+                    <TableCell className="flex w-[150px] gap-2 font-medium">
+                      <div>{foodName}</div>
+                      <div
+                        className={`flex items-center justify-center gap-2 ${
+                          hoveredFood === foodName ? 'opacity-100' : 'opacity-0'
+                        } transition-opacity duration-200`}>
+                        {' '}
+                        {/* Conditionally render buttons */}
+                        <Minus
+                          onClick={() => {
+                            const foodItem = selectedFoods.find((f) => f.name === foodName)
+                            if (foodItem) {
+                              onRemove(foodItem)
+                            }
+                          }}
+                          className="h-4 w-4 cursor-pointer"
+                        />
+                        <Plus
+                          onClick={() => {
+                            const foodItem = selectedFoods.find((f) => f.name === foodName)
+                            if (foodItem) {
+                              onAdd(foodItem)
+                            }
+                          }}
+                          className="h-4 w-4 cursor-pointer"
+                        />
+                      </div>
+                    </TableCell>
                     <TableCell className="border-r text-center">
                       {(Number(food.protein) * count).toFixed()}g
                     </TableCell>

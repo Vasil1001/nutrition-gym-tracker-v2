@@ -90,7 +90,9 @@ export default function FoodList({
               isListView
                 ? 'grid-cols-1'
                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
-            }`}>
+            } ${!isListView ? 'max-h-[70vh] overflow-y-auto' : ''}`}>
+            {' '}
+            {/* Added scrollable container */}
             {isListView ? (
               <div>
                 <FoodAsListTable

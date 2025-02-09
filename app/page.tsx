@@ -108,7 +108,12 @@ export default function Page() {
           onClearSelectedFoods={handleClearSelectedFoods}
           isLoading={isLoading}
         />
-        <SelectedFoodList selectedFoods={selectedFoods} foodCounts={foodCounts} />
+        <SelectedFoodList
+          selectedFoods={selectedFoods}
+          foodCounts={foodCounts}
+          onAdd={handleAddFood}
+          onRemove={handleRemoveFood}
+        />
       </div>
 
       <div className="font-inter mb-6 mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">

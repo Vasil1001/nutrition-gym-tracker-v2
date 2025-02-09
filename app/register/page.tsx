@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
 import { NutritionIcon } from '@/components/icons/NutritionIcon'
+import { defaultFoods } from '@/seed-foods'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -34,8 +35,28 @@ export default function RegisterPage() {
 
     setIsSubmitting(true)
     try {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) throw error
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password
+      })
+      if (signUpError) throw signUpError
+
+      // Seed default foods for the new user
+      if (signUpData?.user?.id) {
+        const userId = signUpData.user.id
+        const foodsToInsert = defaultFoods.map((food) => ({
+          ...food,
+          user_id: userId
+        }))
+
+        const { error: seedError } = await supabase.from('foods').insert(foodsToInsert)
+
+        if (seedError) {
+          console.error('Error seeding default foods:', seedError)
+          // Optionally, you might want to inform the user about this error
+        }
+      }
+
       router.push('/login')
     } catch (error: any) {
       setErrors({ email: error.message })
