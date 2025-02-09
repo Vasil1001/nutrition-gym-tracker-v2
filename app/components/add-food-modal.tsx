@@ -11,7 +11,7 @@ import {
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/app/context/AuthContext'
-import { Food } from '@/lib/types';
+import { Food } from '@/lib/types'
 
 type AddFoodModalProps = {
   onAddFood: (food: Food) => void
@@ -79,62 +79,86 @@ export function AddFoodModal({ onAddFood }: AddFoodModalProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Food</DialogTitle>
+          <DialogTitle className="text-center text-xl font-bold">Add New Food</DialogTitle>
+          <p className="text-center text-sm text-muted-foreground">
+            Add your custom food with nutritional values
+          </p>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form onSubmit={handleSubmit} className="grid gap-6 py-4">
           {error && <p className="text-sm text-red-500">{error}</p>}
-          <div className="grid gap-2">
-            <label htmlFor="name">Name</label>
-            <Input
-              id="name"
-              value={newFood.name}
-              onChange={(e) => setNewFood({ ...newFood, name: e.target.value })}
-              required
-            />
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <label htmlFor="name" className="text-sm font-medium">
+                Food Name
+              </label>
+              <Input
+                id="name"
+                value={newFood.name}
+                onChange={(e) => setNewFood({ ...newFood, name: e.target.value })}
+                className="rounded-md border border-[#30303b] bg-background/50 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="serving" className="text-sm font-medium">
+                Serving Size
+              </label>
+              <Input
+                id="serving"
+                value={newFood.serving_size}
+                onChange={(e) => setNewFood({ ...newFood, serving_size: e.target.value })}
+                className="rounded-md border border-[#30303b] bg-background/50 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                required
+                placeholder="e.g., 100g, 1 scoop"
+              />
+            </div>
           </div>
-          <div className="grid gap-2">
-            <label htmlFor="serving">Serving Size</label>
-            <Input
-              id="serving"
-              value={newFood.serving_size}
-              onChange={(e) => setNewFood({ ...newFood, serving_size: e.target.value })}
-              required
-              placeholder="e.g., 100g"
-            />
+          <div className="grid grid-cols-3 gap-4">
+            <div className="grid gap-2">
+              <label htmlFor="protein" className="text-sm font-medium">
+                Protein (g)
+              </label>
+              <Input
+                id="protein"
+                value={newFood.protein}
+                onChange={(e) => setNewFood({ ...newFood, protein: parseFloat(e.target.value) })}
+                className="rounded-md border border-[#30303b] bg-background/50 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                required
+                type="number"
+                step="0.1"
+              />
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="calories" className="text-sm font-medium">
+                Calories
+              </label>
+              <Input
+                id="calories"
+                value={newFood.calories}
+                onChange={(e) => setNewFood({ ...newFood, calories: parseFloat(e.target.value) })}
+                className="rounded-md border border-[#30303b] bg-background/50 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                required
+                type="number"
+              />
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="carbs" className="text-sm font-medium">
+                Carbs (g)
+              </label>
+              <Input
+                id="carbs"
+                value={newFood.carbs}
+                onChange={(e) => setNewFood({ ...newFood, carbs: parseFloat(e.target.value) })}
+                className="rounded-md border border-[#30303b] bg-background/50 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                required
+                type="number"
+                step="0.1"
+              />
+            </div>
           </div>
-          <div className="grid gap-2">
-            <label htmlFor="protein">Protein (g)</label>
-            <Input
-              id="protein"
-              value={newFood.protein}
-              onChange={(e) => setNewFood({ ...newFood, protein: parseFloat(e.target.value) })}
-              required
-              type="number"
-              step="0.1"
-            />
-          </div>
-          <div className="grid gap-2">
-            <label htmlFor="calories">Calories</label>
-            <Input
-              id="calories"
-              value={newFood.calories}
-              onChange={(e) => setNewFood({ ...newFood, calories: parseFloat(e.target.value) })}
-              required
-              type="number"
-            />
-          </div>
-          <div className="grid gap-2">
-            <label htmlFor="carbs">Carbs (g)</label>
-            <Input
-              id="carbs"
-              value={newFood.carbs}
-              onChange={(e) => setNewFood({ ...newFood, carbs: parseFloat(e.target.value) })}
-              required
-              type="number"
-              step="0.1"
-            />
-          </div>
-          <Button type="submit">Add Food</Button>
+          <Button type="submit" className="mt-4 w-full">
+            Add Food
+          </Button>
         </form>
       </DialogContent>
     </Dialog>

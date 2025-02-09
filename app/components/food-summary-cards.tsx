@@ -18,9 +18,15 @@ import { Button } from '@/components/ui/button'
 
 interface FoodSummaryCardsProps {
   summaries: FoodSummary[]
+  handleSaveDay: () => void
+  foodCounts: { [key: string]: number }
 }
 
-export default function FoodSummaryCards({ summaries }: FoodSummaryCardsProps) {
+export default function FoodSummaryCards({
+  summaries,
+  handleSaveDay,
+  foodCounts
+}: FoodSummaryCardsProps) {
   const [selectedSummary, setSelectedSummary] = useState<FoodSummary | null>(null)
   const [showAllSummaries, setShowAllSummaries] = useState(false)
   const [userTargets, setUserTargets] = useState({
@@ -99,14 +105,19 @@ export default function FoodSummaryCards({ summaries }: FoodSummaryCardsProps) {
   }
 
   return (
-    <div className="mt-8">
+    <div className="mt-4 mb-10">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Food History</h2>
-        {hasMoreSummaries && (
-          <Button variant="outline" onClick={() => setShowAllSummaries(true)} className="text-sm">
-            View All ({summaries.length})
-          </Button>
-        )}
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-semibold">Food History</h2>
+          {hasMoreSummaries && (
+            <Button variant="outline" onClick={() => setShowAllSummaries(true)} className="text-sm">
+              View All ({summaries.length})
+            </Button>
+          )}
+        </div>
+        <Button onClick={handleSaveDay} disabled={Object.keys(foodCounts).length === 0}>
+          Save Today&apos;s Food
+        </Button>
       </div>
 
       {/* Main grid showing first 6 cards */}
@@ -131,11 +142,11 @@ export default function FoodSummaryCards({ summaries }: FoodSummaryCardsProps) {
                       ? 'font-semibold text-blue-500'
                       : 'text-muted-foreground'
                   }`}>
-                  {summary.totalProtein}g protein
+                  {Number(summary.totalProtein).toFixed()}g protein
                 </div>
               </div>
               <div className="mt-2 text-sm text-muted-foreground">
-                {summary.totalCalories} calories
+                {summary.totalCalories}/{userTargets.calories} calories
               </div>
             </CardContent>
           </Card>
@@ -161,21 +172,19 @@ export default function FoodSummaryCards({ summaries }: FoodSummaryCardsProps) {
                     setShowAllSummaries(false)
                   }}>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="font-medium">
-                        {format(new Date(summary.date), 'MMMM dd, yyyy')}
-                      </div>
-                      <div
-                        className={`text-sm ${
-                          isProteinTargetHit(summary.totalProtein)
-                            ? 'font-semibold text-blue-500'
-                            : 'text-muted-foreground'
-                        }`}>
-                        {summary.totalProtein}g protein
-                      </div>
+                    <div className="font-medium">
+                      {format(new Date(summary.date), 'MMMM dd, yyyy')}
                     </div>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span>{summary.totalCalories} calories</span>
+                      <span
+                        className={
+                          isProteinTargetHit(summary.totalProtein)
+                            ? 'font-semibold text-blue-500'
+                            : ''
+                        }>
+                        {Number(summary.totalProtein).toFixed()}g protein
+                      </span>
                       <span>{summary.totalCarbs}g carbs</span>
                     </div>
                   </div>
@@ -233,6 +242,7 @@ export default function FoodSummaryCards({ summaries }: FoodSummaryCardsProps) {
                       dataKey="date"
                       stroke="#666"
                       fontSize={12}
+                      interval={Math.ceil(chartData.length / 7)} // Show ~7 labels
                       tick={({ x, y, payload }) => (
                         <g transform={`translate(${x},${y})`}>
                           <text
@@ -311,7 +321,7 @@ export default function FoodSummaryCards({ summaries }: FoodSummaryCardsProps) {
                         <span className="font-medium">{food.name}</span>
                       </div>
                       <div className="flex gap-4 text-sm text-muted-foreground">
-                        <span>{food.protein}g protein</span>
+                        <span>{Number(food.protein).toFixed()}g protein</span>
                         <span>{food.calories} cal</span>
                         <span>{food.carbs}g carbs</span>
                       </div>

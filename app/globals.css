@@ -81,3 +81,27 @@ font-family: 'Outfit', sans-serif;
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--thumb-color);
+    border-radius: 4px;
+  }
+
+  .scrollbar-thumb-muted-foreground\/20::-webkit-scrollbar-thumb {
+    --thumb-color: rgb(160 160 160 / 0.2);
+  }
+
+  .hover\:scrollbar-thumb-muted-foreground\/30:hover::-webkit-scrollbar-thumb {
+    --thumb-color: rgb(160 160 160 / 0.3);
+  }
+}

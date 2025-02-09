@@ -146,37 +146,39 @@ export default function Page() {
   }
 
   return (
-    <div className="px-4 pt-0 sm:px-0">
-      <div className="grid h-full gap-4 md:grid-cols-[2fr_1fr]">
-        <FoodList
-          foods={foodsArray}
-          setFoods={setFoods}
-          foodCounts={foodCounts}
-          onAdd={handleAddFood}
-          onRemove={handleRemoveFood}
-          onClearSelectedFoods={handleClearSelectedFoods}
-          isLoading={isLoading}
-        />
-        <SelectedFoodList
-          selectedFoods={selectedFoods}
-          foodCounts={foodCounts}
-          onAdd={handleAddFood}
-          onRemove={handleRemoveFood}
-        />
+    <div className="px-4 pt-0 pb-4 sm:px-0">
+      <div className="grid h-full gap-4 border-b md:grid-cols-[2fr_1fr]">
+        <div className="relative">
+          <FoodList
+            foods={foodsArray}
+            setFoods={setFoods}
+            foodCounts={foodCounts}
+            onAdd={handleAddFood}
+            onRemove={handleRemoveFood}
+            onClearSelectedFoods={handleClearSelectedFoods}
+            isLoading={isLoading}
+          />
+        </div>
+        <div className="relative max-h-[calc(100vh-13rem)] overflow-hidden">
+          <SelectedFoodList
+            selectedFoods={selectedFoods}
+            foodCounts={foodCounts}
+            onAdd={handleAddFood}
+            onRemove={handleRemoveFood}
+          />
+        </div>
       </div>
 
-      <div className="mt-4 flex justify-end">
-        <Button onClick={handleSaveDay} disabled={Object.keys(foodCounts).length === 0}>
-          Save Today&apos;s Food
-        </Button>
-      </div>
+      <FoodSummaryCards
+        summaries={summaries}
+        handleSaveDay={handleSaveDay}
+        foodCounts={foodCounts}
+      />
 
-      <FoodSummaryCards summaries={summaries} />
-
-      <div className="my-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+      {/* <div className="my-6 grid grid-cols-1 gap-4 md:grid-cols-2">
         <LineTwoChart />
         <LineChartWeights />
-      </div>
+      </div> */}
     </div>
   )
 }
