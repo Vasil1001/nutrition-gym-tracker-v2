@@ -91,9 +91,7 @@ export default function SelectedFoodList({
               const food = selectedFoods.find((f) => f.name === foodName)
               if (!food || count === 0) return null
               return (
-                <TableRow
-                  className="group dark:hover:bg-[#2e3039]"
-                  key={i}>
+                <TableRow className="group dark:hover:bg-[#2e3039]" key={i}>
                   <TableCell className="w-[10px] text-left font-medium text-muted-foreground">
                     x{count}
                   </TableCell>
