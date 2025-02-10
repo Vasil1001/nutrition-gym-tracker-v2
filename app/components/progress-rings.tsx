@@ -14,9 +14,24 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({
   showLabels = true
 }) => {
   const rings = [
-    { ...calories, color: '#FF9800', radius: 30 },
-    { ...protein, color: '#2196F3', radius: 22 },
-    { ...carbs, color: '#4CAF50', radius: 14 }
+    {
+      ...calories,
+      color: '#FF9800',
+      mutedColor: 'rgba(255, 152, 0, 0.2)',
+      radius: 36
+    },
+    {
+      ...protein,
+      color: '#2196F3',
+      mutedColor: 'rgba(33, 150, 243, 0.2)',
+      radius: 27
+    },
+    {
+      ...carbs,
+      color: '#4CAF50',
+      mutedColor: 'rgba(76, 175, 80, 0.2)',
+      radius: 18
+    }
   ]
 
   const circleProps = (current: number, target: number, radius: number) => {
@@ -32,19 +47,31 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({
         {rings.map((ring, i) => {
           const { circumference, offset } = circleProps(ring.current, ring.target, ring.radius)
           return (
-            <circle
-              key={i}
-              cx="50"
-              cy="50"
-              r={ring.radius}
-              stroke={ring.color}
-              strokeWidth="4"
-              fill="none"
-              strokeDasharray={circumference}
-              strokeDashoffset={offset}
-              strokeLinecap="round"
-              style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
-            />
+            <React.Fragment key={i}>
+              {/* Background circle (muted) */}
+              <circle
+                cx="50"
+                cy="50"
+                r={ring.radius}
+                stroke={ring.mutedColor}
+                strokeWidth="5"
+                fill="none"
+                style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+              />
+              {/* Progress circle */}
+              <circle
+                cx="50"
+                cy="50"
+                r={ring.radius}
+                stroke={ring.color}
+                strokeWidth="5"
+                fill="none"
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                strokeLinecap="round"
+                style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+              />
+            </React.Fragment>
           )
         })}
       </svg>
