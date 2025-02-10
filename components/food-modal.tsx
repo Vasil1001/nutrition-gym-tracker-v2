@@ -8,9 +8,7 @@ import { XIcon } from './ui/icons/XIcon'
 
 export function FoodModal() {
   return (
-    <div
-      key="1"
-      className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 p-4">
+    <div key="1" className="fixed inset-0 flex items-center justify-center bg-gray-500/75 p-4">
       <div className="w-full max-w-sm rounded-lg bg-white">
         <div className="p-6">
           <div className="flex items-center justify-between pb-4">

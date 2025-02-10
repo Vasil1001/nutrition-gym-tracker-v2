@@ -122,7 +122,7 @@ export default function FoodSummaryCards({
       </div>
 
       {/* Main grid showing first 6 cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:grid-cols-6">
         {displayedSummaries.map((summary) => (
           <Card
             key={summary.id}
@@ -276,24 +276,44 @@ export default function FoodSummaryCards({
             <div className="flex flex-col rounded-lg border">
               {/* Totals section */}
               <div className="border-b p-4">
-                <div className="flex justify-center gap-8">
-                  <div className="flex flex-col items-center">
-                    <span className="text-sm text-muted-foreground">Total Protein</span>
-                    <span className="text-2xl font-bold text-blue-500">
-                      {Number(selectedSummary?.totalProtein).toFixed(1)}g
-                    </span>
+                <div className="flex items-center justify-between px-4">
+                  {/* Progress Rings without labels */}
+                  <div className="flex items-center">
+                    <ProgressRings
+                      calories={{
+                        current: selectedSummary?.totalCalories || 0,
+                        target: userTargets.calories
+                      }}
+                      protein={{
+                        current: selectedSummary?.totalProtein || 0,
+                        target: userTargets.protein
+                      }}
+                      carbs={{
+                        current: selectedSummary?.totalCarbs || 0,
+                        target: userTargets.carbs
+                      }}
+                      showLabels={false}
+                    />
                   </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-sm text-muted-foreground">Total Calories</span>
-                    <span className="text-2xl font-bold text-orange-500">
-                      {Math.round(selectedSummary?.totalCalories || 0)}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-sm text-muted-foreground">Total Carbs</span>
-                    <span className="text-2xl font-bold text-green-500">
-                      {Math.round(selectedSummary?.totalCarbs || 0)}g
-                    </span>
+                  <div className="flex flex-1 justify-end gap-8">
+                    <div className="flex flex-col items-center">
+                      <span className="text-sm text-muted-foreground">Total Protein</span>
+                      <span className="text-2xl font-bold text-blue-500">
+                        {Number(selectedSummary?.totalProtein).toFixed(1)}g
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-sm text-muted-foreground">Total Calories</span>
+                      <span className="text-2xl font-bold text-orange-500">
+                        {Math.round(selectedSummary?.totalCalories || 0)}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-sm text-muted-foreground">Total Carbs</span>
+                      <span className="text-2xl font-bold text-green-500">
+                        {Math.round(selectedSummary?.totalCarbs || 0)}g
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

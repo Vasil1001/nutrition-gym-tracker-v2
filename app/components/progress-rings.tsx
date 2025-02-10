@@ -4,9 +4,15 @@ interface ProgressRingsProps {
   calories: { current: number; target: number }
   protein: { current: number; target: number }
   carbs: { current: number; target: number }
+  showLabels?: boolean
 }
 
-export const ProgressRings: React.FC<ProgressRingsProps> = ({ calories, protein, carbs }) => {
+export const ProgressRings: React.FC<ProgressRingsProps> = ({
+  calories,
+  protein,
+  carbs,
+  showLabels = true
+}) => {
   const rings = [
     { ...calories, color: '#FF9800', radius: 30 },
     { ...protein, color: '#2196F3', radius: 22 },
@@ -42,20 +48,22 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({ calories, protein,
           )
         })}
       </svg>
-      <div className="flex flex-col items-center justify-center gap-0.5 font-semibold">
-        <div className="flex items-center gap-1 text-xs" style={{ color: '#FF9800' }}>
-          <span>{Math.round(calories.current)}</span>
-          <span>{calories.current >= calories.target ? 'cal' : `/${calories.target}cal`}</span>
+      {showLabels && (
+        <div className="flex flex-col items-center justify-center gap-0.5 font-medium tracking-tight">
+          <div className="flex items-start gap-1 text-sm" style={{ color: '#FF9800' }}>
+            <span>{Math.round(calories.current)}</span>
+            <span>{calories.current >= calories.target ? 'cal' : `/ ${calories.target}cal`}</span>
+          </div>
+          <div className="flex items-center gap-1 text-sm" style={{ color: '#2196F3' }}>
+            <span>{Number(protein.current).toFixed(1)}g</span>
+            <span>{protein.current >= protein.target ? 'Protein' : `/ ${protein.target}g`}</span>
+          </div>
+          <div className="flex items-center gap-1 text-sm" style={{ color: '#4CAF50' }}>
+            <span>{Math.round(carbs.current)}g</span>
+            <span>{carbs.current >= carbs.target ? 'Carbs' : `/ ${carbs.target}carbs`}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1 text-xs" style={{ color: '#2196F3' }}>
-          <span>{Number(protein.current).toFixed(1)}g</span>
-          <span>{protein.current >= protein.target ? 'Protein' : `/${protein.target}g`}</span>
-        </div>
-        <div className="flex items-center gap-1 text-xs" style={{ color: '#4CAF50' }}>
-          <span>{Math.round(carbs.current)}g</span>
-          <span>{carbs.current >= carbs.target ? 'Carbs' : `/${carbs.target}g`}</span>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
