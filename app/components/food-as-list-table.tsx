@@ -41,40 +41,50 @@ export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: 
           <Table className="">
             <TableHeader className="w-full bg-[#19191f]">
               <TableRow>
-                <TableHead>Food</TableHead>
-                <TableHead className="text-center">Serving</TableHead>
-                <TableHead className="text-center">Calories</TableHead>
-                <TableHead className="text-center">Protein</TableHead>
+                <TableHead className="w-[50%]">Food</TableHead>
+                <TableHead className="w-[16%] text-center">Serving</TableHead>
+                <TableHead className="w-[17%] text-center">Calories</TableHead>
+                <TableHead className="w-[17%] text-center">Protein</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {foods.map((food, index) => (
                 <TableRow
                   key={index}
-                  className="group relative dark:bg-[#19191f] dark:hover:bg-[#2e3039] dark:hover:outline-0">
-                  <TableCell className="flex gap-3 border-r text-center font-semibold">
-                    <div
-                      className={cn(
-                        foodCounts[food.name] > 0 ? 'flex' : 'hidden',
-                        'w-12 items-center justify-start gap-2 font-supreme text-sm font-medium text-muted-foreground transition-all delay-150 group-hover:flex'
-                      )}>
-                      <Minus
-                        className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
-                        onClick={() => handleRemove(food)}
-                      />
-                      <p className="text-[0.9rem] font-bold tracking-tighter text-white">
-                        {cn(foodCounts[food.name] > 0 && '', foodCounts[food.name])}
-                      </p>
-                      <Plus
-                        className="h-5 w-5 cursor-pointer opacity-0 group-hover:opacity-100 hover:text-foreground"
-                        onClick={() => handleAdd(food)}
-                      />
+                  className="group relative transition-all dark:bg-[#19191f] dark:hover:bg-[#2e3039] dark:hover:outline-0">
+                  <TableCell className="flex w-[90%] border-r font-semibold">
+                    <div className="flex  items-center">
+                      <div
+                        className={cn(
+                          foodCounts[food.name] > 0
+                            ? 'flex justify-start'
+                            : 'hidden justify-center',
+                          'w-11 items-center gap-2 font-supreme text-sm font-medium text-muted-foreground transition-all delay-150 group-hover:flex'
+                        )}>
+                        {foodCounts[food.name] > 0 && (
+                          <p
+                            onClick={() => handleRemove(food)}
+                            className="cursor-pointer font-bold tracking-tighter opacity-0 transition-colors group-hover:opacity-100 hover:text-red-500 active:text-red-600">
+                            —
+                          </p>
+                        )}
+                        <span className="text-[0.9rem] font-bold tracking-tighter text-white transition-all delay-150">
+                          {foodCounts[food.name] || ''}
+                        </span>
+                        <p
+                          onClick={() => handleAdd(food)}
+                          className="cursor-pointer font-bold  text-white opacity-0 transition-colors group-hover:opacity-100 hover:text-emerald-500 active:text-emerald-600">
+                          +
+                        </p>
+                      </div>
                     </div>
-                    {food.name}
+                    <span className="ml-2">{food.name}</span>
                   </TableCell>
-                  <TableCell className="border-r text-center">{food.serving_size}</TableCell>
-                  <TableCell className="border-r text-center">{food.calories}cal</TableCell>
-                  <TableCell className="flex justify-center text-end">{food.protein}g</TableCell>
+                  <TableCell className="w-[10%] border-r text-center">
+                    {food.serving_size}
+                  </TableCell>
+                  <TableCell className="w-[10%] border-r text-center">{food.calories}cal</TableCell>
+                  <TableCell className="w-[10%] text-center">{food.protein}g</TableCell>
                 </TableRow>
               ))}
             </TableBody>
