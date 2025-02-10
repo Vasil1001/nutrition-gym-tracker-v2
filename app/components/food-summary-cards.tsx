@@ -122,7 +122,7 @@ export default function FoodSummaryCards({
       </div>
 
       {/* Main grid showing first 6 cards */}
-      <div className="lg:grid-cols-63 grid grid-cols-1 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:grid-cols-3">
         {displayedSummaries.map((summary) => (
           <Card
             key={summary.id}

@@ -17,7 +17,7 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
   const strokeDashoffset = circumference * (1 - percentage / 100)
 
   return (
-    <div className="rounded-lg bg-card p-3 shadow-sm md:border-0 bg-transparent md:p-0 md:shadow-none">
+    <div className="rounded-lg p-3 shadow-sm md:border-0 md:p-0 md:shadow-none">
       <div className="flex flex-col items-center gap-2">
         <div className="relative h-20 w-20 md:h-14 md:w-14 lg:h-20 lg:w-20">
           <svg className="h-full w-full" viewBox="0 0 96 96">
