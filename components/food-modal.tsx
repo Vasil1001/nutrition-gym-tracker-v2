@@ -33,7 +33,7 @@ export function FoodModal() {
                   Food Name
                 </label>
                 <Input
-                  className="ring-1 ring-gray-200 ring-opacity-70 focus:ring-2 focus:ring-gray-300"
+                  className="ring-1 ring-gray-200/70 focus:ring-2 focus:ring-gray-300"
                   id="food-name"
                   placeholder="E.g. Spaghetti"
                 />
@@ -43,7 +43,7 @@ export function FoodModal() {
                   Calories
                 </label>
                 <Input
-                  className="ring-1 ring-gray-200 ring-opacity-70 focus:ring-2 focus:ring-gray-300"
+                  className="ring-1 ring-gray-200/70 focus:ring-2 focus:ring-gray-300"
                   id="food-calories"
                   placeholder="E.g. 250"
                 />
@@ -53,7 +53,7 @@ export function FoodModal() {
                   Serving Size
                 </label>
                 <Input
-                  className="ring-1 ring-gray-200 ring-opacity-70 focus:ring-2 focus:ring-gray-300"
+                  className="ring-1 ring-gray-200/70 focus:ring-2 focus:ring-gray-300"
                   id="food-serving"
                   placeholder="E.g. 1 cup"
                 />
@@ -63,7 +63,7 @@ export function FoodModal() {
                   Protein
                 </label>
                 <Input
-                  className="ring-1 ring-gray-200 ring-opacity-70 focus:ring-2 focus:ring-gray-300"
+                  className="ring-1 ring-gray-200/70 focus:ring-2 focus:ring-gray-300"
                   id="food-protein"
                   placeholder="E.g. 10g"
                 />
