@@ -325,8 +325,8 @@ export default function FoodHistoryCards({
                       </div>
                       <div className="flex gap-4 text-sm text-muted-foreground">
                         <span>{Number(food.protein).toFixed()}g protein</span>
-                        <span>{food.calories} cal</span>
-                        <span>{food.carbs}g carbs</span>
+                        <span>{Number(food.calories).toFixed()} cal</span>
+                        <span>{Number(food.carbs).toFixed()}g carbs</span>
                       </div>
                     </div>
                   ))}

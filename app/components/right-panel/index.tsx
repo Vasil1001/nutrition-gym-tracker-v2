@@ -4,7 +4,7 @@ import { Food } from '@/lib/types'
 import SelectedFoodList from './selected-food-list'
 
 import { useState, useEffect } from 'react'
-import NutritionGoalsCard from './nutrition-goals-card'
+import BMIDailyGoals from './nutrition-goals-card'
 import ProgressMetricsCard from './progress-metrics-card'
 
 interface RightPanelProps {
@@ -58,10 +58,10 @@ export default function RightPanel({
   }
 
   return (
-    <div className="relative order-1 max-h-[calc(100vh-13rem)] overflow-hidden lg:border-l md:order-2">
-      <div className="space-y-4 lg:pl-4 pt-4">
-        <NutritionGoalsCard savedTargets={savedTargets} onGoalsUpdate={handleGoalsUpdate} />
-        <ProgressMetricsCard totals={totals} targets={savedTargets} /> 
+    <div className="relative order-1 max-h-[calc(100vh-13rem)] overflow-hidden md:order-2 lg:border-l">
+      <div className="space-y-4 pt-4 lg:pl-4">
+        <BMIDailyGoals savedTargets={savedTargets} onGoalsUpdate={handleGoalsUpdate} />
+        <ProgressMetricsCard totals={totals} targets={savedTargets} />
         <div className="mt-4">
           <SelectedFoodList
             selectedFoods={selectedFoods}

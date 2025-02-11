@@ -15,10 +15,7 @@ interface NutritionGoalsCardProps {
   onGoalsUpdate: (goals: any) => void
 }
 
-export default function NutritionGoalsCard({
-  savedTargets,
-  onGoalsUpdate
-}: NutritionGoalsCardProps) {
+export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: NutritionGoalsCardProps) {
   const { session } = useAuth()
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [bmiData, setBmiData] = useState({
@@ -77,92 +74,82 @@ export default function NutritionGoalsCard({
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-0">
-          <CardTitle className="text-xl">Daily Goals</CardTitle>
+      <Card className="group">
+        <CardHeader className="flex flex-row items-center justify-between p-3 align-middle">
+          <CardTitle className="text-sm">Daily Goals</CardTitle>
           {session && (
             <Pencil
-              className="h-5 w-5 animate-pulse cursor-pointer text-blue-500 hover:text-blue-600"
+              className="h-5 w-5 cursor-pointer text-blue-500 hover:text-blue-600"
               onClick={handleSetTargetsClick}
             />
           )}
         </CardHeader>
-        <CardContent className="mt-3 flex flex-1 justify-between gap-1 text-sm lg:gap-4">
-          {nutrients.map(({ key, label, unit }) => (
-            <div
-              className="flex w-full flex-col items-center gap-1 rounded-lg p-2.5 text-xs font-medium tracking-tight dark:bg-[#19191f] lg:text-sm"
-              key={key}>
-              <span>{label}</span>
-              {savedTargets[key as keyof typeof savedTargets].target}
-              {unit}
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      {bmiData.bmi > 0 && (
-        <Card>
-          <CardContent className="pt-4">
-            <div className="relative mt-4 h-6">
-              {/* Underweight */}
+        <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-[500px]">
+          <CardContent className="mt-3 flex flex-1 justify-between gap-1 text-sm lg:gap-4">
+            {nutrients.map(({ key, label, unit }) => (
               <div
-                className="absolute h-4 rounded-l bg-blue-500"
-                style={{ width: `${bmiData.underweightMax}%` }}
-              />
-              {/* Normal weight */}
-              <div
-                className="absolute h-4 bg-green-500"
-                style={{
-                  left: `${bmiData.underweightMax}%`,
-                  width: `${bmiData.normalMax - bmiData.underweightMax}%`
-                }}
-              />
-              {/* Overweight */}
-              <div
-                className="absolute h-4 bg-orange-500"
-                style={{
-                  left: `${bmiData.normalMax}%`,
-                  width: `${bmiData.overweightMax - bmiData.normalMax}%`
-                }}
-              />
-              {/* Obese */}
-              <div
-                className="absolute h-4 rounded-r bg-red-500"
-                style={{
-                  left: `${bmiData.overweightMax}%`,
-                  width: `${100 - bmiData.overweightMax}%`
-                }}
-              />
-              {/* BMI Indicator */}
-              <div
-                className="absolute top-0 -mt-3 h-7 w-[1px] bg-black"
-                style={{ left: `${bmiData.bmiPosition}%` }}>
-                <div
-                  className="absolute -left-3 -top-4 text-[0.75rem] font-bold"
-                  style={{ color: bmiData.bmiStatus.color }}>
-                  {bmiData.bmi.toFixed(1)}
-                </div>
+                className="flex w-full flex-col items-center gap-1 rounded-lg p-2.5 text-xs font-medium tracking-tight dark:bg-[#19191f] lg:text-sm"
+                key={key}>
+                <span>{label}</span>
+                {savedTargets[key as keyof typeof savedTargets].target}
+                {unit}
               </div>
-              {/* Labels */}
-              <div className="absolute mt-5 flex w-full justify-between text-xs text-white/65">
-                <span>Under</span>
-                <span>Normal</span>
-                <span>Over</span>
-                <span>Obese</span>
-              </div>
-            </div>
-            {/* <div>
-              <p className="text-xs mt-8">
-                BMI:{' '}
-                <span className='text-xs' style={{ color: bmiData.bmiStatus.color }}>
-                  {bmiData.bmi.toFixed(1)} - {bmiData.bmiStatus.status}
-                </span>
-              </p>
-            </div> */}
+            ))}
           </CardContent>
-        </Card>
+        </div>
+      </Card>
+      {bmiData.bmi > 0 && (
+        <CardContent className="rounded-lg bg-[#2e3039] pt-4">
+          <div className="relative mt-4 h-6">
+            {/* Underweight */}
+            <div
+              className="absolute h-4 rounded-l bg-blue-500"
+              style={{ width: `${bmiData.underweightMax}%` }}
+            />
+            {/* Normal weight */}
+            <div
+              className="absolute h-4 bg-green-500"
+              style={{
+                left: `${bmiData.underweightMax}%`,
+                width: `${bmiData.normalMax - bmiData.underweightMax}%`
+              }}
+            />
+            {/* Overweight */}
+            <div
+              className="absolute h-4 bg-orange-500"
+              style={{
+                left: `${bmiData.normalMax}%`,
+                width: `${bmiData.overweightMax - bmiData.normalMax}%`
+              }}
+            />
+            {/* Obese */}
+            <div
+              className="absolute h-4 rounded-r bg-red-500"
+              style={{
+                left: `${bmiData.overweightMax}%`,
+                width: `${100 - bmiData.overweightMax}%`
+              }}
+            />
+            {/* BMI Indicator */}
+            <div
+              className="absolute top-0 -mt-3 h-7 w-[1px] bg-black"
+              style={{ left: `${bmiData.bmiPosition}%` }}>
+              <div
+                className="absolute -left-3 -top-4 text-[0.75rem] font-bold"
+                style={{ color: bmiData.bmiStatus.color }}>
+                {bmiData.bmi.toFixed(1)}
+              </div>
+            </div>
+            {/* Labels */}
+            <div className="absolute mt-5 flex w-full justify-between text-xs text-white/65">
+              <span>Under</span>
+              <span>Normal</span>
+              <span>Over</span>
+              <span>Obese</span>
+            </div>
+          </div>
+        </CardContent>
       )}
-
       {showOnboarding && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black]/50">
           <div className="relative w-full max-w-md rounded-lg bg-[#34343f] p-6 shadow-lg">

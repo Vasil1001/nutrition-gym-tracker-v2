@@ -119,7 +119,6 @@ export default function SelectedFoodList({
           </TableCell>
         </TableRow>
       )}
-
     </div>
   )
 }
