@@ -4,7 +4,7 @@ import { Food } from '@/lib/types'
 import SelectedFoodList from './selected-food-list'
 
 import { useState, useEffect } from 'react'
-import BMIDailyGoals from './nutrition-goals-card'
+import BMIDailyGoals from './BMIDailyGoals'
 import ProgressMetricsCard from './progress-metrics-card'
 
 interface RightPanelProps {

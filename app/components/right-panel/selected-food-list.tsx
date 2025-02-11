@@ -50,7 +50,7 @@ export default function SelectedFoodList({
               <TableHead className="w-[1px] rounded-xl text-center">Calories</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="max-h-[calc(100%-6rem)] overflow-y-auto sm:text-xs lg:text-sm">
+          <TableBody className="max-h-[10px] overflow-y-auto sm:text-xs lg:text-sm">
             {Object.entries(foodCounts).map(([foodName, count], i) => {
               const food = selectedFoods.find((f) => f.name === foodName)
               if (!food || count === 0) return null
