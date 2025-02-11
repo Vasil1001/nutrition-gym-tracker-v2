@@ -33,7 +33,7 @@ export default function SelectedFoodList({
   const hasSelectedFoods = Object.keys(foodCounts).length > 0
 
   return (
-    <div className="outline-b-none mx-2 mt-6 flex flex-1 flex-col overflow-hidden rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
+    <div className="mx-2 mt-6 flex flex-1 flex-col rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
       {!hasSelectedFoods ? (
         <div className="flex h-[200px] items-center justify-center text-muted-foreground">
           No foods selected
@@ -41,11 +41,13 @@ export default function SelectedFoodList({
       ) : (
         <Table>
           <TableHeader className="sticky top-0 z-10 bg-[#19191f]">
-            <TableRow>
-              <TableHead className="w-[40px] text-left">#</TableHead>
+            <TableRow className="hover:bg-[#19191f]">
+              <TableHead className="w-[40px] rounded-tl-xl text-left hover:bg-[#19191f]">
+                #
+              </TableHead>
               <TableHead className="w-[150px]">Food</TableHead>
-              <TableHead className="w-[1px] text-center">Protein</TableHead>
-              <TableHead className="w-[1px] text-center">Calories</TableHead>
+              <TableHead className="w-[1px] rounded-xl text-center">Protein</TableHead>
+              <TableHead className="w-[1px] rounded-xl text-center">Calories</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="max-h-[calc(100%-6rem)] overflow-y-auto sm:text-xs lg:text-sm">
@@ -101,24 +103,23 @@ export default function SelectedFoodList({
           </TableBody>
         </Table>
       )}
-      {/* <div className="sticky bottom-0 w-full border-t bg-[#2e3039] text-sm hover:bg-[#2e3039]">
-        <div className="table w-full">
-          <TableRow>
-            <TableCell className="w-[30px] border-none py-3 text-start text-muted-foreground">
-              #
-            </TableCell>
-            <TableCell className="w-[120px] border-none py-3 text-start font-medium">
-              Total
-            </TableCell>
-            <TableCell className="w-[1px] border-r border-none py-3 text-center">
-              {totals.protein.toFixed()}g
-            </TableCell>
-            <TableCell className="w-[1px] border-none py-3 text-center">
-              {totals.calories.toFixed()}cal
-            </TableCell>
-          </TableRow>
-        </div>
-      </div> */}
+      {!hasSelectedFoods && (
+        <TableRow className="sticky bottom-0 flex w-full  border-none  bg-[#2e3039] text-sm hover:bg-[#2e3039]">
+          <TableCell className="border-none py-3 pt-4 text-start text-muted-foreground">
+            #
+          </TableCell>
+          <TableCell className="w-[150px] flex-1 border-none py-3 pt-4 text-start font-medium">
+            Total
+          </TableCell>
+          <TableCell className=" border-none py-3 pt-4 text-center">
+            {totals.protein.toFixed()}g
+          </TableCell>
+          <TableCell className=" border-none py-3 pt-4 text-center">
+            {totals.calories.toFixed()}cal
+          </TableCell>
+        </TableRow>
+      )}
+
     </div>
   )
 }
