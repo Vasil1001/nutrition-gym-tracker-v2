@@ -49,12 +49,6 @@ export default function FoodHistoryCards({
     }
   }, [])
 
-  const nutrients = [
-    { key: 'calories', label: 'Calories', color: '#FF9800', target: 2000 },
-    { key: 'protein', label: 'Protein', color: '#2196F3', target: 150 },
-    { key: 'carbs', label: 'Carbs', color: '#4CAF50', target: 250 }
-  ]
-
   // Custom tooltip component
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
