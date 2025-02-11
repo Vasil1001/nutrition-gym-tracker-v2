@@ -78,7 +78,7 @@ function Targets({
           }}></div>
         {/* BMI Indicator */}
         <div
-          className="absolute top-0 -mt-3 h-7 w-0.5 bg-black"
+          className="absolute top-0 -mt-3 h-7 w-[1px] bg-black"
           style={{ left: `${bmiPosition}%` }}>
           <div
             className="absolute -left-3 -top-5 text-[0.85rem] font-bold"
@@ -96,7 +96,7 @@ function Targets({
       </div>
       <div>
         <p className="mt-8">
-          BMI:{' '}
+          BMI:
           <span style={{ color: bmiStatus.color }}>
             {bmi.toFixed(1)} - {bmiStatus.status}
           </span>

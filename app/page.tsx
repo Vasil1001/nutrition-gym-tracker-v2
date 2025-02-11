@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import FoodSummaryCards from './components/food-summary-cards'
 import { Spinner } from '@/components/ui/spinner'
+import RightPanel from './components/right-panel'
 
 export default function Page() {
   const { session, loading } = useAuth()
@@ -181,18 +182,13 @@ export default function Page() {
             isLoading={isLoading}
           />
         </div>
-        <div className="relative order-1 max-h-[calc(100vh-13rem)] overflow-hidden md:order-2">
-          <div className="mb-4 md:mb-0">
-            <SelectedFoodList
-              selectedFoods={selectedFoods}
-              foodCounts={foodCounts}
-              onAdd={handleAddFood}
-              onRemove={handleRemoveFood}
-            />
-          </div>
-        </div>
+        <RightPanel
+          selectedFoods={selectedFoods}
+          foodCounts={foodCounts}
+          onAdd={handleAddFood}
+          onRemove={handleRemoveFood}
+        />
       </div>
-
       <FoodSummaryCards
         summaries={summaries}
         handleSaveDay={handleSaveDay}
