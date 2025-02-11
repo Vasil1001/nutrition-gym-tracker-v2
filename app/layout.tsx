@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import Navbar from '@/components/navbar'
+import Navbar from '@/app/components/navbar'
 import Container from '@/components/ui/container'
 import { AuthProvider } from './context/AuthContext'
 

@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/app/context/AuthContext'
 import { useState } from 'react'
 import { Spinner } from '@/components/ui/loader'
-import FoodCardSkeleton from '@/components/food-card-skeleton'
+import FoodCardSkeleton from '@/app/components/left-panel/food-card-skeleton'
 import { Food } from '@/lib/types'
 import { foods as defaultFoods } from '@/lib/foods' // Add this import
 import { useToast } from '@/hooks/use-toast' // Add this import

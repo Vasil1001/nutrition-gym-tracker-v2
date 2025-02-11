@@ -17,17 +17,17 @@ import {
 } from 'recharts'
 import { Button } from '@/components/ui/button'
 
-interface FoodSummaryCardsProps {
+interface FoodHistoryCardsProps {
   summaries: FoodSummary[]
   handleSaveDay: () => void
   foodCounts: { [key: string]: number }
 }
 
-export default function FoodSummaryCards({
+export default function FoodHistoryCards({
   summaries,
   handleSaveDay,
   foodCounts
-}: FoodSummaryCardsProps) {
+}: FoodHistoryCardsProps) {
   const [selectedSummary, setSelectedSummary] = useState<FoodSummary | null>(null)
   const [showAllSummaries, setShowAllSummaries] = useState(false)
   const [userTargets, setUserTargets] = useState({

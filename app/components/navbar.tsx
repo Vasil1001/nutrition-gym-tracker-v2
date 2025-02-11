@@ -7,8 +7,8 @@ import { Menu, Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Button } from './ui/button'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { Button } from '../../components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '../../components/ui/sheet'
 import { useAuth } from '@/app/context/AuthContext'
 import {
   DropdownMenu,
@@ -18,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import User from './ui/icons/user-round-icon'
+import User from '../../components/ui/icons/user-round-icon'
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme()

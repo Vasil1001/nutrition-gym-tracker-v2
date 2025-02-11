@@ -1,7 +1,6 @@
 'use client'
 
-import FoodList from './components/food-list'
-import SelectedFoodList from './components/selected-food-list'
+import FoodList from './components/left-panel/food-list'
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
@@ -10,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { FoodSummary } from '@/lib/types'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
-import FoodSummaryCards from './components/food-summary-cards'
+import FoodHistoryCards from './components/food-history-cards'
 import { Spinner } from '@/components/ui/spinner'
 import RightPanel from './components/right-panel'
 
@@ -189,7 +188,7 @@ export default function Page() {
           onRemove={handleRemoveFood}
         />
       </div>
-      <FoodSummaryCards
+      <FoodHistoryCards
         summaries={summaries}
         handleSaveDay={handleSaveDay}
         foodCounts={foodCounts}
