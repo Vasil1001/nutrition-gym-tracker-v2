@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Table,
   TableBody,
@@ -85,7 +83,7 @@ export default function SelectedFoodList({
                 </TableRow>
               )
             })}
-
+            {/* Totals row rendered inside the TableBody */}
             <TableRow className="sticky bottom-0 w-full border-t bg-[#2e3039] text-sm hover:bg-[#2e3039]">
               <TableCell className="w-[30px] border-none py-3 pt-4 text-start text-muted-foreground">
                 #
@@ -105,18 +103,10 @@ export default function SelectedFoodList({
       )}
       {!hasSelectedFoods && (
         <TableRow className="sticky bottom-0 flex w-full  border-none  bg-[#2e3039] text-sm hover:bg-[#2e3039]">
-          <TableCell className="border-none py-3 pt-4 text-start text-muted-foreground">
-            #
-          </TableCell>
-          <TableCell className="w-[150px] flex-1 border-none py-3 pt-4 text-start font-medium">
-            Total
-          </TableCell>
-          <TableCell className=" border-none py-3 pt-4 text-center">
-            {totals.protein.toFixed()}g
-          </TableCell>
-          <TableCell className=" border-none py-3 pt-4 text-center">
-            {totals.calories.toFixed()}cal
-          </TableCell>
+          <TableCell className="border-none py-3 pt-4 text-start text-muted-foreground"></TableCell>
+          <TableCell className="w-[150px] flex-1 border-none py-3 pt-4 text-start font-medium"></TableCell>
+          <TableCell className=" border-none py-5 text-center"></TableCell>
+          <TableCell className=" border-none py-5 text-center"></TableCell>
         </TableRow>
       )}
     </div>

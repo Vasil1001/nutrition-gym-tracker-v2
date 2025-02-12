@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { FoodSummary } from '@/lib/types'
 import { format } from 'date-fns'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { ProgressCircle } from './progress-circle'
 import { ProgressRings } from './progress-rings'
 import {
@@ -22,6 +22,31 @@ interface FoodHistoryCardsProps {
   handleSaveDay: () => void
   foodCounts: { [key: string]: number }
 }
+
+// Update the tooltip props to allow undefined values
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: any[]
+  label?: string
+}
+
+const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border border-border bg-card px-3 py-2 shadow-lg">
+        <p className="mb-1 text-xs text-muted-foreground">{label}</p>
+        <p className="font-medium">
+          <span className="text-blue-500">{payload[0].value}g</span>
+          <span className="ml-1 text-sm text-muted-foreground">protein</span>
+        </p>
+      </div>
+    )
+  }
+  return null
+}
+
+// Render helper to pass into Tooltip's content
+const renderCustomTooltip = (props: CustomTooltipProps) => <CustomTooltip {...props} />
 
 export default function FoodHistoryCards({
   summaries,
@@ -49,31 +74,17 @@ export default function FoodHistoryCards({
     }
   }, [])
 
-  // Custom tooltip component
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="rounded-lg border border-border bg-card px-3 py-2 shadow-lg">
-          <p className="mb-1 text-xs text-muted-foreground">{label}</p>
-          <p className="font-medium">
-            <span className="text-blue-500">{payload[0].value}g</span>
-            <span className="ml-1 text-sm text-muted-foreground">protein</span>
-          </p>
-        </div>
-      )
-    }
-    return null
-  }
+  // Sort summaries only once when summaries change
+  const sortedSummaries = useMemo(() => {
+    return [...summaries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  }, [summaries])
 
-  // Format data for the line chart with selected date indicator
-  const chartData = summaries
-    .slice() // Create a copy to avoid mutating original array
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .map((summary) => ({
-      date: format(new Date(summary.date), 'MMM dd'),
-      protein: summary.totalProtein,
-      isSelected: selectedSummary?.id === summary.id
-    }))
+  // Format data for the line chart using memoized sortedSummaries
+  const chartData = sortedSummaries.map((summary) => ({
+    date: format(new Date(summary.date), 'MMM dd'),
+    protein: summary.totalProtein,
+    isSelected: summary.id === selectedSummary?.id
+  }))
 
   // Custom dot component to highlight selected date
   const CustomDot = ({ cx, cy, payload }: any) => {
@@ -242,7 +253,7 @@ export default function FoodHistoryCards({
                       )}
                     />
                     <YAxis stroke="#666" fontSize={12} />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={renderCustomTooltip} />
                     <ReferenceLine
                       y={userTargets.protein}
                       stroke="#2196F3"

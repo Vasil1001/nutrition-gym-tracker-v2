@@ -1,40 +1,57 @@
 'use client'
+import dynamic from 'next/dynamic'
 
 import FoodList from './components/left-panel/food-list'
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Food } from '@/lib/types'
 import { useAuth } from '@/app/context/AuthContext'
-import { Button } from '@/components/ui/button'
 import { FoodSummary } from '@/lib/types'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import FoodHistoryCards from './components/food-history-cards'
 import { Spinner } from '@/components/ui/spinner'
-import RightPanel from './components/right-panel'
+
+const RightPanel = dynamic(() => import('./components/right-panel'), { ssr: false })
 
 export default function Page() {
   const { session, loading } = useAuth()
   const router = useRouter()
+  const { toast } = useToast()
 
   const [isLoading, setIsLoading] = useState(true)
   const [foodsArray, setFoods] = useState<Food[]>([])
   const [selectedFoods, setSelectedFoods] = useState<Food[]>(() => {
-    if (typeof window !== 'undefined') {
-      const savedSelectedFoods = localStorage.getItem('selectedFoods')
-      return savedSelectedFoods ? JSON.parse(savedSelectedFoods) : []
-    }
-    return []
+    const savedSelectedFoods = localStorage.getItem('selectedFoods')
+    return savedSelectedFoods ? JSON.parse(savedSelectedFoods) : []
   })
   const [foodCounts, setFoodCounts] = useState<{ [key: string]: number }>(() => {
-    if (typeof window !== 'undefined') {
-      const savedFoodCounts = localStorage.getItem('foodCounts')
-      return savedFoodCounts ? JSON.parse(savedFoodCounts) : {}
-    }
-    return {}
+    const savedFoodCounts = localStorage.getItem('foodCounts')
+    return savedFoodCounts ? JSON.parse(savedFoodCounts) : {}
   })
   const [summaries, setSummaries] = useState<FoodSummary[]>([])
-  const { toast } = useToast()
+
+  const handleAddFood = useCallback((food: Food) => {
+    setSelectedFoods((prev) => [...prev, food])
+    setFoodCounts((prev) => ({
+      ...prev,
+      [food.name]: (prev[food.name] || 0) + 1
+    }))
+  }, [])
+
+  const handleRemoveFood = useCallback((food: Food) => {
+    setFoodCounts((prevCounts) => {
+      const currentCount = prevCounts[food.name] || 0
+      if (currentCount > 1) {
+        return { ...prevCounts, [food.name]: currentCount - 1 }
+      } else {
+        const newCounts = { ...prevCounts }
+        delete newCounts[food.name]
+        setSelectedFoods((prev) => prev.filter((f) => f.name !== food.name))
+        return newCounts
+      }
+    })
+  }, [])
 
   const fetchFoods = useCallback(async () => {
     if (!session) {
@@ -70,12 +87,9 @@ export default function Page() {
     fetchFoods()
   }, [fetchFoods])
 
-  // Move these useEffect hooks outside the conditional block
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods))
-      localStorage.setItem('foodCounts', JSON.stringify(foodCounts))
-    }
+    localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods))
+    localStorage.setItem('foodCounts', JSON.stringify(foodCounts))
   }, [selectedFoods, foodCounts])
 
   useEffect(() => {
@@ -95,26 +109,6 @@ export default function Page() {
 
   if (!session) {
     return null
-  }
-
-  const handleAddFood = (food: Food) => {
-    setSelectedFoods([...selectedFoods, food])
-    const newCount = (foodCounts[food.name] || 0) + 1
-    setFoodCounts({ ...foodCounts, [food.name]: newCount })
-  }
-
-  const handleRemoveFood = (food: Food) => {
-    setFoodCounts((prevCounts) => {
-      const currentCount = prevCounts[food.name] || 0
-      if (currentCount > 1) {
-        return { ...prevCounts, [food.name]: currentCount - 1 }
-      } else {
-        const newCounts = { ...prevCounts }
-        delete newCounts[food.name]
-        setSelectedFoods(selectedFoods.filter((f) => f.name !== food.name))
-        return newCounts
-      }
-    })
   }
 
   const handleClearSelectedFoods = () => {
