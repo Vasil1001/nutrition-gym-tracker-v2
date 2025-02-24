@@ -105,3 +105,14 @@ font-family: 'Outfit', sans-serif;
     --thumb-color: rgb(160 160 160 / 0.3);
   }
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
