@@ -1,5 +1,6 @@
 'use client'
 import dynamic from 'next/dynamic'
+import { ProteinChart } from './components/protein-chart'
 
 import FoodList from './components/left-panel/food-list'
 import { useEffect, useState, useCallback } from 'react'
@@ -244,6 +245,10 @@ export default function Page() {
         handleSaveDay={handleSaveDay}
         foodCounts={foodCounts}
       />
+      <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
+      <div className="mb-6 rounded-lg border p-4">
+        <ProteinChart data={summaries} />
+      </div>
     </div>
   )
 }

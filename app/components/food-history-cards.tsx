@@ -16,6 +16,7 @@ import {
   YAxis
 } from 'recharts'
 import { Button } from '@/components/ui/button'
+import { ProteinChart } from './protein-chart'
 
 interface FoodHistoryCardsProps {
   summaries: FoodSummary[]
@@ -229,54 +230,7 @@ export default function FoodHistoryCards({
             {/* Protein Progress Chart */}
             <div className="rounded-lg border p-4">
               <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
-              <div className="h-[200px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                    <XAxis
-                      dataKey="date"
-                      stroke="#666"
-                      fontSize={12}
-                      interval={Math.ceil(chartData.length / 7)} // Show ~7 labels
-                      tick={({ x, y, payload }) => (
-                        <g transform={`translate(${x},${y})`}>
-                          <text
-                            x={0}
-                            y={0}
-                            dy={16}
-                            textAnchor="middle"
-                            fill={chartData[payload.index].isSelected ? '#2196F3' : '#666'}
-                            fontWeight={chartData[payload.index].isSelected ? 'bold' : 'normal'}>
-                            {payload.value}
-                          </text>
-                        </g>
-                      )}
-                    />
-                    <YAxis stroke="#666" fontSize={12} />
-                    <Tooltip content={renderCustomTooltip} />
-                    <ReferenceLine
-                      y={userTargets.protein}
-                      stroke="#2196F3"
-                      strokeDasharray="3 3"
-                      label={{
-                        value: `Target ${userTargets.protein}g`,
-                        position: 'center',
-                        fill: '#2196F3',
-                        fontSize: 13,
-                        fontWeight: 600
-                      }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="protein"
-                      stroke="#2196F3"
-                      strokeWidth={2}
-                      dot={<CustomDot />}
-                      activeDot={{ r: 8, fill: '#2196F3', stroke: '#fff' }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              <ProteinChart data={summaries} selectedSummaryId={selectedSummary?.id} />
             </div>
             <div className="flex flex-col rounded-lg border">
               {/* Totals section */}
