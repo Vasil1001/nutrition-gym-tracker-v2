@@ -66,10 +66,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#19191f] px-4 py-8">
-      <div className="flex w-full max-w-4xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
-        {/* Left side with icon - same as login page */}
-        <div className="hidden flex-1 items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 px-4 backdrop-blur-lg">
+      <div className="flex h-[600px] w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+        {/* Left side - hidden on mobile */}
+        <div className="hidden max-w-xs items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
           <div className="space-y-6 text-center text-white">
             <div className="rounded-2xl bg-white/20 p-6 backdrop-blur-sm">
               <div className="mx-auto mb-6 h-32 w-32 rounded-xl border-2 border-dashed bg-white/30 p-6">
@@ -81,79 +81,76 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 bg-zinc-50 p-6 md:p-12">
-          <div className="flex w-full max-w-md flex-col">
-            <div className="flex-1">
-              <div className="mb-6 text-center">
-                <h2 className="mb-2 text-4xl font-bold text-gray-900">Get Started</h2>
-                <p className="text-gray-600">Create your free account</p>
-              </div>
-
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                      errors.email ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                  />
-                  {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
-                </div>
-
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Password</label>
-                  <input
-                    type="password"
-                    className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                      errors.password ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                  />
-                  {errors.password && (
-                    <p className="mt-2 text-sm text-red-600">{errors.password}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                      errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm your password"
-                  />
-                  {errors.confirmPassword && (
-                    <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full rounded-lg bg-green-600 px-4 py-2.5 font-medium text-white transition-all hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                  {isSubmitting ? 'Creating Account...' : 'Create Account'}
-                </button>
-              </form>
+        {/* Right side with increased width */}
+        <div className="flex flex-1 bg-white p-6 md:p-12">
+          <div className="mx-auto flex w-full max-w-lg flex-col">
+            <div className="mb-6 text-center">
+              <h2 className="mb-2 text-3xl font-bold text-gray-900">Get Full Access Today</h2>
+              <p className="text-gray-600">Create your free account</p>
             </div>
 
-            <div className="mt-6 pb-6 text-center">
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@company.com"
+                />
+                {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">Password</label>
+                <input
+                  type="password"
+                  className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="6+ characters"
+                />
+                {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm your password"
+                />
+                {errors.confirmPassword && (
+                  <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full rounded-lg bg-green-600 px-4 py-2.5 font-medium text-white transition-all hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                {isSubmitting ? 'Creating Account...' : 'Create account'}
+              </button>
+            </form>
+
+            <div className="mt-6 text-center">
               <Link
                 href="/login"
                 className="text-sm font-medium text-green-600 transition-colors hover:text-green-800">
-                Already have an account? Login
+                Already have an account? Sign in
               </Link>
             </div>
           </div>

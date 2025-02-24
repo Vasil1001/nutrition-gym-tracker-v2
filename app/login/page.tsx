@@ -46,10 +46,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#19191f] px-4 py-8">
-      <div className="flex w-full max-w-4xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 px-4 backdrop-blur-lg">
+      <div className="flex h-[600px] w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
         {/* Left side - hidden on mobile */}
-        <div className="hidden flex-1 items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
+        <div className="hidden max-w-xs items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
           <div className="space-y-6 text-center text-white">
             <div className="rounded-2xl bg-white/20 p-6 backdrop-blur-sm">
               <div className="mx-auto mb-6 h-32 w-32 rounded-xl border-2 border-dashed bg-white/30 p-6">
@@ -61,9 +61,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Right side */}
-        <div className="flex flex-1 bg-zinc-50 p-6 md:p-12">
-          <div className="flex w-full max-w-md flex-col">
+        {/* Right side with increased width */}
+        <div className="flex flex-1 bg-white p-6 md:p-12">
+          <div className="mx-auto flex w-full max-w-lg flex-col">
             <div className="flex-1">
               <div className="mb-6 text-center">
                 <h2 className="mb-2 text-4xl font-bold text-gray-900">Welcome Back</h2>
