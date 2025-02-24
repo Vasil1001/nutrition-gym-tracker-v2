@@ -82,10 +82,36 @@ export default function Page() {
     }
   }, [session])
 
+  const fetchSummaries = useCallback(async () => {
+    if (!session) return
+
+    try {
+      const { data, error } = await supabase
+        .from('food_summaries')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('date', { ascending: false })
+
+      if (error) throw error
+      setSummaries(data || [])
+    } catch (error) {
+      console.error('Error fetching summaries:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to load food history',
+        variant: 'destructive'
+      })
+    }
+  }, [session, toast])
+
   // Fetch foods on mount and when session changes
   useEffect(() => {
     fetchFoods()
   }, [fetchFoods])
+
+  useEffect(() => {
+    fetchSummaries()
+  }, [fetchSummaries])
 
   useEffect(() => {
     localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods))
@@ -116,7 +142,8 @@ export default function Page() {
     setFoodCounts({})
   }
 
-  const handleSaveDay = () => {
+  const handleSaveDay = async () => {
+    if (!session) return
     if (Object.keys(foodCounts).length === 0) {
       toast({
         title: 'No foods selected',
@@ -126,39 +153,69 @@ export default function Page() {
       return
     }
 
-    const summary: FoodSummary = {
-      id: Date.now().toString(), // Simple ID for now
+    const summaryData = {
+      id: crypto.randomUUID(),
       date: new Date().toISOString(),
-      totalProtein: Object.entries(foodCounts).reduce((total, [foodName, count]) => {
-        const food = selectedFoods.find((f) => f.name === foodName)
-        return total + (food ? food.protein * count : 0)
-      }, 0),
-      totalCalories: Object.entries(foodCounts).reduce((total, [foodName, count]) => {
-        const food = selectedFoods.find((f) => f.name === foodName)
-        return total + (food ? food.calories * count : 0)
-      }, 0),
-      totalCarbs: Object.entries(foodCounts).reduce((total, [foodName, count]) => {
-        const food = selectedFoods.find((f) => f.name === foodName)
-        return total + (food ? food.carbs * count : 0)
-      }, 0),
+      user_id: session.user.id,
+      totalProtein: Number(
+        Object.entries(foodCounts)
+          .reduce((total, [foodName, count]) => {
+            const food = selectedFoods.find((f) => f.name === foodName)
+            return total + (food ? food.protein * count : 0)
+          }, 0)
+          .toFixed(2)
+      ),
+      totalCalories: Number(
+        Object.entries(foodCounts)
+          .reduce((total, [foodName, count]) => {
+            const food = selectedFoods.find((f) => f.name === foodName)
+            return total + (food ? food.calories * count : 0)
+          }, 0)
+          .toFixed(2)
+      ),
+      totalCarbs: Number(
+        Object.entries(foodCounts)
+          .reduce((total, [foodName, count]) => {
+            const food = selectedFoods.find((f) => f.name === foodName)
+            return total + (food ? food.carbs * count : 0)
+          }, 0)
+          .toFixed(2)
+      ),
       foods: Object.entries(foodCounts).map(([name, count]) => {
         const food = selectedFoods.find((f) => f.name === name)!
         return {
           name,
           count,
-          protein: food.protein * count,
-          calories: food.calories * count,
-          carbs: food.carbs * count
+          protein: Number(food.protein * count),
+          calories: Number(food.calories * count),
+          carbs: Number(food.carbs * count)
         }
       })
     }
 
-    setSummaries([summary, ...summaries])
-    toast({
-      title: 'Day saved!',
-      description: 'Your daily food summary has been saved.'
-    })
-    handleClearSelectedFoods()
+    try {
+      console.log('Saving summary:', summaryData) // Add this for debugging
+      const { error } = await supabase.from('food_summaries').insert(summaryData)
+
+      if (error) {
+        console.error('Supabase error:', error) // Add this for debugging
+        throw error
+      }
+
+      setSummaries([summaryData, ...summaries])
+      toast({
+        title: 'Day saved!',
+        description: 'Your daily food summary has been saved.'
+      })
+      handleClearSelectedFoods()
+    } catch (error) {
+      console.error('Error saving summary:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to save food summary. Check console for details.',
+        variant: 'destructive'
+      })
+    }
   }
 
   return (
