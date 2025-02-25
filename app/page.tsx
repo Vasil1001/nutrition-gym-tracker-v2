@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic'
 import { ProteinChart } from './components/protein-chart'
 import FoodList from './components/left-panel/food-list'
-import FoodHistoryCards from './components/food-history-cards'
+import FoodHistoryCards from './components/food-history/food-history-cards'
 import { Spinner } from '@/components/ui/spinner'
 import { useAuth } from '@/app/context/AuthContext'
 import { useToast } from '@/hooks/use-toast'
