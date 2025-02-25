@@ -65,7 +65,6 @@ export function useFoodManagement(userId: string | undefined) {
   const handleRemoveFood = useCallback((food: Food) => {
     setState((prev) => {
       const currentCount = prev.foodCounts[food.name] || 0
-
       if (currentCount > 1) {
         return {
           ...prev,
@@ -77,7 +76,6 @@ export function useFoodManagement(userId: string | undefined) {
       } else {
         const newCounts = { ...prev.foodCounts }
         delete newCounts[food.name]
-
         return {
           ...prev,
           selectedFoods: prev.selectedFoods.filter((f) => f.name !== food.name),
@@ -87,23 +85,8 @@ export function useFoodManagement(userId: string | undefined) {
     })
   }, [])
 
-  const handleClearSelectedFoods = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      selectedFoods: [],
-      foodCounts: {}
-    }))
-  }, [])
-
-  // Data fetching
   const fetchFoods = useCallback(async () => {
-    if (!userId) {
-      setState((prev) => ({ ...prev, foodsArray: [], isLoading: false }))
-      return
-    }
-
     try {
-      setState((prev) => ({ ...prev, isLoading: true }))
       const { data, error } = await supabase.from('foods').select('*').eq('user_id', userId)
 
       if (error) throw error
@@ -181,6 +164,14 @@ export function useFoodManagement(userId: string | undefined) {
       })
     }
   }
+
+  const handleClearSelectedFoods = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      selectedFoods: [],
+      foodCounts: {}
+    }))
+  }, [])
 
   return {
     ...state,

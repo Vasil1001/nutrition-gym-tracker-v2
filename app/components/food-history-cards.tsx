@@ -24,7 +24,6 @@ interface FoodHistoryCardsProps {
   foodCounts: { [key: string]: number }
 }
 
-// Update the tooltip props to allow undefined values
 interface CustomTooltipProps {
   active?: boolean
   payload?: any[]
@@ -46,8 +45,151 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   return null
 }
 
-// Render helper to pass into Tooltip's content
 const renderCustomTooltip = (props: CustomTooltipProps) => <CustomTooltip {...props} />
+
+const SummaryCard = ({
+  summary,
+  userTargets,
+  isProteinTargetHit,
+  onClick
+}: {
+  summary: FoodSummary
+  userTargets: { calories: number; protein: number; carbs: number }
+  isProteinTargetHit: (proteinAmount: number) => boolean
+  onClick: () => void
+}) => (
+  <Card
+    key={summary.id}
+    className={`cursor-pointer transition-colors hover:bg-accent/50 ${
+      isProteinTargetHit(summary.totalProtein) ? 'border-2 border-blue-500/50 bg-blue-500/10' : ''
+    }`}
+    onClick={onClick}>
+    <CardContent className="flex flex-col gap-2 p-4">
+      <div className="text-sm font-medium text-muted-foreground">
+        {format(new Date(summary.date), 'MMM dd, yyyy')}
+      </div>
+      <ProgressRings
+        calories={{ current: summary.totalCalories, target: userTargets.calories }}
+        protein={{ current: summary.totalProtein, target: userTargets.protein }}
+        carbs={{ current: summary.totalCarbs || 0, target: userTargets.carbs }}
+      />
+    </CardContent>
+  </Card>
+)
+
+const SummaryModal = ({
+  selectedSummary,
+  userTargets,
+  setSelectedSummary,
+  summaries
+}: {
+  selectedSummary: FoodSummary | null
+  userTargets: { calories: number; protein: number; carbs: number }
+  setSelectedSummary: (summary: FoodSummary | null) => void
+  summaries: FoodSummary[]
+}) => (
+  <Dialog open={!!selectedSummary} onOpenChange={() => setSelectedSummary(null)}>
+    <DialogContent className="max-w-3xl">
+      <DialogHeader>
+        <DialogTitle className="flex justify-center">
+          {selectedSummary && format(new Date(selectedSummary.date), 'MMMM dd, yyyy')}
+        </DialogTitle>
+      </DialogHeader>
+      <div className="mt-4 flex flex-col gap-8">
+        <div className="mx-auto flex max-w-[500px] justify-center gap-8">
+          {selectedSummary && (
+            <>
+              <ProgressCircle
+                current={selectedSummary.totalCalories}
+                target={userTargets.calories}
+                label="Calories"
+                color="#FF9800"
+              />
+              <ProgressCircle
+                current={selectedSummary.totalProtein}
+                target={userTargets.protein}
+                label="Protein"
+                color="#2196F3"
+              />
+              <ProgressCircle
+                current={selectedSummary.totalCarbs || 0}
+                target={userTargets.carbs}
+                label="Carbs"
+                color="#4CAF50"
+              />
+            </>
+          )}
+        </div>
+        <div className="rounded-lg border p-4">
+          <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
+          <ProteinChart data={summaries} selectedSummaryId={selectedSummary?.id} />
+        </div>
+        <div className="flex flex-col rounded-lg border">
+          <div className="border-b p-4">
+            <div className="flex items-center justify-between px-4">
+              <div className="flex items-center">
+                <ProgressRings
+                  calories={{
+                    current: selectedSummary?.totalCalories || 0,
+                    target: userTargets.calories
+                  }}
+                  protein={{
+                    current: selectedSummary?.totalProtein || 0,
+                    target: userTargets.protein
+                  }}
+                  carbs={{
+                    current: selectedSummary?.totalCarbs || 0,
+                    target: userTargets.carbs
+                  }}
+                  showLabels={false}
+                />
+              </div>
+              <div className="flex flex-1 justify-end gap-8">
+                <div className="flex flex-col items-center">
+                  <span className="text-sm text-muted-foreground">Total Protein</span>
+                  <span className="text-2xl font-bold text-blue-500">
+                    {Number(selectedSummary?.totalProtein).toFixed(1)}g
+                  </span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-sm text-muted-foreground">Total Calories</span>
+                  <span className="text-2xl font-bold text-orange-500">
+                    {Math.round(selectedSummary?.totalCalories || 0)}
+                  </span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-sm text-muted-foreground">Total Carbs</span>
+                  <span className="text-2xl font-bold text-green-500">
+                    {Math.round(selectedSummary?.totalCarbs || 0)}g
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="max-h-[300px] overflow-y-auto p-4">
+            <div className="divide-y">
+              {selectedSummary?.foods.map((food, index) => (
+                <div key={index} className="flex items-center justify-between py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-md bg-accent px-2 py-0.5 text-sm font-medium">
+                      x{food.count}
+                    </span>
+                    <span className="font-medium">{food.name}</span>
+                  </div>
+                  <div className="flex gap-4 text-sm text-muted-foreground">
+                    <span>{Number(food.protein).toFixed()}g protein</span>
+                    <span>{Number(food.calories).toFixed()} cal</span>
+                    <span>{Number(food.carbs).toFixed()}g carbs</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </DialogContent>
+  </Dialog>
+)
 
 export default function FoodHistoryCards({
   summaries,
@@ -62,7 +204,6 @@ export default function FoodHistoryCards({
     carbs: 250
   })
 
-  // Load user targets from localStorage
   useEffect(() => {
     const savedTargets = localStorage.getItem('nutritionTargets')
     if (savedTargets) {
@@ -75,20 +216,17 @@ export default function FoodHistoryCards({
     }
   }, [])
 
-  // Sort summaries only once when summaries change
   const sortedSummaries = useMemo(() => {
     return [...summaries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
   }, [summaries])
 
-  // Format data for the line chart using memoized sortedSummaries
   const chartData = sortedSummaries.map((summary) => ({
     date: format(new Date(summary.date), 'MMM dd'),
     protein: summary.totalProtein,
     isSelected: summary.id === selectedSummary?.id
   }))
 
-  // Custom dot component to highlight selected date
-  const CustomDot = ({ cx, cy, payload }: any) => {
+  const CustomDot = ({ cx, cy, payload }: { cx: number; cy: number; payload: any }) => {
     if (payload.isSelected) {
       return (
         <svg x={cx - 6} y={cy - 6} width="12" height="12" fill="currentColor">
@@ -106,7 +244,6 @@ export default function FoodHistoryCards({
   const displayedSummaries = summaries.slice(0, 6)
   const hasMoreSummaries = summaries.length > 6
 
-  // Helper function to check if protein target was hit
   const isProteinTargetHit = (proteinAmount: number) => {
     return proteinAmount >= userTargets.protein
   }
@@ -127,32 +264,18 @@ export default function FoodHistoryCards({
         </Button>
       </div>
 
-      {/* Main grid showing first 6 cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4 lg:grid-cols-6">
         {displayedSummaries.map((summary) => (
-          <Card
+          <SummaryCard
             key={summary.id}
-            className={`cursor-pointer transition-colors hover:bg-accent/50 ${
-              isProteinTargetHit(summary.totalProtein)
-                ? 'border-2 border-blue-500/50 bg-blue-500/10'
-                : ''
-            }`}
-            onClick={() => setSelectedSummary(summary)}>
-            <CardContent className="flex flex-col gap-2 p-4">
-              <div className="text-sm font-medium text-muted-foreground">
-                {format(new Date(summary.date), 'MMM dd, yyyy')}
-              </div>
-              <ProgressRings
-                calories={{ current: summary.totalCalories, target: userTargets.calories }}
-                protein={{ current: summary.totalProtein, target: userTargets.protein }}
-                carbs={{ current: summary.totalCarbs || 0, target: userTargets.carbs }}
-              />
-            </CardContent>
-          </Card>
+            summary={summary}
+            userTargets={userTargets}
+            isProteinTargetHit={isProteinTargetHit}
+            onClick={() => setSelectedSummary(summary)}
+          />
         ))}
       </div>
 
-      {/* View All Modal */}
       <Dialog open={showAllSummaries} onOpenChange={setShowAllSummaries}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
@@ -194,113 +317,12 @@ export default function FoodHistoryCards({
         </DialogContent>
       </Dialog>
 
-      {/* Existing Details Modal */}
-      <Dialog open={!!selectedSummary} onOpenChange={() => setSelectedSummary(null)}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle className="flex justify-center">
-              {selectedSummary && format(new Date(selectedSummary.date), 'MMMM dd, yyyy')}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="mt-4 flex flex-col gap-8">
-            <div className="mx-auto flex max-w-[500px] justify-center gap-8">
-              {selectedSummary && (
-                <>
-                  <ProgressCircle
-                    current={selectedSummary.totalCalories}
-                    target={userTargets.calories}
-                    label="Calories"
-                    color="#FF9800"
-                  />
-                  <ProgressCircle
-                    current={selectedSummary.totalProtein}
-                    target={userTargets.protein}
-                    label="Protein"
-                    color="#2196F3"
-                  />
-                  <ProgressCircle
-                    current={selectedSummary.totalCarbs || 0}
-                    target={userTargets.carbs}
-                    label="Carbs"
-                    color="#4CAF50"
-                  />
-                </>
-              )}
-            </div>
-            {/* Protein Progress Chart */}
-            <div className="rounded-lg border p-4">
-              <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
-              <ProteinChart data={summaries} selectedSummaryId={selectedSummary?.id} />
-            </div>
-            <div className="flex flex-col rounded-lg border">
-              {/* Totals section */}
-              <div className="border-b p-4">
-                <div className="flex items-center justify-between px-4">
-                  {/* Progress Rings without labels */}
-                  <div className="flex items-center">
-                    <ProgressRings
-                      calories={{
-                        current: selectedSummary?.totalCalories || 0,
-                        target: userTargets.calories
-                      }}
-                      protein={{
-                        current: selectedSummary?.totalProtein || 0,
-                        target: userTargets.protein
-                      }}
-                      carbs={{
-                        current: selectedSummary?.totalCarbs || 0,
-                        target: userTargets.carbs
-                      }}
-                      showLabels={false}
-                    />
-                  </div>
-                  <div className="flex flex-1 justify-end gap-8">
-                    <div className="flex flex-col items-center">
-                      <span className="text-sm text-muted-foreground">Total Protein</span>
-                      <span className="text-2xl font-bold text-blue-500">
-                        {Number(selectedSummary?.totalProtein).toFixed(1)}g
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-sm text-muted-foreground">Total Calories</span>
-                      <span className="text-2xl font-bold text-orange-500">
-                        {Math.round(selectedSummary?.totalCalories || 0)}
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-sm text-muted-foreground">Total Carbs</span>
-                      <span className="text-2xl font-bold text-green-500">
-                        {Math.round(selectedSummary?.totalCarbs || 0)}g
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Scrollable food list */}
-              <div className="max-h-[300px] overflow-y-auto p-4">
-                <div className="divide-y">
-                  {selectedSummary?.foods.map((food, index) => (
-                    <div key={index} className="flex items-center justify-between py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="rounded-md bg-accent px-2 py-0.5 text-sm font-medium">
-                          x{food.count}
-                        </span>
-                        <span className="font-medium">{food.name}</span>
-                      </div>
-                      <div className="flex gap-4 text-sm text-muted-foreground">
-                        <span>{Number(food.protein).toFixed()}g protein</span>
-                        <span>{Number(food.calories).toFixed()} cal</span>
-                        <span>{Number(food.carbs).toFixed()}g carbs</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <SummaryModal
+        selectedSummary={selectedSummary}
+        userTargets={userTargets}
+        setSelectedSummary={setSelectedSummary}
+        summaries={summaries}
+      />
     </div>
   )
 }
