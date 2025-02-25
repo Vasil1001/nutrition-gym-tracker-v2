@@ -68,6 +68,43 @@ export function ProteinChart({ data, selectedSummaryId, className = '' }: Protei
     )
   }
 
+  const renderCustomizedLabel = (props: any) => {
+    const { viewBox } = props
+    const { width, height } = viewBox
+    const x = width / 2
+    const y = viewBox.y
+    const target = JSON.parse(
+      localStorage.getItem('nutritionTargets') || '{"protein":{"target":150}}'
+    ).protein.target
+    const labelValue = `Target ${target}g`
+    const labelWidth = labelValue.length * 8
+    const rectHeight = 22
+    const rectWidth = labelWidth + 3
+
+    return (
+      <g>
+        <rect
+          x={x - rectWidth / 2}
+          y={y - rectHeight / 2}
+          width={rectWidth}
+          height={rectHeight}
+          fill="rgba(33, 150, 243, 0.4)"
+          rx={3}
+        />
+        <text
+          x={x}
+          y={y + 5}
+          dy={0}
+          textAnchor="middle"
+          fill="white"
+          fontSize={13}
+          fontWeight={400}>
+          {labelValue}
+        </text>
+      </g>
+    )
+  }
+
   return (
     <div className={`h-[200px] w-full ${className}`}>
       <ResponsiveContainer width="100%" height="100%">
@@ -86,7 +123,8 @@ export function ProteinChart({ data, selectedSummaryId, className = '' }: Protei
                   dy={16}
                   textAnchor="middle"
                   fill={sortedData[payload.index].isSelected ? '#2196F3' : '#666'}
-                  fontWeight={sortedData[payload.index].isSelected ? 'bold' : 'normal'}>
+                  fontWeight={sortedData[payload.index].isSelected ? 'normal' : 'normal'}
+                  fontSize={13}>
                   {payload.value}
                 </text>
               </g>
@@ -98,13 +136,7 @@ export function ProteinChart({ data, selectedSummaryId, className = '' }: Protei
             y={userTargets.protein.target}
             stroke="#2196F3"
             strokeDasharray="3 3"
-            label={{
-              value: `Target ${userTargets.protein.target}g`,
-              position: 'center',
-              fill: '#2196F3',
-              fontSize: 13,
-              fontWeight: 600
-            }}
+            label={renderCustomizedLabel}
           />
           <Line
             type="monotone"
@@ -112,7 +144,7 @@ export function ProteinChart({ data, selectedSummaryId, className = '' }: Protei
             stroke="#2196F3"
             strokeWidth={2}
             dot={<CustomDot />}
-            activeDot={{ r: 8, fill: '#2196F3', stroke: '#fff' }}
+            activeDot={{ r: 8, fill: '#2196F3', stroke: '#000' }}
           />
         </LineChart>
       </ResponsiveContainer>
