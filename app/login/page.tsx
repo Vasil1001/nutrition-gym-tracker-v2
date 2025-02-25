@@ -1,29 +1,30 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
 import { NutritionIcon } from '@/components/icons/NutritionIcon'
+import AuthForm from '@/app/auth/AuthForm'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGuestLoading, setIsGuestLoading] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleLogin = async (data: { email: string; password: string }) => {
     setIsSubmitting(true)
-
+    setServerError(null)
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password
+      })
       if (error) throw error
       router.push('/')
     } catch (error: any) {
-      setErrors({ email: error.message })
+      setServerError(error.message || 'Invalid credentials')
+      console.error(error.message)
     } finally {
       setIsSubmitting(false)
     }
@@ -39,7 +40,7 @@ export default function LoginPage() {
       if (error) throw error
       router.push('/')
     } catch (error: any) {
-      setErrors({ email: 'Guest login failed. Please try again.' })
+      console.error('Guest login failed. Please try again.')
     } finally {
       setIsGuestLoading(false)
     }
@@ -69,66 +70,28 @@ export default function LoginPage() {
                 <h2 className="mb-2 text-4xl font-bold text-gray-900">Welcome Back</h2>
                 <p className="text-gray-600">Sign in to continue</p>
               </div>
-
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                      errors.email ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                  />
-                  {errors.email && <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>}
+              {/* Server Error */}
+              {serverError && (
+                <div className="mb-4 text-center text-sm text-red-600">{serverError}</div>
+              )}
+              {/* Use reusable AuthForm without confirm field */}
+              <AuthForm onSubmit={handleLogin} isSubmitting={isSubmitting} submitText="Sign In" />
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
                 </div>
-
-                <div>
-                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Password</label>
-                  <input
-                    type="password"
-                    className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                      errors.password ? 'border-red-500' : 'border-gray-300'
-                    } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                  />
-                  {errors.password && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.password}</p>
-                  )}
+                <div className="relative flex justify-center text-sm">
+                  <span className="bg-white px-4 text-gray-500">OR</span>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full rounded-lg bg-green-600 px-4 py-2.5 font-medium text-white transition-all hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                  {isSubmitting ? 'Signing in...' : 'Sign In'}
-                </button>
-
-                <div className="relative my-4">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="bg-white px-4 text-gray-500">OR</span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleGuestLogin}
-                  disabled={isGuestLoading}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                  {isGuestLoading ? 'Loading...' : 'Continue as Guest'}
-                </button>
-              </form>
+              </div>
+              <button
+                type="button"
+                onClick={handleGuestLogin}
+                disabled={isGuestLoading}
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 font-medium text-gray-700 transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                {isGuestLoading ? 'Loading...' : 'Continue as Guest'}
+              </button>
             </div>
-
             <div className="mt-6 pb-6 text-center">
               <Link
                 href="/register"

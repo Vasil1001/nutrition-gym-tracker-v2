@@ -79,6 +79,17 @@ export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: Nutrition
     { key: 'carbs', label: 'Carbs', unit: 'g' }
   ]
 
+  // New helper function to get target value
+  const getTargetValue = (key: keyof typeof savedTargets): number | null => {
+    const target = savedTargets[key]
+    if (typeof target === 'object' && target !== null && 'target' in target) {
+      return (target as NutritionTarget).target
+    } else if (typeof target === 'number') {
+      return target
+    }
+    return null
+  }
+
   return (
     <div className="space-y-4">
       <Card className="group">
@@ -95,18 +106,10 @@ export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: Nutrition
           <CardContent className="mt-3 flex flex-1 justify-between gap-1 text-sm lg:gap-4">
             {nutrients.map(({ key, label, unit }) => (
               <div
-                className="flex w-full flex-col items-center gap-1 rounded-lg p-2.5 text-xs font-medium tracking-tight dark:bg-[#19191f] lg:text-sm"
-                key={key}>
+                key={key}
+                className="flex w-full flex-col items-center gap-1 rounded-lg p-2.5 text-xs font-medium tracking-tight dark:bg-[#19191f] lg:text-sm">
                 <span>{label}</span>
-                {(() => {
-                  const target = savedTargets[key as keyof typeof savedTargets]
-                  if (typeof target === 'object' && target !== null && 'target' in target) {
-                    return (target as NutritionTarget).target
-                  } else if (typeof target === 'number') {
-                    return target
-                  }
-                  return null
-                })()}
+                {getTargetValue(key as keyof typeof savedTargets)}
                 {unit}
               </div>
             ))}

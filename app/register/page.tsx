@@ -1,45 +1,47 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
 import { NutritionIcon } from '@/components/icons/NutritionIcon'
 import { defaultFoods } from '@/seed-foods'
+import AuthForm from '@/app/auth/AuthForm'
 
 export default function RegisterPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [errors, setErrors] = useState<{
-    email?: string
-    password?: string
-    confirmPassword?: string
-  }>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
   const router = useRouter()
 
-  const validateForm = () => {
-    const newErrors: typeof errors = {}
-    if (!email) newErrors.email = 'Email is required'
-    if (!password) newErrors.password = 'Password is required'
-    if (password.length < 6) newErrors.password = 'Password must be at least 6 characters'
-    if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match'
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!validateForm()) return
-
+  const handleRegister = async (data: {
+    email: string
+    password: string
+    confirmPassword?: string
+  }) => {
     setIsSubmitting(true)
+    setServerError(null)
     try {
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password
+      // Check if the email is already registered
+      const res = await fetch('/api/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email })
       })
-      if (signUpError) throw signUpError
+      const result = await res.json()
+      if (result.exists) {
+        throw new Error('Email is already registered')
+      }
+
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password
+      })
+      if (signUpError) {
+        // Fallback check if error indicates duplicate email
+        if (signUpError.message.toLowerCase().includes('already')) {
+          throw new Error('Email is already registered')
+        }
+        throw signUpError
+      }
 
       // Seed default foods for the new user
       if (signUpData?.user?.id) {
@@ -48,18 +50,15 @@ export default function RegisterPage() {
           ...food,
           user_id: userId
         }))
-
         const { error: seedError } = await supabase.from('foods').insert(foodsToInsert)
-
         if (seedError) {
           console.error('Error seeding default foods:', seedError)
-          // Optionally, you might want to inform the user about this error
         }
       }
-
       router.push('/login')
     } catch (error: any) {
-      setErrors({ email: error.message })
+      setServerError(error.message || 'Invalid credentials')
+      console.error(error.message)
     } finally {
       setIsSubmitting(false)
     }
@@ -88,64 +87,17 @@ export default function RegisterPage() {
               <h2 className="mb-2 text-3xl font-bold text-gray-900">Get Full Access Today</h2>
               <p className="text-gray-600">Create your free account</p>
             </div>
-
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@company.com"
-                />
-                {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">Password</label>
-                <input
-                  type="password"
-                  className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
-                  } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="6+ characters"
-                />
-                {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  className={`w-full rounded-lg border bg-zinc-50 px-3.5 py-2.5 text-gray-800 ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                  } transition-all placeholder:text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500`}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm your password"
-                />
-                {errors.confirmPassword && (
-                  <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-lg bg-green-600 px-4 py-2.5 font-medium text-white transition-all hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                {isSubmitting ? 'Creating Account...' : 'Create account'}
-              </button>
-            </form>
-
+            {/* Server Error */}
+            {serverError && (
+              <div className="mb-4 text-center text-sm text-red-600">{serverError}</div>
+            )}
+            {/* Use reusable AuthForm with confirm password */}
+            <AuthForm
+              onSubmit={handleRegister}
+              isSubmitting={isSubmitting}
+              submitText="Create account"
+              showConfirm={true}
+            />
             <div className="mt-6 text-center">
               <Link
                 href="/login"
