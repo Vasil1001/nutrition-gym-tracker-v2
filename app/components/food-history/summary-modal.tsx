@@ -20,7 +20,7 @@ export default function SummaryModal({
 }: SummaryModalProps) {
   return (
     <Dialog open={!!selectedSummary} onOpenChange={() => setSelectedSummary(null)}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-xl p-4  lg:max-w-3xl">
         <DialogHeader>
           <DialogTitle className="flex justify-center">
             {selectedSummary && format(new Date(selectedSummary.date), 'MMMM dd, yyyy')}

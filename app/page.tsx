@@ -19,15 +19,14 @@ export default function Page() {
   const { toast } = useToast()
   const { foodsArray, isLoading, fetchFoods, setFoods } = useFoodData(session)
   const {
-    selectedFoods,
     foodCounts,
     summaries,
     handleAddFood,
     handleRemoveFood,
     handleClearSelectedFoods,
-    handleSaveDay,
+    saveFoodSummary,
     fetchSummaries
-  } = useFoodSelection(session, toast)
+  } = useFoodSelection(session, toast, foodsArray)
 
   useEffect(() => {
     fetchFoods()
@@ -70,7 +69,7 @@ export default function Page() {
           />
         </div>
         <RightPanel
-          selectedFoods={selectedFoods}
+          selectedFoods={foodsArray}
           foodCounts={foodCounts}
           onAdd={handleAddFood}
           onRemove={handleRemoveFood}
@@ -78,7 +77,7 @@ export default function Page() {
       </div>
       <FoodHistoryCards
         summaries={summaries}
-        handleSaveDay={handleSaveDay}
+        handleSaveDay={saveFoodSummary} // renamed from handleSaveDay
         foodCounts={foodCounts}
       />
       <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
