@@ -5,14 +5,35 @@ import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 import Onboarding from '@/app/components/right-panel/bmi-graphic/onboarding'
 import { useAuth } from '@/app/context/AuthContext'
+import { getBmiStatus, calculateBmiPosition } from '@/lib/bmi-utils'
+import { NutritionTarget, SavedTargets } from '@/lib/types'
 
 interface NutritionGoalsCardProps {
-  savedTargets: {
-    calories: { current: number; target: number }
-    protein: { current: number; target: number }
-    carbs: { current: number; target: number }
-  }
-  onGoalsUpdate: (goals: any) => void
+  savedTargets: SavedTargets
+  onGoalsUpdate: (targets: SavedTargets) => void
+}
+
+// Extracted component for BMI visualization
+function BmiVisualizer({ bmi }: { bmi: number }) {
+  const { status, color } = getBmiStatus(bmi)
+  const position = calculateBmiPosition(bmi)
+
+  return (
+    <div className="mt-2">
+      <div className="mb-1 text-sm font-medium">BMI: {bmi.toFixed(1)}</div>
+      <div className="relative h-2 w-full rounded-full bg-gray-200">
+        <div
+          className="absolute h-4 w-4 rounded-full border-2 border-white"
+          style={{
+            backgroundColor: color,
+            left: `${position}%`,
+            top: '-4px'
+          }}
+        />
+        <div className="mt-4 text-xs text-gray-500">{status}</div>
+      </div>
+    </div>
+  )
 }
 
 export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: NutritionGoalsCardProps) {
@@ -27,20 +48,6 @@ export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: Nutrition
     overweightMax: 30
   })
 
-  const getBmiStatus = (bmi: number) => {
-    if (bmi < 18.5) return { status: 'Underweight', color: '#2196F3' }
-    if (bmi < 25) return { status: 'Healthy Weight', color: '#4CAF50' }
-    if (bmi < 30) return { status: 'Overweight', color: '#FF9800' }
-    return { status: 'Obese', color: '#F44336' }
-  }
-
-  const calculateBmiPosition = (bmi: number) => {
-    if (bmi < 18.5) return (bmi / 18.5) * 18.5
-    if (bmi < 25) return 18.5 + ((bmi - 18.5) / 6.5) * (25 - 18.5)
-    if (bmi < 30) return 25 + ((bmi - 25) / 5) * (30 - 25)
-    return Math.min(100, 30 + ((bmi - 30) / 5) * (35 - 30))
-  }
-
   const handleSetTargetsClick = () => {
     setShowOnboarding(true)
   }
@@ -49,7 +56,7 @@ export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: Nutrition
     setShowOnboarding(false)
   }
 
-  const handleGoalsUpdate = (newTargets: any) => {
+  const handleGoalsUpdate = (newTargets: SavedTargets) => {
     if (newTargets.bmi) {
       const bmiStatus = getBmiStatus(newTargets.bmi)
       const bmiPosition = calculateBmiPosition(newTargets.bmi)
@@ -91,7 +98,15 @@ export default function BMIDailyGoals({ savedTargets, onGoalsUpdate }: Nutrition
                 className="flex w-full flex-col items-center gap-1 rounded-lg p-2.5 text-xs font-medium tracking-tight dark:bg-[#19191f] lg:text-sm"
                 key={key}>
                 <span>{label}</span>
-                {savedTargets[key as keyof typeof savedTargets].target}
+                {(() => {
+                  const target = savedTargets[key as keyof typeof savedTargets]
+                  if (typeof target === 'object' && target !== null && 'target' in target) {
+                    return (target as NutritionTarget).target
+                  } else if (typeof target === 'number') {
+                    return target
+                  }
+                  return null
+                })()}
                 {unit}
               </div>
             ))}

@@ -1,4 +1,4 @@
-import { Food } from "./types";
+import { Food, FoodSummary } from './types'
 
 export const foods: Food[] = [
   {
@@ -135,3 +135,47 @@ export const foods: Food[] = [
     carbs: 2.3
   }
 ]
+
+export function calculateTotalNutrition(foods: Food[], counts: { [key: string]: number }) {
+  let totalProtein = 0
+  let totalCalories = 0
+  let totalCarbs = 0
+
+  const foodItems = Object.entries(counts)
+    .map(([name, count]) => {
+      const food = foods.find((f) => f.name === name)
+      if (!food) return null
+
+      const protein = food.protein * count
+      const calories = food.calories * count
+      const carbs = food.carbs * count
+
+      totalProtein += protein
+      totalCalories += calories
+      totalCarbs += carbs
+
+      return {
+        name,
+        count,
+        protein,
+        calories,
+        carbs
+      }
+    })
+    .filter(Boolean)
+
+  return {
+    totalProtein,
+    totalCalories,
+    totalCarbs,
+    foodItems
+  }
+}
+
+export function isProteinTargetHit(proteinAmount: number, target: number) {
+  return proteinAmount >= target
+}
+
+export function formatNutritionValue(value: number) {
+  return value.toFixed(1)
+}
