@@ -48,7 +48,7 @@ export default function LoginPage() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 px-4 backdrop-blur-lg">
-      <div className="flex h-[600px] w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+      <div className="flex w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
         {/* Left side - hidden on mobile */}
         <div className="hidden max-w-xs items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
           <div className="space-y-6 text-center text-white">
@@ -70,12 +70,13 @@ export default function LoginPage() {
                 <h2 className="mb-2 text-4xl font-bold text-gray-900">Welcome Back</h2>
                 <p className="text-gray-600">Sign in to continue</p>
               </div>
-              {/* Server Error */}
-              {serverError && (
-                <div className="mb-4 text-center text-sm text-red-600">{serverError}</div>
-              )}
               {/* Use reusable AuthForm without confirm field */}
-              <AuthForm onSubmit={handleLogin} isSubmitting={isSubmitting} submitText="Sign In" />
+              <AuthForm
+                onSubmit={handleLogin}
+                isSubmitting={isSubmitting}
+                submitText="Sign In"
+                fieldError={serverError ? { field: 'password', message: serverError } : undefined}
+              />
               <div className="relative my-4">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>

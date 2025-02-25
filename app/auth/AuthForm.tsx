@@ -7,18 +7,25 @@ interface AuthFormData {
   confirmPassword?: string
 }
 
+interface FieldError {
+  field: 'email' | 'password' | 'confirmPassword'
+  message: string
+}
+
 interface AuthFormProps {
   onSubmit: (data: AuthFormData) => void | Promise<void>
   isSubmitting: boolean
   submitText: string
   showConfirm?: boolean
+  fieldError?: FieldError
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
   onSubmit,
   isSubmitting,
   submitText,
-  showConfirm = false
+  showConfirm = false,
+  fieldError
 }) => {
   const {
     register,
@@ -45,6 +52,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
           placeholder="name@company.com"
         />
         {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
+        {fieldError?.field === 'email' && (
+          <p className="animate-fadeIn mt-2 text-sm text-red-600">{fieldError.message}</p>
+        )}
       </div>
       {/* Password */}
       <div>
@@ -61,6 +71,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
           placeholder={showConfirm ? '6+ characters' : 'Enter your password'}
         />
         {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>}
+        {fieldError?.field === 'password' && (
+          <p className="animate-fadeIn mt-2 text-sm text-red-600">{fieldError.message}</p>
+        )}
       </div>
       {/* Confirm Password */}
       {showConfirm && (
@@ -79,6 +92,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
           />
           {errors.confirmPassword && (
             <p className="mt-2 text-sm text-red-600">{errors.confirmPassword.message}</p>
+          )}
+          {fieldError?.field === 'confirmPassword' && (
+            <p className="animate-fadeIn mt-2 text-sm text-red-600">{fieldError.message}</p>
           )}
         </div>
       )}

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
-import { NutritionIcon } from '@/components/icons/NutritionIcon'
+import { FruitBowlIcon } from '@/components/icons/FruitBowlIcon'
 import { defaultFoods } from '@/seed-foods'
 import AuthForm from '@/app/auth/AuthForm'
 
@@ -66,16 +66,16 @@ export default function RegisterPage() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 px-4 backdrop-blur-lg">
-      <div className="flex h-[600px] w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+      <div className="flex w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm xl:h-[750px]">
         {/* Left side - hidden on mobile */}
-        <div className="hidden max-w-xs items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
+        <div className="hidden max-w-[250px] items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex lg:max-w-xs">
           <div className="space-y-6 text-center text-white">
-            <div className="rounded-2xl bg-white/20 p-6 backdrop-blur-sm">
-              <div className="mx-auto mb-6 h-32 w-32 rounded-xl border-2 border-dashed bg-white/30 p-6">
-                <NutritionIcon />
+            <div className="rounded-2xl bg-white/20 p-2 backdrop-blur-sm">
+              <div className="mx-auto mb-3 h-24 w-24 rounded-xl border-2 border-dashed bg-white/30 p-5 lg:h-32 lg:w-32">
+                <FruitBowlIcon />
               </div>
-              <h3 className="mb-2 text-2xl font-bold">Track Your Nutrition</h3>
-              <p className="opacity-90">Start your journey to healthier eating today</p>
+              <h3 className="text-md mb-2 font-medium tracking-tight">Nutrition</h3>
+              <p className="text-xs opacity-90">Start your journey today</p>
             </div>
           </div>
         </div>
@@ -84,19 +84,16 @@ export default function RegisterPage() {
         <div className="flex flex-1 bg-white p-6 md:p-12">
           <div className="mx-auto flex w-full max-w-lg flex-col">
             <div className="mb-6 text-center">
-              <h2 className="mb-2 text-3xl font-bold text-gray-900">Get Full Access Today</h2>
-              <p className="text-gray-600">Create your free account</p>
+              <h2 className="mb-2 text-3xl font-bold text-gray-900">Register</h2>
+              <p className="text-md text-gray-600">Create your free account</p>
             </div>
-            {/* Server Error */}
-            {serverError && (
-              <div className="mb-4 text-center text-sm text-red-600">{serverError}</div>
-            )}
             {/* Use reusable AuthForm with confirm password */}
             <AuthForm
               onSubmit={handleRegister}
               isSubmitting={isSubmitting}
               submitText="Create account"
               showConfirm={true}
+              fieldError={serverError ? { field: 'email', message: serverError } : undefined}
             />
             <div className="mt-6 text-center">
               <Link
