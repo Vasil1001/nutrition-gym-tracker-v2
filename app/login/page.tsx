@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
-import { NutritionIcon } from '@/components/icons/NutritionIcon'
+import { FruitBowlIcon } from '@/components/icons/FruitBowlIcon'
 import AuthForm from '@/app/auth/AuthForm'
 
 export default function LoginPage() {
@@ -48,16 +48,16 @@ export default function LoginPage() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 px-4 backdrop-blur-lg">
-      <div className="flex w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm">
+      <div className="flex w-full max-w-3xl rounded-2xl bg-white/80 shadow-xl backdrop-blur-sm xl:h-[750px]">
         {/* Left side - hidden on mobile */}
-        <div className="hidden max-w-xs items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex">
+        <div className="hidden max-w-[250px] items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 p-12 md:flex lg:max-w-xs">
           <div className="space-y-6 text-center text-white">
-            <div className="rounded-2xl bg-white/20 p-6 backdrop-blur-sm">
-              <div className="mx-auto mb-6 h-32 w-32 rounded-xl border-2 border-dashed bg-white/30 p-6">
-                <NutritionIcon />
+            <div className="rounded-2xl bg-white/20 p-2 backdrop-blur-sm">
+              <div className="mx-auto mb-3 h-24 w-24 rounded-xl border-2 border-dashed bg-white/30 p-5 lg:h-32 lg:w-32">
+                <FruitBowlIcon />
               </div>
-              <h3 className="mb-2 text-2xl font-bold">Track Your Nutrition</h3>
-              <p className="opacity-90">Start your journey to healthier eating today</p>
+              <h3 className="text-md mb-2 font-medium tracking-tight">Nutrition</h3>
+              <p className="text-xs opacity-90">Start your journey today</p>
             </div>
           </div>
         </div>
@@ -67,8 +67,8 @@ export default function LoginPage() {
           <div className="mx-auto flex w-full max-w-lg flex-col">
             <div className="flex-1">
               <div className="mb-6 text-center">
-                <h2 className="mb-2 text-4xl font-bold text-gray-900">Welcome Back</h2>
-                <p className="text-gray-600">Sign in to continue</p>
+                <h2 className="mb-2 text-4xl font-bold text-gray-900">Sign in</h2>
+                <p className="text-gray-600">Welcome back</p>
               </div>
               {/* Use reusable AuthForm without confirm field */}
               <AuthForm
