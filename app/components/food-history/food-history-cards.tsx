@@ -52,14 +52,20 @@ export default function FoodHistoryCards({
     <div className="mb-10 mt-4">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h2 className="text-xl font-semibold">Food History</h2>
+          <h2 className="text-lg font-medium md:text-xl">Food History</h2>
           {hasMoreSummaries && (
-            <Button variant="outline" onClick={() => setShowAllSummaries(true)} className="text-sm">
+            <Button
+              variant="outline"
+              onClick={() => setShowAllSummaries(true)}
+              className="text-xs md:text-xs ">
               View All ({summaries.length})
             </Button>
           )}
         </div>
-        <Button onClick={handleSaveDay} disabled={Object.keys(foodCounts).length === 0}>
+        <Button
+          onClick={handleSaveDay}
+          disabled={Object.keys(foodCounts).length === 0}
+          className="px-2 text-xs md:px-3 md:text-sm">
           Save Today&apos;s Food
         </Button>
       </div>

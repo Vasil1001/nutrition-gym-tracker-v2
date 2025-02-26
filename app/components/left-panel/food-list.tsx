@@ -121,8 +121,8 @@ export default function FoodList({
     <div className="h-full rounded-lg shadow-sm">
       <div className="mx-auto md:max-w-none">
         <div className="flex items-center justify-between">
-          <h2 className="my-6 mt-4 text-xl font-semibold lg:text-2xl">Food List</h2>
-          <div className="flex gap-2">
+          <h2 className="text-lg my-6 mt-4 font-medium md:text-xl lg:text-2xl">Food List</h2>
+          <div className="flex items-center gap-2">
             <Button
               variant={'outline'}
               className="rounded px-2.5 py-2 text-xs transition duration-300 lg:text-sm"
