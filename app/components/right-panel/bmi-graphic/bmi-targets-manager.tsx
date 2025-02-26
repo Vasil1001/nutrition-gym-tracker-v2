@@ -61,7 +61,7 @@ function BMITargetsManager({ savedTargets, onSaveTargets }: BMITargetsManagerPro
     if (savedTargets.bmi && savedTargets.calories && savedTargets.protein) {
       setResults((prevResults) => ({
         ...prevResults,
-        bmi: savedTargets.bmi,
+        bmi: savedTargets.bmi || 0, // Ensure bmi is always a number
         calorieTarget: savedTargets.calories.target,
         proteinTarget: savedTargets.protein.target
       }))
