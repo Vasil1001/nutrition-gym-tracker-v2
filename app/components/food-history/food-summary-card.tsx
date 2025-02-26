@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { format } from 'date-fns'
 import { FoodSummary } from '@/lib/types'
-import { ProgressRings } from '@/app/components/progress-rings'
+import { ProgressRings } from '@/app/components/charts/progress-rings'
 
 interface FoodSummaryCardProps {
   summary: FoodSummary

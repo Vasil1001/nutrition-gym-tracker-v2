@@ -2,10 +2,10 @@
 
 import { Food } from '@/lib/types'
 import SelectedFoodList from './selected-food-list'
-
-import { useState, useEffect } from 'react'
 import BMIDailyGoals from './BMIDailyGoals'
 import ProgressMetricsCard from './progress-metrics-card'
+import { useNutritionTotals } from '@/hooks/useNutritionTotals'
+import { useNutritionTargets } from '@/hooks/useNutritionTargets'
 
 interface RightPanelProps {
   selectedFoods: Food[]
@@ -20,48 +20,15 @@ export default function RightPanel({
   onAdd,
   onRemove
 }: RightPanelProps) {
-  const [savedTargets, setSavedTargets] = useState({
-    calories: { current: 0, target: 2000 },
-    protein: { current: 0, target: 150 },
-    carbs: { current: 0, target: 250 }
-  })
-
-  const totals = {
-    protein: Object.keys(foodCounts).reduce((total, foodName) => {
-      const food = selectedFoods.find((f) => f.name === foodName)
-      return total + (food ? Number(food.protein) * foodCounts[foodName] : 0)
-    }, 0),
-    calories: Object.keys(foodCounts).reduce((total, foodName) => {
-      const food = selectedFoods.find((f) => f.name === foodName)
-      return total + (food ? Number(food.calories) * foodCounts[foodName] : 0)
-    }, 0),
-    carbs: Object.keys(foodCounts).reduce((total, foodName) => {
-      const food = selectedFoods.find((f) => f.name === foodName)
-      return total + (food ? Number(food.carbs) * foodCounts[foodName] : 0)
-    }, 0)
-  }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('nutritionTargets')
-      if (saved) {
-        setSavedTargets(JSON.parse(saved))
-      }
-    }
-  }, [])
-
-  const handleGoalsUpdate = (newGoals: any) => {
-    setSavedTargets(newGoals)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('nutritionTargets', JSON.stringify(newGoals))
-    }
-  }
+  // Use the custom hooks for cleaner component
+  const { targets, updateTargets } = useNutritionTargets()
+  const totals = useNutritionTotals(selectedFoods, foodCounts)
 
   return (
     <div className="relative order-1 max-h-[calc(100vh-13rem)] overflow-hidden md:order-2 lg:border-l">
       <div className="space-y-4 pt-4 lg:pl-4">
-        <BMIDailyGoals savedTargets={savedTargets} onGoalsUpdate={handleGoalsUpdate} />
-        <ProgressMetricsCard totals={totals} targets={savedTargets} />
+        <BMIDailyGoals savedTargets={targets} onGoalsUpdate={updateTargets} />
+        <ProgressMetricsCard totals={totals} targets={targets} />
         <div className="mt-4">
           <SelectedFoodList
             selectedFoods={selectedFoods}

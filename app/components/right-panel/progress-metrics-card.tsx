@@ -1,7 +1,7 @@
 'use client'
 
 import { Card, CardContent } from '@/components/ui/card'
-import { ProgressCircle } from '../progress-circle'
+import { ProgressCircle } from '../charts/progress-circle'
 
 interface ProgressMetricsCardProps {
   totals: {

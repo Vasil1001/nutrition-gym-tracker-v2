@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { format } from 'date-fns'
 import { FoodSummary } from '@/lib/types'
-import { ProgressCircle } from '../progress-circle'
-import { ProgressRings } from '../progress-rings'
-import { ProteinChart } from '../protein-chart'
+import { ProgressCircle } from '../charts/progress-circle'
+import { ProgressRings } from '../charts/progress-rings'
+import { ProteinChart } from '../charts/protein-chart'
 
 interface SummaryModalProps {
   selectedSummary: FoodSummary | null
