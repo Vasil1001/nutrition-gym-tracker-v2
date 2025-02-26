@@ -18,6 +18,9 @@ const config = {
       }
     },
     extend: {
+      screens: {
+        xs: '620px'
+      },
       fontFamily: {
         chillax: ['Chillax', 'sans-serif'],
         satoshi: ['Satoshi', 'sans-serif'],

@@ -42,7 +42,7 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-1.5">
+    <div className="flex flex-row items-center justify-center gap-4 sm:flex-col sm:gap-1.5">
       <svg className="h-20 w-20" viewBox="0 0 100 100">
         {rings.map((ring, i) => {
           const { circumference, offset } = circleProps(ring.current, ring.target, ring.radius)
@@ -76,18 +76,27 @@ export const ProgressRings: React.FC<ProgressRingsProps> = ({
         })}
       </svg>
       {showLabels && (
-        <div className="flex flex-col items-center justify-center gap-0.5 font-medium tracking-tight">
-          <div className="flex items-start gap-1 text-sm" style={{ color: '#FF9800' }}>
-            <span>{Math.round(calories.current)}</span>
-            <span>{calories.current >= calories.target ? 'cal' : `/ ${calories.target}cal`}</span>
+        <div className="flex flex-col items-start justify-center gap-0.5 sm:items-center">
+          <div className="flex items-start gap-1 text-xs" style={{ color: '#FF9800' }}>
+            <span>{Math.round(calories.current)}c</span>
+            <span className="xs:hidden">{calories.current >= calories.target ? 'cal' : ''}</span>
+            <span className="xs:inline hidden">
+              {calories.current >= calories.target ? 'cal' : `/ ${calories.target}cal`}
+            </span>
           </div>
-          <div className="flex items-center gap-1 text-sm" style={{ color: '#2196F3' }}>
+          <div className="flex items-center gap-1 text-xs" style={{ color: '#2196F3' }}>
             <span>{Number(protein.current).toFixed(1)}g</span>
-            <span>{protein.current >= protein.target ? 'Protein' : `/ ${protein.target}g`}</span>
+            <span className="xs:hidden">{protein.current >= protein.target ? '' : ''}</span>
+            <span className="xs:inline hidden">
+              {protein.current >= protein.target ? '' : `/ ${protein.target}g`}
+            </span>
           </div>
-          <div className="flex items-center gap-1 text-sm" style={{ color: '#4CAF50' }}>
-            <span>{Math.round(carbs.current)}g</span>
-            <span>{carbs.current >= carbs.target ? 'Carbs' : `/ ${carbs.target}carbs`}</span>
+          <div className="flex items-center gap-1 text-xs" style={{ color: '#4CAF50' }}>
+            <span>{Math.round(carbs.current)}ca</span>
+            <span className="xs:hidden">{carbs.current >= carbs.target ? 'Carbs' : ''}</span>
+            <span className="xs:inline hidden">
+              {carbs.current >= carbs.target ? 'Carbs' : `/ ${carbs.target}carb`}
+            </span>
           </div>
         </div>
       )}
