@@ -67,4 +67,10 @@ export interface SavedTargets {
   protein: NutritionTarget
   carbs: NutritionTarget
   bmi?: number
+  // BMI visualization properties
+  bmiPosition?: number
+  bmiStatus?: { status: string; color: string }
+  underweightMax?: number
+  normalMax?: number
+  overweightMax?: number
 }

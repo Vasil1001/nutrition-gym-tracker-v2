@@ -40,20 +40,20 @@ export default function FoodCard({
 
   return (
     <div>
-      <Card key={food.name} className="group flex h-full flex-col rounded-xl">
+      <Card key={food.name} className="group flex h-full flex-col rounded-lg">
         <CardContent className="flex flex-1 flex-col rounded-xl p-3 text-base">
           <div className="flex flex-1 flex-col">
             <div className="mb-2">
               <div className="flex items-start justify-between">
                 <div className="flex">
-                  <CardTitle className="flex text-xs lg:text-[15px]">
+                  <CardTitle className="mb-1 flex items-center text-xs">
                     {count > 0 && (
-                      <span className="mr-1 whitespace-nowrap text-xs font-bold tracking-tighter text-white">
+                      <span className="mr-1 whitespace-nowrap text-xs font-medium text-white">
                         x{count}
                       </span>
                     )}
                     <div className="flex cursor-pointer" onClick={handleDeleteClick}>
-                      <CardTitle className="flex text-xs hover:text-red-500 hover:line-through lg:text-[16px]">
+                      <CardTitle className="flex text-sm font-medium hover:text-red-500 hover:line-through ">
                         {food.name}
                       </CardTitle>
                     </div>
