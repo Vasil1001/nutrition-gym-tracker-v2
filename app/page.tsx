@@ -26,6 +26,9 @@ export default function Page() {
     fetchSummaries
   } = useFoodSelection(session, toast, foodsArray)
 
+  // Check if user is guest by comparing email with the guest email
+  const isGuestUser = session?.user?.email === process.env.NEXT_PUBLIC_GUEST_EMAIL
+
   useEffect(() => {
     fetchFoods()
   }, [fetchFoods])
@@ -37,6 +40,14 @@ export default function Page() {
   return (
     <AuthGuard>
       <div className="px-4 pb-4 pt-0 sm:px-0">
+        {isGuestUser && (
+          <div className="rounded-lg bg-zinc-100 px-4 py-3 shadow-sm">
+            <p className="text-sm text-zinc-800">
+              <span className="mr-2 inline-block h-2 w-2 rounded-full bg-amber-500"></span>
+              You are currently using guest mode.
+            </p>
+          </div>
+        )}
         <div className="grid h-full gap-4 border-b md:grid-cols-[2fr_1fr]">
           <div className="relative order-2 md:order-1">
             <FoodList
