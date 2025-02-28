@@ -28,7 +28,7 @@ export default function SummaryModal({
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4 flex flex-col gap-6 sm:gap-8">
-            <div className="xs:gap-3 mx-auto flex max-w-[500px] justify-center gap-2 sm:gap-6 md:gap-8">
+            <div className="mx-auto flex max-w-[500px] justify-center gap-2 xs:gap-3 sm:gap-6 md:gap-8">
               {selectedSummary && (
                 <>
                   <ProgressCircle
@@ -80,7 +80,7 @@ export default function SummaryModal({
                     <div className="flex flex-col items-center">
                       <span className="text-xs text-muted-foreground sm:text-sm">Protein</span>
                       <span className="text-xl font-bold text-blue-500 sm:text-2xl">
-                        {Number(selectedSummary?.totalProtein).toFixed(1)}g
+                        {Math.round(selectedSummary?.totalProtein || 0)}g
                       </span>
                     </div>
                     <div className="flex flex-col items-center">
@@ -111,15 +111,9 @@ export default function SummaryModal({
                         <span className="text-xs font-medium sm:text-sm">{food.name}</span>
                       </div>
                       <div className="mt-1 flex flex-wrap gap-2 pl-8 text-sm text-muted-foreground sm:mt-0 sm:pl-0 sm:text-sm">
-                        <span className="whitespace-nowrap">
-                          {Number(food.protein).toFixed()}g protein
-                        </span>
-                        <span className="whitespace-nowrap">
-                          {Number(food.calories).toFixed()} cal
-                        </span>
-                        <span className="whitespace-nowrap">
-                          {Number(food.carbs).toFixed()}g carbs
-                        </span>
+                        <span className="whitespace-nowrap">{food.protein.toFixed()}g protein</span>
+                        <span className="whitespace-nowrap">{food.calories.toFixed()} cal</span>
+                        <span className="whitespace-nowrap">{food.carbs.toFixed()}g carbs</span>
                       </div>
                     </div>
                   ))}
