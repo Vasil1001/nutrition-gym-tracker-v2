@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import FoodList from './components/left-panel/food-list'
 import FoodHistoryCards from './components/food-history/food-history-cards'
 import AuthGuard from './components/auth/AuthGuard'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'react-hot-toast'
 import { useFoodData } from '@/hooks/useFoodData'
 import { useEffect } from 'react'
 import { useFoodSelection } from '@/hooks/useFoodSelection'
@@ -14,7 +14,6 @@ const RightPanel = dynamic(() => import('./components/right-panel'), { ssr: fals
 
 export default function Page() {
   const { session } = useAuth()
-  const { toast } = useToast()
   const { foodsArray, isLoading, fetchFoods, setFoods } = useFoodData(session)
   const {
     foodCounts,

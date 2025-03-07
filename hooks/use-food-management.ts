@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { Food, FoodSummary } from '@/lib/types'
 import { supabase } from '@/lib/supabaseClient'
-import { useToast } from './use-toast'
+import { toast } from 'react-hot-toast'
 import { calculateTotalNutrition } from '@/lib/foods'
 
 interface FoodManagementState {
@@ -15,7 +15,6 @@ interface FoodManagementState {
 }
 
 export function useFoodManagement(userId: string | undefined) {
-  const { toast } = useToast()
   const [state, setState] = useState<FoodManagementState>(() => {
     // Initialize from localStorage if available
     const initialState = {
@@ -111,22 +110,14 @@ export function useFoodManagement(userId: string | undefined) {
       setState((prev) => ({ ...prev, summaries: data || [] }))
     } catch (error) {
       console.error('Error fetching summaries:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to load food history',
-        variant: 'destructive'
-      })
+      toast.error('Failed to load food history')
     }
-  }, [userId, toast])
+  }, [userId])
 
   const handleSaveDay = async () => {
     if (!userId) return
     if (Object.keys(state.foodCounts).length === 0) {
-      toast({
-        title: 'No foods selected',
-        description: 'Please select some foods before saving.',
-        variant: 'destructive'
-      })
+      toast.error('Please select some foods before saving.')
       return
     }
 
@@ -150,18 +141,11 @@ export function useFoodManagement(userId: string | undefined) {
       if (error) throw error
 
       setState((prev) => ({ ...prev, summaries: [summaryData, ...prev.summaries] }))
-      toast({
-        title: 'Day saved!',
-        description: 'Your daily food summary has been saved.'
-      })
+      toast.success('Your daily food summary has been saved.')
       handleClearSelectedFoods()
     } catch (error) {
       console.error('Error saving summary:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to save your daily food summary.',
-        variant: 'destructive'
-      })
+      toast.error('Failed to save your daily food summary.')
     }
   }
 

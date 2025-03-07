@@ -8,8 +8,8 @@ import { useState } from 'react'
 import { Spinner } from '@/components/ui/loader'
 import FoodCardSkeleton from '@/app/components/left-panel/food-card-skeleton'
 import { Food } from '@/lib/types'
-import { foods as defaultFoods } from '@/lib/foods' // Add this import
-import { useToast } from '@/hooks/use-toast' // Add this import
+import { foods as defaultFoods } from '@/lib/foods'
+import { toast } from 'react-hot-toast'
 
 interface FoodProps {
   foods: Food[]
@@ -32,7 +32,6 @@ export default function FoodList({
 }: FoodProps) {
   const { session } = useAuth()
   const [isListView, setIsListView] = useState(false)
-  const { toast } = useToast()
 
   // Function to check which default foods are missing
   const getMissingDefaultFoods = () => {
@@ -47,10 +46,8 @@ export default function FoodList({
       const missingFoods = getMissingDefaultFoods()
 
       if (missingFoods.length === 0) {
-        toast({
-          title: 'All default foods exist',
-          description: 'You already have all default foods in your list',
-          variant: 'default'
+        toast('You already have all default foods in your list', {
+          icon: '✓'
         })
         return
       }
@@ -66,19 +63,11 @@ export default function FoodList({
 
       if (data) {
         setFoods((prev) => [...prev, ...data])
-        toast({
-          title: 'Default foods added',
-          description: `Added ${data.length} missing default foods to your list`,
-          variant: 'default'
-        })
+        toast.success(`Added ${data.length} missing default foods to your list`)
       }
     } catch (error) {
       console.error('Error adding default foods:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to add default foods',
-        variant: 'destructive'
-      })
+      toast.error('Failed to add default foods')
     }
   }
 
@@ -121,7 +110,7 @@ export default function FoodList({
     <div className="h-full rounded-lg shadow-sm">
       <div className="mx-auto md:max-w-none">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg my-6 mt-4 font-medium md:text-xl lg:text-2xl">Food List</h2>
+          <h2 className="my-6 mt-4 text-lg font-medium md:text-xl lg:text-2xl">Food List</h2>
           <div className="flex items-center gap-2">
             <Button
               variant={'outline'}
@@ -154,7 +143,6 @@ export default function FoodList({
         ) : foods.length > 0 ? (
           <div
             className={`mb-2 grid gap-4 ${
-              // Changed mb-4 to mb-2 to match selected food list
               isListView
                 ? 'grid-cols-1'
                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
@@ -164,7 +152,6 @@ export default function FoodList({
                 : ''
             }`}>
             {' '}
-            {/* Added scrollable container */}
             {isListView ? (
               <div>
                 <FoodAsListTable
@@ -190,7 +177,6 @@ export default function FoodList({
             )}
           </div>
         ) : (
-          // Show 'No foods added yet' only when not loading and foods array is empty
           <div className="col-span-full flex h-[50vh] items-center justify-center">
             <p className="text-center text-muted-foreground">No foods added yet</p>
           </div>
