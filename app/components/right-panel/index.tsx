@@ -5,7 +5,8 @@ import SelectedFoodList from './selected-food-list'
 import BMIDailyGoals from './BMIDailyGoals'
 import ProgressMetricsCard from './progress-metrics-card'
 import { useNutritionTotals } from '@/hooks/useNutritionTotals'
-import { useNutritionTargets } from '@/hooks/useNutritionTargets'
+import { useNutritionTargets } from '@/app/components/right-panel/useNutritionTargets'
+
 
 interface RightPanelProps {
   selectedFoods: Food[]
