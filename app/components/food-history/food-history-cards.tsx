@@ -63,7 +63,7 @@ export default function FoodHistoryCards({
           )}
         </div>
         <Button
-          onClick={handleSaveDay}
+          onClick={() => handleSaveDay()}
           disabled={Object.keys(foodCounts).length === 0}
           className="px-2 text-xs md:px-3 md:text-sm">
           Save Today&apos;s Food

@@ -33,7 +33,6 @@ export default function FoodList({
   const { session } = useAuth()
   const [isListView, setIsListView] = useState(false)
 
-  // Function to check which default foods are missing
   const getMissingDefaultFoods = () => {
     const existingFoodNames = new Set(foods.map((f) => f.name))
     return defaultFoods.filter((food) => !existingFoodNames.has(food.name))

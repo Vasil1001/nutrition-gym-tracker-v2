@@ -3,8 +3,9 @@ import { supabase } from '@/lib/supabaseClient'
 import { Food, FoodSummary } from '@/lib/types'
 import { useLocalStorageFoodCounts } from './useLocalStorageFoodCounts'
 import { useSaveFoodSummary } from './useSaveFoodSummary'
+import { toast } from 'react-hot-toast'
 
-export function useFoodSelection(session: any, toast: any, foods: Food[]) {
+export function useFoodSelection(session: any, foods: Food[]) {
   const { foodCounts, setFoodCounts } = useLocalStorageFoodCounts()
   const [summaries, setSummaries] = useState<FoodSummary[]>([])
 
@@ -52,13 +53,9 @@ export function useFoodSelection(session: any, toast: any, foods: Food[]) {
       setSummaries(data || [])
     } catch (error) {
       console.error('Error fetching summaries:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to load food history',
-        variant: 'destructive'
-      })
+      toast.error('Failed to load food history')
     }
-  }, [session, toast])
+  }, [session])
 
   const calculateSummaryData = useCallback(() => {
     return {
@@ -104,17 +101,12 @@ export function useFoodSelection(session: any, toast: any, foods: Food[]) {
 
   const { saveFoodSummary } = useSaveFoodSummary({
     session,
-    toast,
     setSummaries,
     summaries,
     foodCounts,
     handleClearSelectedFoods,
     calculateSummaryData
   })
-
-  useEffect(() => {
-    // Remove selectedFoods logic from localStorage
-  }, [foodCounts])
 
   return {
     foodCounts,
