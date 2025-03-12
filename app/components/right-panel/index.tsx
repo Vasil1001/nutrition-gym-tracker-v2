@@ -21,7 +21,6 @@ export default function RightPanel({
   onAdd,
   onRemove
 }: RightPanelProps) {
-  // Use the custom hooks for cleaner component
   const { targets, updateTargets } = useNutritionTargets()
   const totals = useNutritionTotals(selectedFoods, foodCounts)
 

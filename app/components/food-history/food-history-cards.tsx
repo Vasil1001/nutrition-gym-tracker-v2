@@ -2,23 +2,40 @@ import { useState, useEffect, useMemo } from 'react'
 import { format } from 'date-fns'
 import { FoodSummary } from '@/lib/types'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
 import FoodSummaryCard from './food-summary-card'
 import SummaryModal from './summary-modal'
+import { Trash2 } from 'lucide-react'
 
 interface FoodHistoryCardsProps {
   summaries: FoodSummary[]
   handleSaveDay: () => void
   foodCounts: { [key: string]: number }
+  onDeleteSummary: (summaryId: string) => void
 }
 
 export default function FoodHistoryCards({
   summaries,
   handleSaveDay,
-  foodCounts
+  foodCounts,
+  onDeleteSummary
 }: FoodHistoryCardsProps) {
   const [selectedSummary, setSelectedSummary] = useState<FoodSummary | null>(null)
   const [showAllSummaries, setShowAllSummaries] = useState(false)
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    open: boolean
+    summaryId: string | null
+  }>({
+    open: false,
+    summaryId: null
+  })
   const [userTargets, setUserTargets] = useState({
     calories: 2000,
     protein: 150,
@@ -46,6 +63,17 @@ export default function FoodHistoryCards({
 
   const isProteinTargetHit = (proteinAmount: number) => {
     return proteinAmount >= userTargets.protein
+  }
+
+  const handleDeleteClick = (summaryId: string) => {
+    setDeleteConfirmation({ open: true, summaryId })
+  }
+
+  const handleConfirmDelete = () => {
+    if (deleteConfirmation.summaryId) {
+      onDeleteSummary(deleteConfirmation.summaryId)
+    }
+    setDeleteConfirmation({ open: false, summaryId: null })
   }
 
   return (
@@ -78,6 +106,7 @@ export default function FoodHistoryCards({
             userTargets={userTargets}
             isSelected={summary.id === selectedSummary?.id}
             onClick={() => setSelectedSummary(summary)}
+            onDelete={onDeleteSummary}
           />
         ))}
       </div>
@@ -92,34 +121,68 @@ export default function FoodHistoryCards({
               {summaries.map((summary) => (
                 <div
                   key={summary.id}
-                  className={`cursor-pointer p-4 hover:bg-accent/50 ${
+                  className={`flex cursor-pointer items-center justify-between p-4 hover:bg-accent/50 ${
                     isProteinTargetHit(summary.totalProtein) ? 'bg-blue-500/10' : ''
-                  }`}
-                  onClick={() => {
-                    setSelectedSummary(summary)
-                    setShowAllSummaries(false)
-                  }}>
-                  <div className="flex items-center justify-between">
-                    <div className="font-medium">
-                      {format(new Date(summary.date), 'MMMM dd, yyyy')}
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>{summary.totalCalories} calories</span>
-                      <span
-                        className={
-                          isProteinTargetHit(summary.totalProtein)
-                            ? 'font-semibold text-blue-500'
-                            : ''
-                        }>
-                        {Number(summary.totalProtein).toFixed()}g protein
-                      </span>
-                      <span>{summary.totalCarbs}g carbs</span>
+                  }`}>
+                  <div
+                    className="flex-grow"
+                    onClick={() => {
+                      setSelectedSummary(summary)
+                      setShowAllSummaries(false)
+                    }}>
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium">
+                        {format(new Date(summary.date), 'MMMM dd, yyyy')}
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span>{summary.totalCalories} calories</span>
+                        <span
+                          className={
+                            isProteinTargetHit(summary.totalProtein)
+                              ? 'font-semibold text-blue-500'
+                              : ''
+                          }>
+                          {Number(summary.totalProtein).toFixed()}g protein
+                        </span>
+                        <span>{summary.totalCarbs}g carbs</span>
+                      </div>
                     </div>
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-2 h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
+                    onClick={() => handleDeleteClick(summary.id)}>
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Delete</span>
+                  </Button>
                 </div>
               ))}
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={deleteConfirmation.open}
+        onOpenChange={(open) => setDeleteConfirmation({ ...deleteConfirmation, open })}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Food Summary</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this food summary? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteConfirmation({ open: false, summaryId: null })}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -128,6 +191,7 @@ export default function FoodHistoryCards({
         userTargets={userTargets}
         setSelectedSummary={setSelectedSummary}
         summaries={summaries}
+        onDeleteSummary={onDeleteSummary}
       />
     </div>
   )

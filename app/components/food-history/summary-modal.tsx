@@ -10,6 +10,8 @@ interface SummaryModalProps {
   userTargets: { calories: number; protein: number; carbs: number }
   setSelectedSummary: (summary: FoodSummary | null) => void
   summaries: FoodSummary[]
+  onDeleteSummary: (summaryId: string) => void
+
 }
 
 export default function SummaryModal({

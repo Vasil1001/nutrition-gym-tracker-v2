@@ -22,7 +22,8 @@ export default function Page() {
     handleRemoveFood,
     handleClearSelectedFoods,
     saveFoodSummary,
-    fetchSummaries
+    fetchSummaries,
+    deleteFoodSummary
   } = useFoodSelection(session, foodsArray)
 
   const isGuestUser = session?.user?.email === process.env.NEXT_PUBLIC_GUEST_EMAIL
@@ -68,6 +69,7 @@ export default function Page() {
             }
           }}
           foodCounts={foodCounts}
+          onDeleteSummary={deleteFoodSummary}
         />
         <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
         <div className="mb-6 rounded-lg border p-4">

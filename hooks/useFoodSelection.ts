@@ -108,6 +108,30 @@ export function useFoodSelection(session: any, foods: Food[]) {
     calculateSummaryData
   })
 
+  const deleteFoodSummary = useCallback(
+    async (summaryId: string) => {
+      if (!session) return
+
+      try {
+        const { error } = await supabase
+          .from('food_summaries')
+          .delete()
+          .eq('id', summaryId)
+          .eq('user_id', session.user.id)
+
+        if (error) throw error
+
+        // Update local state after successful deletion
+        setSummaries((prev) => prev.filter((summary) => summary.id !== summaryId))
+        toast.success('Food summary deleted')
+      } catch (error) {
+        console.error('Error deleting summary:', error)
+        toast.error('Failed to delete food summary')
+      }
+    },
+    [session, setSummaries]
+  )
+
   return {
     foodCounts,
     summaries,
@@ -115,6 +139,7 @@ export function useFoodSelection(session: any, foods: Food[]) {
     handleRemoveFood,
     handleClearSelectedFoods,
     saveFoodSummary,
-    fetchSummaries
+    fetchSummaries,
+    deleteFoodSummary
   }
 }
