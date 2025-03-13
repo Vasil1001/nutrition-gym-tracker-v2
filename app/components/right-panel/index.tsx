@@ -7,7 +7,6 @@ import ProgressMetricsCard from './progress-metrics-card'
 import { useNutritionTotals } from '@/hooks/useNutritionTotals'
 import { useNutritionTargets } from '@/app/components/right-panel/useNutritionTargets'
 
-
 interface RightPanelProps {
   selectedFoods: Food[]
   foodCounts: { [key: string]: number }
@@ -25,7 +24,7 @@ export default function RightPanel({
   const totals = useNutritionTotals(selectedFoods, foodCounts)
 
   return (
-    <div className="relative order-1 max-h-[calc(100vh-11rem)]  md:order-2 lg:border-l">
+    <div className="relative order-1 max-h-[calc(100vh-11rem)] overflow-y-auto scrollbar-thin scrollbar-track-background scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30  md:order-2 lg:border-l">
       <div className="space-y-4 pt-4 lg:pl-4">
         <BMIDailyGoals savedTargets={targets} onGoalsUpdate={updateTargets} />
         <ProgressMetricsCard totals={totals} targets={targets} />
