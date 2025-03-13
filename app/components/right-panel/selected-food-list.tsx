@@ -31,7 +31,7 @@ export default function SelectedFoodList({
   const hasSelectedFoods = Object.keys(foodCounts).length > 0
 
   return (
-    <div className="mx-2 mt-6 flex flex-1 flex-col rounded-xl rounded-b-none outline outline-8 outline-[#2e3039]">
+    <div className="mx-2 mt-6 flex max-h-[450px] flex-1 flex-col rounded-xl rounded-b-none outline outline-8 outline-[#2e3039] ">
       {!hasSelectedFoods ? (
         <div className="flex h-[200px] items-center justify-center text-muted-foreground">
           No foods selected
@@ -44,11 +44,11 @@ export default function SelectedFoodList({
                 #
               </TableHead>
               <TableHead className="w-[150px]">Food</TableHead>
-              <TableHead className="w-[1px] rounded-xl text-center">Protein</TableHead>
-              <TableHead className="w-[1px] rounded-xl text-center">Calories</TableHead>
+              <TableHead className="w-[1px]  text-center">Protein</TableHead>
+              <TableHead className="w-[1px]  text-center">Calories</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="max-h-[10px] overflow-y-auto sm:text-xs lg:text-sm">
+          <TableBody className="overflow-y-auto sm:text-xs lg:text-sm">
             {Object.entries(foodCounts).map(([foodName, count], i) => {
               const food = selectedFoods.find((f) => f.name === foodName)
               if (!food || count === 0) return null
@@ -84,13 +84,11 @@ export default function SelectedFoodList({
               )
             })}
             {/* Totals row rendered inside the TableBody */}
-            <TableRow className="sticky bottom-0 w-full border-t bg-[#2e3039] text-sm hover:bg-[#2e3039]">
+            <TableRow className="sticky bottom-0 w-full border-t bg-[#2e3039] text-xs  font-medium hover:bg-[#2e3039]">
               <TableCell className="w-[30px] border-none py-3 pt-4 text-start text-muted-foreground">
                 #
               </TableCell>
-              <TableCell className="w-[120px] border-none py-3 pt-4 text-start font-medium">
-                Total
-              </TableCell>
+              <TableCell className="w-[120px] border-none py-3 pt-4 text-start">Total</TableCell>
               <TableCell className="w-[1px] border-none py-3 pt-4 text-center">
                 {totals.protein.toFixed()}g
               </TableCell>

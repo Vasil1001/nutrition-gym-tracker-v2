@@ -144,7 +144,7 @@ export default function FoodList({
             className={`mb-2 grid gap-4 ${
               isListView
                 ? 'grid-cols-1'
-                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
+                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 '
             } ${
               !isListView
                 ? 'max-h-[70vh] overflow-y-auto pr-4 scrollbar-thin scrollbar-track-background scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30'

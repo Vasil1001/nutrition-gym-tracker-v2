@@ -35,7 +35,7 @@ export default function FoodAsListTable({ foods, foodCounts, onAdd, onRemove }: 
     onRemove(food)
   }
   return (
-    <Card className="m-2 ">
+    <Card className="m-2 max-h-[70vh] scrollbar-thin scrollbar-track-background scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30 overflow-y-auto ">
       <CardContent className="rounded-xl p-0 outline outline-8 outline-[#2e3039]">
         <div className="overflow-auto rounded-xl ">
           <Table className="">

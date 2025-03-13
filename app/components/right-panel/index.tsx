@@ -25,7 +25,7 @@ export default function RightPanel({
   const totals = useNutritionTotals(selectedFoods, foodCounts)
 
   return (
-    <div className="relative order-1 max-h-[calc(100vh-13rem)] overflow-hidden md:order-2 lg:border-l">
+    <div className="relative order-1 max-h-[calc(100vh-11rem)]  md:order-2 lg:border-l">
       <div className="space-y-4 pt-4 lg:pl-4">
         <BMIDailyGoals savedTargets={targets} onGoalsUpdate={updateTargets} />
         <ProgressMetricsCard totals={totals} targets={targets} />
