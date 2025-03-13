@@ -71,8 +71,7 @@ export default function Page() {
           foodCounts={foodCounts}
           onDeleteSummary={deleteFoodSummary}
         />
-        <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
-        <div className="mb-6 rounded-lg border p-4">
+        <div className="border rounded-lg">
           <ProteinChart data={summaries} />
         </div>
       </div>

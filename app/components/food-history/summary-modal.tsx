@@ -55,7 +55,6 @@ export default function SummaryModal({
               )}
             </div>
             <div className="rounded-lg border p-4">
-              <h3 className="mb-4 text-lg font-semibold">Protein Progress</h3>
               <ProteinChart data={summaries} selectedSummaryId={selectedSummary?.id} />
             </div>
             <div className="flex flex-col rounded-lg border">
