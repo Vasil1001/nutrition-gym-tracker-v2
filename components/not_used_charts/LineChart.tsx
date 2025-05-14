@@ -34,7 +34,6 @@ const data = [
 export function LineChartWeights() {
   const [chartData, setChartData] = useState(data)
 
-  // Method to add new entry
   const addEntry = (session: Session) => {
     console.log(session)
     // TODO: Console log the type of weight.date

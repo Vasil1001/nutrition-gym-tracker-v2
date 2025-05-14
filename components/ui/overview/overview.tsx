@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { ArrowUpFromLine, Clock, User } from 'lucide-react'
-import { LineChartWeights } from '../../charts/LineChart'
+import { LineChartWeights } from '../../not_used_charts/LineChart'
 import { TabsContent } from '@/components/ui/tabs'
 import { GitBranchIcon } from '../icons/GitBranchIcon'
 

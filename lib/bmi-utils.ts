@@ -1,5 +1,3 @@
-// Functions for BMI-related calculations and utilities
-
 /**
  * Gets the BMI status and associated color based on the BMI value.
  * @param bmi - The BMI value to check
