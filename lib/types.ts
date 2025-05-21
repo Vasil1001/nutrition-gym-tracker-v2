@@ -73,4 +73,7 @@ export interface SavedTargets {
   underweightMax?: number
   normalMax?: number
   overweightMax?: number
+  // User measurements
+  heightCm?: number
+  weightKg?: number
 }

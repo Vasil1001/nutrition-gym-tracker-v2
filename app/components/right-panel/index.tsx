@@ -5,7 +5,8 @@ import SelectedFoodList from './selected-food-list'
 import BMIDailyGoals from './BMIDailyGoals'
 import ProgressMetricsCard from './progress-metrics-card'
 import { useNutritionTotals } from '@/hooks/useNutritionTotals'
-import { useNutritionTargets } from '@/app/components/right-panel/useNutritionTargets'
+import { useUserTargets } from '@/hooks/useUserTargets'
+import { useAuth } from '@/app/context/AuthContext'
 
 interface RightPanelProps {
   selectedFoods: Food[]
@@ -19,8 +20,16 @@ export default function RightPanel({
   foodCounts,
   onAdd,
   onRemove
-}: RightPanelProps) {
-  const { targets, updateTargets } = useNutritionTargets()
+}: RightPanelProps) {  const { session } = useAuth()
+  const userTargetsResult = useUserTargets(session)
+  const { targets, updateTargets } = userTargetsResult || { 
+    targets: {
+      calories: { target: 2000, current: 0 },
+      protein: { target: 150, current: 0 },
+      carbs: { target: 250, current: 0 }
+    }, 
+    updateTargets: () => {} 
+  }
   const totals = useNutritionTotals(selectedFoods, foodCounts)
 
   return (
