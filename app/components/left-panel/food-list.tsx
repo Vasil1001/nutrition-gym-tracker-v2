@@ -10,6 +10,7 @@ import FoodCardSkeleton from '@/app/components/left-panel/food-card-skeleton'
 import { Food } from '@/lib/types'
 import { foods as defaultFoods } from '@/lib/foods'
 import { toast } from 'react-hot-toast'
+import { Input } from '@/components/ui/input'
 
 interface FoodProps {
   foods: Food[]
@@ -128,6 +129,21 @@ export default function FoodList({
           </div>
         </div>
 
+        {/* Search bar that filters the food array based on the input */}
+        <div className="mb-4 flex items-center justify-between">
+          <Input
+            type="text"
+            placeholder="Search for food..."
+            className="text-sm h-11 w-full rounded-lg  bg-[#2e3039] px-4 py-2 focus:border-[#228742] focus-visible:ring-1 "
+            onChange={(e) => {
+              const searchTerm = e.target.value.toLowerCase()
+              const filteredFoods = defaultFoods.filter((food) =>
+                food.name.toLowerCase().includes(searchTerm)
+              )
+              setFoods(filteredFoods)
+            }}
+          />
+        </div>
         {isLoading ? (
           <div className="relative">
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/50">
