@@ -131,11 +131,13 @@ export default function SelectedFoodList({
               </p>
             )}
           </div>
-          <div className="flex h-full flex-col justify-center">
+          <div className="ml-2 flex h-full flex-col justify-between">
             {/* Placeholder for progress bar/chart */}
-            <div className="h-2.5 w-full rounded-full bg-gray-700">
+            <p className="text-sm font-bold text-muted-foreground">Protein</p>
+
+            <div className="h-5 w-full rounded-sm rounded-l-sm bg-gray-700">
               <div
-                className="h-2.5 rounded-full bg-emerald-500"
+                className="h-5  rounded-sm bg-emerald-500"
                 style={{
                   width: `${Math.min(100, (totals.protein / (proteinTarget || 1)) * 100)}%`
                 }}></div>
