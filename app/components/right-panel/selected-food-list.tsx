@@ -19,14 +19,18 @@ interface SelectedFoodListProps {
     calories: number
     carbs: number
   }
+  proteinPercentageChange?: number // Added new prop
 }
+
+const proteinTarget = 150 // Hardcoded target, can be dynamic
 
 export default function SelectedFoodList({
   selectedFoods,
   foodCounts,
   onAdd,
   onRemove,
-  totals
+  totals,
+  proteinPercentageChange // Added new prop
 }: SelectedFoodListProps) {
   const hasSelectedFoods = Object.keys(foodCounts).length > 0
 
@@ -40,7 +44,7 @@ export default function SelectedFoodList({
         <Table>
           <TableHeader className="sticky top-0 z-10 bg-[#19191f]">
             <TableRow className="hover:bg-[#19191f]">
-              <TableHead className="w-[40px] rounded-tl-xl text-left hover:bg-[#19191f]">
+              <TableHead className="w-[20px] rounded-tl-xl text-left hover:bg-[#19191f]">
                 #
               </TableHead>
               <TableHead className="w-[150px]">Food</TableHead>
@@ -84,11 +88,11 @@ export default function SelectedFoodList({
               )
             })}
             {/* Totals row rendered inside the TableBody */}
-            <TableRow className="sticky bottom-0 w-full border-t bg-[#2e3039] text-xs  font-medium hover:bg-[#2e3039]">
-              <TableCell className="w-[30px] border-none py-3 pt-4 text-start text-muted-foreground">
+            <TableRow className="sticky bottom-0 w-full border-t bg-[#2e3039] text-sm  font-medium hover:bg-[#2e3039]">
+              <TableCell className="w-[20px] border-none py-3 pt-4 text-start text-muted-foreground">
                 #
               </TableCell>
-              <TableCell className="w-[120px] border-none py-3 pt-4 text-start">Total</TableCell>
+              <TableCell className="w-[120px] border-none py-3 pt-4 text-start">Totals</TableCell>
               <TableCell className="w-[1px] border-none py-3 pt-4 text-center">
                 {totals.protein.toFixed()}g
               </TableCell>
@@ -106,6 +110,41 @@ export default function SelectedFoodList({
           <TableCell className=" border-none py-5 text-center"></TableCell>
           <TableCell className=" border-none py-5 text-center"></TableCell>
         </TableRow>
+      )}
+      {/* Protein Intake Display */}
+      {hasSelectedFoods && (
+        <div className="grid grid-cols-2 items-center bg-[#2e3039] p-3">
+          <div className="text-left">
+            <p className="text-sm font-bold text-muted-foreground">Protein</p>
+            <p className="text-3xl font-bold">{totals.protein.toFixed(1)}g</p>
+            {proteinPercentageChange !== undefined && (
+              <p
+                className={`text-sm ${
+                  proteinPercentageChange > 0
+                    ? 'text-emerald-500'
+                    : proteinPercentageChange < 0
+                      ? 'text-red-500'
+                      : 'text-muted-foreground' // Neutral color for 0% change or when undefined
+                }`}>
+                Today {proteinPercentageChange > 0 ? '+' : ''}
+                {proteinPercentageChange.toFixed()}%
+              </p>
+            )}
+          </div>
+          <div className="flex h-full flex-col justify-center">
+            {/* Placeholder for progress bar/chart */}
+            <div className="h-2.5 w-full rounded-full bg-gray-700">
+              <div
+                className="h-2.5 rounded-full bg-emerald-500"
+                style={{
+                  width: `${Math.min(100, (totals.protein / (proteinTarget || 1)) * 100)}%`
+                }}></div>
+            </div>
+            <p className="mt-1 text-right text-xs text-muted-foreground">
+              Target: {proteinTarget ? `${proteinTarget}g` : 'Not set'}
+            </p>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -13,22 +13,25 @@ interface RightPanelProps {
   foodCounts: { [key: string]: number }
   onAdd: (food: Food) => void
   onRemove: (food: Food) => void
+  proteinPercentageChange?: number // Added new prop
 }
 
 export default function RightPanel({
   selectedFoods,
   foodCounts,
   onAdd,
-  onRemove
-}: RightPanelProps) {  const { session } = useAuth()
+  onRemove,
+  proteinPercentageChange // Added new prop
+}: RightPanelProps) {
+  const { session } = useAuth()
   const userTargetsResult = useUserTargets(session)
-  const { targets, updateTargets } = userTargetsResult || { 
+  const { targets, updateTargets } = userTargetsResult || {
     targets: {
       calories: { target: 2000, current: 0 },
       protein: { target: 150, current: 0 },
       carbs: { target: 250, current: 0 }
-    }, 
-    updateTargets: () => {} 
+    },
+    updateTargets: () => {}
   }
   const totals = useNutritionTotals(selectedFoods, foodCounts)
 
@@ -44,6 +47,7 @@ export default function RightPanel({
             onAdd={onAdd}
             onRemove={onRemove}
             totals={totals}
+            proteinPercentageChange={proteinPercentageChange} // Pass prop
           />
         </div>
       </div>
